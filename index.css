@@ -1,0 +1,442 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+*{
+    margin:0px;
+    padding:0px;
+
+}
+
+html,body
+{
+    width:100vw;
+    height:100vh;
+    box-sizing:border-box;
+}
+
+.servicesofc {
+  text-align: center;
+  padding: 50px 20px;
+  background: #fff;
+}
+
+.servicesofc h2 {
+  color: #6c7ae0;
+  font-size: 2em;
+  margin-bottom: 40px;
+}
+
+.services-container {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+ 
+}
+
+.service-card {
+  background-color:#F6D5EA;
+  border-radius: 10px;
+  padding: 18px;
+  width: 255px;
+  height:257px;
+  text-align: left;
+}
+
+.service-image {
+  background: #6c7ae0;
+  height: 50px;
+  width:50px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.service-card h3 {
+  color: #6c7ae0;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.service-card p {
+  color: #555;
+
+}
+
+.about_problem{
+    margin-top:0rem;
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     width: 100%;
+  }
+  .about_problem_side{
+    height:28rem;
+    padding-top:9rem;
+  }
+  
+  .about_problem_container1{
+    float: left;
+    width: 35%;
+    height: 45rem;
+   
+    
+  }
+
+  .about_problem_container2{
+    float: left;
+    width: 50%;
+    right:30rem;
+    height: 50rem;  
+  }
+
+
+  #container2{
+    padding-left:0px;
+  }
+  
+  .opportunities{
+    padding-left: 10rem;
+    color: #C47FEF;
+    font-size:40px;
+    padding-top:3rem;
+  
+  }
+  
+  
+  .opportunities2{
+    padding-left: 10rem;
+    font-size:55px;
+    color:#533664;
+  
+  }
+
+  .opportunities3{
+    padding-left: 10rem;
+    font-size:20px;
+    color:#898989;
+ 
+  
+  }
+
+  .button_opp{
+    padding-left:10rem;
+    padding-top:3rem;
+  }
+  
+
+  #services2{
+    width:55rem;
+    padding-left:4rem;
+    display:flex;
+    gap:2rem;
+    flex-wrap:wrap;
+    background-color:#FFF5DC;
+  }
+
+  #edit{
+    width:10rem;
+    border-radius: 5px;
+    color:#FFF5DC;
+    background-color: #C47FEF;
+  }
+  
+  .test{
+    background-color:#fff;
+    height:45rem;
+    background-size: cover;
+  }
+  
+  .element1{
+    padding-top:5rem;
+  }
+  
+  .cta-button {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left:10rem;
+    margin-top:3rem;
+}
+
+
+
+.test4 {
+  text-align: center;
+  padding: 50px 20px;
+  background-color:#fff;
+  background-image:url(testtttt.jpg);
+  height:50rem;
+}
+
+
+.test4 p {
+  color: #555;
+  font-size: 1em;
+  max-width: 800px;
+  margin: 0 auto 30px;
+}
+
+
+
+.feature-section {
+  padding: 50px 20px;
+  background-color:#fff;
+  height:30rem;
+}
+
+.feature-section h2 {
+  color:#533664;
+  font-size: 1.7em;
+  margin-right:10rem;
+  text-align: right;
+}
+
+.feature-section h3 {
+  color: #533664;
+  font-size: 50px;
+  margin-bottom: 20px;
+  margin-right:10rem;
+  text-align: right;
+}
+
+.p1_initiative {
+  color: #555;
+  font-size: 1em;
+  max-width:350px;
+  text-align: justify;
+  float:right;
+  margin-right:10rem;
+  margin-bottom:1rem;
+  text-align: left;
+
+}
+
+.p2_initiative{
+  margin-right:10rem;
+  margin-left:48.7rem;
+  text-align: left;
+  color: #555;
+ 
+}
+
+.feature-section a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+@media screen and (max-width:750px){
+
+
+
+
+  #opportunities-section{
+    height:100rem;
+    background-color:white;
+  }
+
+
+  .about_problem{
+     margin-top:0rem;
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     width: 100vw;
+     display:flex;
+     flex-direction:column;
+
+
+     
+   
+  }
+
+
+  .about_problem_side{
+    display:flex;
+    padding-top:9rem;
+    flex-direction:column;
+    align-items:center;
+   
+  }
+ 
+  .about_problem_container1{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width: 100%;
+    height: 45rem;
+    padding-left:0rem;
+   
+  }
+
+
+
+
+  .opportunities{
+   padding-right:2rem;
+    text-align:center;
+    color: #C47FEF;
+    font-size:20px;
+    padding-top:1rem;
+ 
+  }
+ 
+ 
+  .opportunities2{
+    padding-right:2rem;
+    text-align:center;
+    font-size:35px;
+    color:#533664;
+ 
+  }
+
+
+  .opportunities3{
+    padding-right:2rem;
+    text-align:center;
+    font-size:18px;
+    color:#898989;
+ 
+ 
+  }
+
+
+  .about_problem_container2{
+    display:flex;
+    flex-direction:column;
+    align-items:column;
+    width: 100%;
+    right:0rem;
+    margin-top:4rem;
+    float:none;
+   
+   
+  }
+
+
+  #services2{
+    width:100%;
+    padding-left:2rem;
+    display:flex;
+    gap:2rem;
+    flex-wrap:wrap;
+    align-items:center;
+    background-color:#FFF5DC;
+    margin-left:2.5rem;
+  }
+
+
+  #edit{
+    width:10rem;
+    border-radius: 5px;
+    color:#FFF5DC;
+    background-color: #C47FEF;
+    margin-left:2rem;
+  }
+ 
+ 
+  .test4 {
+    text-align: center;
+    background-color:#fff;
+    background-image:none;
+    height:40rem;
+    width:100%;
+   
+  }
+
+
+  .test4 h1{
+    width: 100%;
+    margin-right: 3rem;
+    margin-left: 3rem;
+    text-align:center;
+    font-size:0.1rem;
+
+
+  }
+
+
+  .test4 p {
+    color: #555;
+    font-size: 1rem;
+    width: 100%;
+    margin-right: 4rem;
+    margin-left: 2.7rem;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+  }
+
+
+  .database-button {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-left:3rem;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+
+  .feature-section {
+    padding: 50px 20px;
+    background-color:#fff;
+    height:50rem;
+    display:flex;
+    flex-direction:column;
+  }
+
+
+  .feature-section h2 {
+    color:#533664;
+    font-size: 1em;
+    margin-right:0rem;
+    text-align: center;
+    margin-left:7rem;
+  }
+ 
+  .feature-section h3 {
+    color: #533664;
+    font-size: 35px;
+    margin-bottom: 20px;
+    margin-right:0rem;
+    text-align: center;
+    margin-left:7rem;
+  }
+
+
+  .p1_initiative {
+    color: #555;
+    font-size: 1em;
+    max-width:100%;
+    text-align: justify;
+    float:none;
+    margin-right:0rem;
+    margin-bottom:1rem;
+    text-align: center;
+    margin-left:7rem;
+ 
+  }
+ 
+  .p2_initiative{
+    margin-right:0rem;
+    margin-left:7rem;
+    text-align: center;
+    color: #555;
+   
+  }
+
+
+}
+
+
+
+
+  
