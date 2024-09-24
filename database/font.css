@@ -1,8 +1,0 @@
-@font-face {
-    font-family: fonte;
-    src: url(Solomon_Sans/Solomon\ Sans\ Normal.otf) format('opentype');
-}
-
-*{
-   font-family: fonte; 
-}
