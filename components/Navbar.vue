@@ -1,7 +1,7 @@
 <template>
   <nav class="flex justify-between w-full mb-12 px-[100px]">
     <div class="text-xl font-bold">
-      <img src="/images/logo-light.svg" alt="" />
+      <img src="/images/logo-light-footer.svg" alt="" />
     </div>
     <ul class="flex space-x-8 font-medium">
       <li><a href="#" class="hover:text-gray-200">Início</a></li>

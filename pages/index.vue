@@ -129,7 +129,7 @@ onMounted(() => {
           <Category category="Mentorias" icon="mentorship" />
           <Category category="Bolsas de Estudo" icon="scholarship" />
           <Category category="Olimpíadas Científicas" icon="olympiads" />
-          <Category category="MUNs" icon="muns" />
+          <Category category="MUNs" icon="mun" />
           <Category category="Programas Acadêmicos" icon="academic_programs" />
           <Category category="Competições" icon="competitions" />
           <Category category="Intercâmbios" icon="exchanges" />
