@@ -10,7 +10,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/fonts": "^0.10.0",
+    "@iconoir/vue": "^7.9.0",
+    "@nuxt/fonts": "^0.10.2",
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest"

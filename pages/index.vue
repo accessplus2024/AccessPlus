@@ -1,16 +1,34 @@
 <script setup>
+import { Mail, Linkedin, Instagram, Youtube } from "@iconoir/vue";
+const contacts = [
+  {
+    icon: Mail,
+    label: "E-mail",
+    info: "contato@accessplus.com",
+  },
+  {
+    icon: Linkedin,
+    label: "LinkedIn",
+    info: "linkedin.com/company/accessplus",
+  },
+  {
+    icon: Instagram,
+    label: "Instagram",
+    info: "@accessplus",
+  },
+  {
+    icon: Youtube,
+    label: "YouTube",
+    info: "youtube.com/accessplus",
+  },
+];
+
 useHead({
   title: "Home - Access+",
   meta: [
     { charset: "UTF-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1.0" },
     { hid: "description", name: "description", content: "" },
-  ],
-  link: [
-    {
-      rel: "stylesheet",
-      href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css",
-    },
   ],
   htmlAttrs: {
     lang: "pt-br",
@@ -43,12 +61,12 @@ onMounted(() => {
   <body class="bg-white text-white">
     <!-- Header Section -->
     <header
-      class="relative bg-gradient-to-r from-purple-600 to-pink-600 py-16 rounded-b-lg bg-cover bg-center"
+      class="relative bg-gradient-to-r from-purple-600 to-pink-600 pb-16 rounded-b-lg bg-cover bg-center"
       style="background-image: url('/images/Fundo.png')"
     >
       <div class="container mx-auto px-6 flex flex-col items-center">
         <!-- Navbar -->
-        <Navbar />
+        <Navbar transparent="true" />
         <!-- Heading Content -->
         <div class="text-left w-full max-w-4xl">
           <h1 class="text-5xl font-bold mb-4 leading-none">
@@ -317,12 +335,18 @@ onMounted(() => {
 
     <!-- Sobre nós Section -->
     <section
-      class="sobre-nos-section mx-auto my-16 px-6 bg-white p-8 rounded-lg shadow-md"
-      style="width: 1200px; height: 250px"
+      class="bg-cover bg-center bg- mx-auto my-16 px-6 bg-white p-8 rounded-lg shadow-md"
+      style="
+        width: 1200px;
+        height: 250px;
+        background-image: url('/images/bg-about.png');
+      "
     >
       <div class="flex items-center justify-between">
         <div class="flex-1">
-          <h2 class="custom-heading text-gray-900">
+          <h2
+            class="text-4xl font-bold leading-[69.48px] tracking-[-0.01em] pl-24 text-gray-900"
+          >
             Sobre
             <br />
             <span>nós</span>
@@ -330,11 +354,10 @@ onMounted(() => {
         </div>
         <div class="flex-1 text-left">
           <p
-            class="text-lg text-gray-800 mb-6"
+            class="text-lg text-gray-800 mb-6 font-poppins"
             style="
-              font-family: 'Poppins', sans-serif;
               font-size: 15px;
-              font-weight: 200;
+              font-weight: 400;
               line-height: 25px;
               letter-spacing: -0.01em;
               text-align: left;
@@ -361,52 +384,46 @@ onMounted(() => {
     >
       <!-- Contact Information -->
       <div class="p-8 bg-white rounded-lg">
-        <h2 class="contact-heading text-gray-900 mb-6">Entre em contato</h2>
-        <p class="contact-text mb-8">
+        <h2
+          class="text-4xl font-bold leading-[52.11px] tracking-[-0.01em] text-gray-900 mb-6"
+        >
+          Entre em contato
+        </h2>
+        <p
+          class="text-base font-light leading-6 tracking-tight text-gray-800 mb-8"
+        >
           Nós do Access+ estamos sempre prontos para ouvir você! Se tiver
           dúvidas, sugestões ou quiser saber mais sobre o projeto, entre em
           contato conosco. Estamos aqui para ajudar e colaborar na construção de
           um futuro com mais oportunidades para todos.
         </p>
         <div class="space-y-4">
-          <!-- E-mail Section -->
-          <div class="flex items-center space-x-4 bg-gray-100 p-4 rounded-lg">
-            <i
-              class="fas fa-envelope contact-icon bg-purple-100 p-3 rounded-full"
-            ></i>
-            <div>
-              <p class="text-sm font-bold text-gray-700">E-mail</p>
-              <p class="text-sm text-gray-500">contactaccessplus@gmail.com</p>
+          <!-- Contact Information Sections -->
+          <div
+            v-for="(contact, index) in contacts"
+            :key="index"
+            class="flex items-center space-x-4 bg-gray-100 p-4 rounded-lg"
+          >
+            <div class="bg-purple-100 contact-icon rounded-full p-3">
+              <component class="text-[#3d30a2]" :is="contact.icon" />
             </div>
-          </div>
-          <!-- LinkedIn Section -->
-          <div class="flex items-center space-x-4 bg-gray-100 p-4 rounded-lg">
-            <i
-              class="fab fa-linkedin contact-icon bg-purple-100 p-3 rounded-full"
-            ></i>
-            <p class="text-sm font-bold text-gray-700">LinkedIn</p>
-          </div>
-          <!-- Instagram Section -->
-          <div class="flex items-center space-x-4 bg-gray-100 p-4 rounded-lg">
-            <i
-              class="fab fa-instagram contact-icon bg-purple-100 p-3 rounded-full"
-            ></i>
-            <p class="text-sm font-bold text-gray-700">Instagram</p>
-          </div>
-
-          <!-- YouTube Section -->
-          <div class="flex items-center space-x-4 bg-gray-100 p-4 rounded-lg">
-            <i
-              class="fab fa-youtube contact-icon bg-purple-100 p-3 rounded-full"
-            ></i>
-            <p class="text-sm font-bold text-gray-700">YouTube</p>
+            <div>
+              <p class="text-sm font-bold text-gray-700">{{ contact.label }}</p>
+              <p v-if="contact.info" class="text-sm text-gray-500">
+                {{ contact.info }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Contact Form -->
       <div class="bg-[#3D30A2] p-8 rounded-lg shadow-md">
-        <h2 class="contact-form-heading text-white mb-6">Mande uma Mensagem</h2>
+        <h2
+          class="text-2xl font-semibold leading-tight tracking-tight text-white mb-6"
+        >
+          Mande uma Mensagem
+        </h2>
         <form>
           <div class="mb-6">
             <label for="name" class="block text-white mb-2 text-left"
@@ -496,114 +513,6 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- footer -->
-    <footer class="bg-[#A459D1] py-10 mt-12 rounded-t-3xl">
-      <div class="max-w-5xl mx-auto px-[60px] flex justify-between items-start">
-        <div class="flex flex-col items-start">
-          <div class="flex flex-1 w-full h-full">
-            <img src="/images/logo-light-footer.svg" class="mt-7" />
-          </div>
-          <div class="text-white mt-48">
-            <p>Siga nossas redes sociais:</p>
-            <div class="flex space-x-4 mt-2">
-              <a href="#" class="text-white flex items-center">
-                <i class="fab fa-instagram mr-2"></i> Instagram
-              </a>
-              <a href="#" class="text-white flex items-center">
-                <i class="fab fa-linkedin mr-2"></i> LinkedIn
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="text-white text-left">
-          <h2 class="text-[24px] font-semibold mb-2">Navegação</h2>
-          <ul class="flex flex-col space-y-1">
-            <li v-for="link in ['Início', 'Sobre nós', 'Oportunidades']">
-              <a
-                href="#"
-                class="text-white text-[14px] hover:text-yellow-500 font-bold"
-                >{{ link }}</a
-              >
-            </li>
-            <li
-              v-for="category in [
-                'Olimpíadas Científicas',
-                'Programas de Intercâmbio',
-                'Competições de Escrita',
-                'Mentorias',
-                'Bolsas de Estudo',
-                'MUNs',
-              ]"
-            >
-              <a
-                href="#"
-                class="text-white text-[14px] hover:text-yellow-500"
-                >{{ category }}</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="text-white text-[14px] hover:text-yellow-500 font-bold"
-                >Veja Tudo</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </footer>
+    <Footer />
   </body>
 </template>
-
-<style scoped>
-body,
-h3,
-h2,
-p {
-  font-family: "Montserrat", sans-serif;
-}
-
-.custom-heading {
-  font-family: "Montserrat", sans-serif;
-  font-size: 64px;
-  font-weight: 700;
-  line-height: 69.48px;
-  letter-spacing: -0.01em;
-  padding-left: 100px;
-}
-
-.contact-heading {
-  font-family: "Montserrat", sans-serif;
-  font-size: 48px;
-  font-weight: 700;
-  line-height: 52.11px;
-  letter-spacing: -0.01em;
-}
-
-.contact-text {
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 24px;
-  letter-spacing: -0.01em;
-  color: #1e1e1e;
-}
-
-.contact-form-heading {
-  font-family: "Montserrat", sans-serif;
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 34.74px;
-  letter-spacing: -0.01em;
-}
-
-.contact-icon {
-  color: #3d30a2;
-}
-
-.sobre-nos-section {
-  background-image: url("/images/Fundo\ Sobre\ Nós\ seção.png");
-  background-size: cover;
-  background-position: center;
-}
-</style>

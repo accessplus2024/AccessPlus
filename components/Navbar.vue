@@ -1,27 +1,37 @@
 <template>
-  <nav class="flex justify-between w-full mb-12 px-[100px]">
+  <nav
+    :class="[
+      '',
+      transparent
+        ? 'flex mb-12 pt-16 w-full justify-between px-[100px]'
+        : 'mt-8 max-w-6xl mx-auto flex justify-between items-center py-6 px-6',
+    ]"
+  >
     <div class="text-xl font-bold">
-      <img src="/images/logo-light-navbar.svg" alt="" />
+      <img
+        :src="
+          transparent
+            ? '/images/logo-light-navbar.svg'
+            : '/images/logo-dark.svg'
+        "
+        alt=""
+      />
     </div>
     <ul class="flex space-x-8 font-medium">
       <li><a href="/" class="hover:text-gray-200">Início</a></li>
       <li><a href="/sobre" class="hover:text-gray-200">Sobre Nós</a></li>
       <li class="relative group">
-        <a href="#" class="hover:text-gray-200">Oportunidades</a>
+        <a href="/oportunidades" class="hover:text-gray-200">Oportunidades</a>
         <!-- Dropdown menu -->
         <div
           class="absolute left-0 hidden group-hover:block mt-2 w-128 bg-gray-200 rounded-lg p-6 shadow-lg z-10"
           style="width: 320px"
         >
-          <h2
-            class="font-semibold text-[#383737] mb-4"
-            style="font-family: Poppins; font-size: 20px"
-          >
+          <h2 class="font-semibold font-poppins text-base text-[#383737] mb-4">
             Oportunidades
           </h2>
           <ul
-            class="space-y-1 text-[#383737] font-light pr-6"
-            style="font-family: Poppins; font-size: 15px"
+            class="space-y-1 font-poppins text-sm text-[#383737] font-light pr-6"
           >
             <li>Olimpíadas Científicas</li>
             <li>Programas Acadêmicos</li>
@@ -45,9 +55,14 @@
       </li>
     </ul>
     <div class="flex space-x-4">
-      <a href="#"><i class="fab fa-youtube hover:text-gray-200"></i></a>
-      <a href="#"><i class="fab fa-instagram hover:text-gray-200"></i></a>
-      <a href="#"><i class="fab fa-linkedin hover:text-gray-200"></i></a>
+      <a href="#"><Youtube class="hover:text-gray-200" /></a>
+      <a href="#"><Instagram class="hover:text-gray-200" /></a>
+      <a href="#"><Linkedin class="hover:text-gray-200" /></a>
     </div>
   </nav>
 </template>
+
+<script setup>
+import { Youtube, Instagram, Linkedin } from "@iconoir/vue";
+defineProps(["transparent"]);
+</script>
