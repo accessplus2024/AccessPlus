@@ -24,7 +24,7 @@ const contacts = [
 ];
 
 useHead({
-  title: "Home - Access+",
+  title: "Home",
   meta: [
     { charset: "UTF-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1.0" },
@@ -36,6 +36,7 @@ useHead({
 });
 
 onMounted(() => {
+  const carousel = document.getElementById("carousel");
   const carouselInner = document.getElementById("carouselInner");
   const cardWidth = carousel.offsetWidth / 3.0 + 20;
   let currentPosition = 0;

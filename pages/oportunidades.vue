@@ -12,30 +12,15 @@ useHead({
   },
 });
 
+const contentTitle = ref("Elegibilidade e Guia de Aplicação");
+const contentText = ref(
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in rep."
+);
+
 function changeContent(title, text) {
-  document.getElementById("content-title").innerText = title;
-  document.getElementById("content-text").innerText = text;
+  contentTitle.value = title;
+  contentText.value = text;
 }
-onMounted(() => {
-  const carouselInner = document.getElementById("carouselInner");
-  const cardWidth = carousel.offsetWidth / 3.0 + 20;
-  let currentPosition = 0;
-
-  function updateCarouselPosition() {
-    carouselInner.style.transform = `translateX(-${currentPosition}px)`;
-  }
-
-  document.getElementById("nextBtn").addEventListener("click", () => {
-    const maxScrollPosition = carouselInner.scrollWidth - carousel.offsetWidth;
-    currentPosition = Math.min(currentPosition + cardWidth, maxScrollPosition);
-    updateCarouselPosition();
-  });
-
-  document.getElementById("prevBtn").addEventListener("click", () => {
-    currentPosition = Math.max(currentPosition - cardWidth, 0);
-    updateCarouselPosition();
-  });
-});
 </script>
 
 <template>
@@ -108,25 +93,45 @@ onMounted(() => {
       <div class="col-span-5 space-y-4">
         <button
           class="bg-gray-200 w-full py-3 rounded-lg font-semibold text-[#140E3F] text-center px-4"
-          onclick="changeContent('Elegibilidade e Guia de Aplicação', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.')"
+          @click="
+            changeContent(
+              'Elegibilidade e Guia de Aplicação',
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            )
+          "
         >
           Elegibilidade e Guia de Aplicação
         </button>
         <button
           class="bg-gray-200 w-full py-3 rounded-lg font-semibold text-[#140E3F] text-center px-4"
-          onclick="changeContent('Sobre o Processo', 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.')"
+          @click="
+            changeContent(
+              'Sobre o Processo',
+              'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+            )
+          "
         >
           Sobre o Processo
         </button>
         <button
           class="bg-gray-200 w-full py-3 rounded-lg font-semibold text-[#140E3F] text-center px-4"
-          onclick="changeContent('Dicas de Premiados', 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.')"
+          @click="
+            changeContent(
+              'Dicas de Premiados',
+              'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
+            )
+          "
         >
           Dicas de Premiados
         </button>
         <button
           class="bg-gray-200 w-full py-3 rounded-lg font-semibold text-[#140E3F] text-center px-4"
-          onclick="changeContent('Prêmios', 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')"
+          @click="
+            changeContent(
+              'Prêmios',
+              'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+            )
+          "
         >
           Prêmios
         </button>
@@ -136,13 +141,10 @@ onMounted(() => {
       <div class="col-span-7">
         <div id="content-section" class="bg-gray-100 p-6 rounded-lg">
           <h3 id="content-title" class="font-semibold text-lg">
-            Elegibilidade e Guia de Aplicação
+            {{ contentTitle }}
           </h3>
           <p id="content-text" class="text-sm text-gray-600 mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in rep.
+            {{ contentText }}
           </p>
         </div>
       </div>
