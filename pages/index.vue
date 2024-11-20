@@ -172,7 +172,7 @@ onMounted(() => {
     <section class="bg-gray-100 py-16">
       <div class="container mx-auto px-6 max-w-6xl">
         <h2 class="text-3xl font-bold text-left text-[#140E3F] mb-12 pl-6">
-          <span class="font-bold">Novidades</span>
+          <span class="font-bold">Novidades </span>
           <span class="font-medium">do Mês</span>
         </h2>
         <div class="flex items-center justify-between">

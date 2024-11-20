@@ -20,12 +20,11 @@ useHead({
 </script>
 
 <template>
+
   <body class="bg-white text-white">
     <!-- header -->
-    <header
-      class="relative bg-gradient-to-r from-purple-600 to-pink-600 pb-16 rounded-b-lg bg-cover bg-center"
-      style="background-image: url('/images/sobre.png')"
-    >
+    <header class="relative bg-gradient-to-r from-purple-600 to-pink-600 pb-16 rounded-b-lg bg-cover bg-center"
+      style="background-image: url('/images/sobre.png')">
       <div class="container mx-auto px-6 flex flex-col items-center">
         <!-- Navbar -->
         <Navbar transparent="true" />
@@ -37,11 +36,8 @@ useHead({
       </div>
     </header>
 
-    <!-- texto inicial -->
-    <!-- Todo: colocar fotos das meninas-->
-    <div
-      class="container mx-auto flex flex-col text-center mt-28 mb-14 items-center justify-center px-4"
-    >
+    <!-- About/story -->
+    <div class="container mx-auto flex flex-col text-center mt-28 mb-14 items-center justify-center px-4">
       <h1 class="text-5xl font-semibold mb-8" style="color: #380f45">
         Como tudo começou
       </h1>
@@ -66,41 +62,70 @@ useHead({
       </div>
     </div>
 
-    <!-- Cards de objetivos -->
-    <div
-      class="container mx-auto flex flex-row gap-16 items-center justify-center"
-    >
-      <!-- Card individual-->
-      <div
-        class="text-white py-12 px-16 rounded-lg h-96 flex flex-col justify-start items-start"
-        style="background-color: #3d30a2; width: 32rem"
-      >
-        <!-- Tag objetivo-->
-        <span
-          class="text-gray-800 text-center text-sm px-5 py-2 rounded-full mb-9"
-          style="background-color: #d9d9d9"
-          >NOSSA MISSÃO</span
-        >
-
-        <h1 class="text-left text-4xl">
-          Democratizar o acesso a oportunidades educacionais e transformar vidas
-          por meio da educação.
-        </h1>
+    <!-- Values -->
+    <div class="mt-28">
+      <h1 class="text-5xl font-medium text-center mb-8" style="color: #380f45">
+        Nossos <span class="font-semibold">Valores</span>
+      </h1>
+    </div>
+    <div class="flex justify-center gap-6">
+      <!-- Inclusion Card -->
+      <div class="bg-red-400 text-white p-6 rounded-lg w-80 h-64 flex flex-col justify-start items-start relative">
+        <p class="text-2xl font-bold">Inclusão</p>
+        <p class="text-base text-left">Acreditamos que todos os jovens devem ter as mesmas oportunidades de crescer e se
+          desenvolver, independentemente de sua origem ou condição financeira.</p>
       </div>
 
-      <!-- Card individual-->
-      <div
-        class="text-white py-12 px-16 rounded-lg h-96 flex flex-col justify-start items-start"
-        style="background-color: #3d30a2; width: 32rem"
-      >
-        <!-- Tag objetivo-->
-        <span
-          class="text-gray-800 text-center text-sm px-5 py-2 rounded-full mb-9"
-          style="background-color: #f16767"
-          >Blank</span
-        >
+      <!-- Innovation Card -->
+      <div class="bg-purple-400 text-white p-6 rounded-lg w-80 h-64 flex flex-col justify-start items-start relative">
+        <p class="text-2xl font-bold">Inovação</p>
+        <p class="text-base text-left">Através de ferramentas tecnológicas e uma abordagem moderna, nossa plataforma
+          oferece uma maneira nova e eficaz de conectar estudantes com oportunidades educacionais.</p>
+      </div>
 
-        <h1 class="text-left text-4xl">Some text.</h1>
+      <!-- Community Card -->
+      <div class="bg-blue-800 text-white p-6 rounded-lg w-80 h-64 flex flex-col justify-start items-start relative">
+        <p class="text-2xl font-bold">Comunidade</p>
+        <p class="text-base text-left">Queremos construir uma rede de apoio que valorize o potencial de cada estudante,
+          ajudando-os a alcançar seus sonhos e retribuir à sociedade.</p>
+      </div>
+    </div>
+
+    <!-- Team -->
+    <div class="container mx-auto mt-28">
+      <h1 class="text-5xl font-medium mb-8" style="color: #380f45">
+        Nossos <br>
+        <span class="font-semibold">Integrantes</span>
+      </h1>
+
+      <!-- Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-black">
+        <div class="bg-gray-200 shadow-md rounded-lg p-6 flex flex-col justify-start items-start">
+          <img src="/images/perfil_linkedin_1.png" alt="Paula Borges Frickes" class="w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl  font-semibold mb-2">Paula Borges Frickes</h3>
+            <p class="text-gray-700">Co-fundadora e Diretora Executiva </p>
+            <p class="text-gray-700">Rio de Janeiro, RJ</p>
+          </div>
+        </div>
+
+        <div class="bg-gray-200 shadow-md rounded-lg p-6 flex flex-col justify-start items-start">
+          <img src="/images/perfil_linkedin_1.png" alt="Paula Borges Frickes" class="w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Ester Borges Frickes</h3>
+            <p class="text-gray-700">Co-Fundadora e Diretora de Operações</p>
+            <p class="text-gray-700">Rio de Janeiro, RJ</p>
+          </div>
+        </div>
+
+        <div class="bg-gray-200 shadow-md rounded-lg p-6 flex flex-col justify-start items-start">
+          <img src="/images/perfil_linkedin_1.png" alt="Paula Borges Frickes" class="w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Camily Guimarães</h3>
+            <p class="text-gray-700">Co-fundadora e Diretora de X</p>
+            <p class="text-gray-700">X, MG</p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -128,31 +153,22 @@ useHead({
           <h2 class="text-[24px] font-semibold mb-2">Navegação</h2>
           <ul class="flex flex-col space-y-1">
             <li v-for="link in ['Início', 'Sobre nós', 'Oportunidades']">
-              <a
-                href="#"
-                class="text-white text-[14px] hover:text-yellow-500 font-bold"
-                >{{ link }}
+              <a href="#" class="text-white text-[14px] hover:text-yellow-500 font-bold">{{ link }}
               </a>
             </li>
-            <li
-              v-for="category in [
-                'Olimpíadas Científicas',
-                'Programas de Intercâmbio',
-                'Competições de Escrita',
-                'Mentorias',
-                'Bolsas de Estudo',
-                'MUNs',
-              ]"
-            >
-              <a href="#" class="text-white text-[14px] hover:text-yellow-500"
-                >{{ category }}
+            <li v-for="category in [
+              'Olimpíadas Científicas',
+              'Programas de Intercâmbio',
+              'Competições de Escrita',
+              'Mentorias',
+              'Bolsas de Estudo',
+              'MUNs',
+            ]">
+              <a href="#" class="text-white text-[14px] hover:text-yellow-500">{{ category }}
               </a>
             </li>
             <li>
-              <a
-                href="#"
-                class="text-white text-[14px] hover:text-yellow-500 font-bold"
-                >Veja Tudo
+              <a href="#" class="text-white text-[14px] hover:text-yellow-500 font-bold">Veja Tudo
               </a>
             </li>
           </ul>
