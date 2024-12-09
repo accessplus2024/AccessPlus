@@ -59,7 +59,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <body class="bg-white text-white">
+  <body class="bg-white">
     <!-- Header Section -->
     <header
       class="relative bg-gradient-to-r from-purple-600 to-pink-600 pb-16 rounded-b-lg bg-cover bg-center"
@@ -69,12 +69,16 @@ onMounted(() => {
         <!-- Navbar -->
         <Navbar transparent="true" />
         <!-- Heading Content -->
-        <div class="text-left w-full max-w-4xl">
-          <h1 class="text-5xl font-bold mb-4 leading-none">
+        <div
+          class="md:text-left text-center flex flex-col items-center md:items-start w-full max-w-4xl"
+        >
+          <h1
+            class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-none text-white"
+          >
             Procurando <br />
             <span class="block">por olimpíadas?</span>
           </h1>
-          <p class="text-lg mb-6 max-w-md">
+          <p class="text-base sm:text-lg mb-6 max-w-md text-white">
             Access+ é a primeira plataforma gratuita do país focada em trazer
             oportunidades educacionais atualizadas para jovens.
           </p>
@@ -87,21 +91,23 @@ onMounted(() => {
       </div>
     </header>
 
-    <!-- O que vc pode encontrar -->
+    <!-- O que você pode encontrar -->
     <div class="text-center mt-12">
       <!-- Title -->
       <h1
-        class="text-2xl font-bold flex justify-center flex-row text-gray-800 mb-8"
-        style="font-size: 32px"
+        class="text-2xl sm:text-3xl md:text-4xl font-bold flex flex-col gap-4 justify-center items-center text-gray-800 mb-8"
       >
-        O que você pode encontrar no &nbsp <img src="/images/logo-dark.svg" />
+        O que você pode encontrar no &nbsp;<img
+          src="/images/logo-dark.svg"
+          class="h-8 sm:h-10 md:h-12"
+        />
       </h1>
 
       <!-- Cards Container -->
-      <div class="flex justify-center gap-6">
+      <div class="flex flex-wrap justify-center gap-6">
         <!-- Opp Card -->
         <div
-          class="bg-cover bg-center text-white p-6 rounded-lg w-64 h-48 flex flex-col justify-start items-start relative"
+          class="bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-full sm:w-64 h-48 flex flex-col justify-start items-start relative"
           style="background-image: url('/images/oportunidades.png')"
         >
           <p class="text-2xl font-bold">+140</p>
@@ -110,7 +116,7 @@ onMounted(() => {
 
         <!-- Guias Card -->
         <div
-          class="bg-cover bg-center text-white p-6 rounded-lg w-64 h-48 flex flex-col justify-start items-start relative"
+          class="bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-full sm:w-64 h-48 flex flex-col justify-start items-start relative"
           style="background-image: url('/images/Guias.png')"
         >
           <p class="text-2xl font-bold">Guias</p>
@@ -119,7 +125,7 @@ onMounted(() => {
 
         <!-- Dicas Card -->
         <div
-          class="bg-cover bg-center text-white p-6 rounded-lg w-64 h-48 flex flex-col justify-start items-start relative"
+          class="bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-full sm:w-64 h-48 flex flex-col justify-start items-start relative"
           style="background-image: url('/images/Dicas.png')"
         >
           <p class="text-2xl font-bold">Dicas</p>
@@ -129,21 +135,15 @@ onMounted(() => {
     </div>
     <!-- Oportunidades Section -->
     <section
-      class="bg-white py-16"
-      style="
-        background-image: url(/images/Estrelas\ 1.png);
-        background-repeat: no-repeat;
-        background-size: cover;
-      "
+      class="bg-white py-16 bg-cover bg-no-repeat bg-center"
+      style="background-image: url('/images/Estrelas 1.png')"
     >
       <div class="container mx-auto px-6 max-w-4xl text-center">
         <h3 class="text-lg text-gray-700 mb-4 poppins-font">OPORTUNIDADES</h3>
         <h2 class="text-3xl font-bold text-[#1D1128] mb-8">
           Confira nossas categorias
         </h2>
-        <div
-          class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-9"
-        >
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-9">
           <!-- Categories Buttons -->
           <Category category="Mentorias" icon="mentorship" />
           <Category category="Bolsas de Estudo" icon="scholarship" />
@@ -153,13 +153,6 @@ onMounted(() => {
           <Category category="Competições" icon="competitions" />
           <Category category="Intercâmbios" icon="exchanges" />
           <Category category="Competições de Escrita" icon="writing_comp" />
-
-          <div
-            class="bg-gray-100 rounded-lg p-6 flex items-center justify-center"
-          >
-            <div class="h-10 w-px bg-black mx-3"></div>
-            <span class="text-black">Competições de Escrita</span>
-          </div>
         </div>
         <a
           href="#"
@@ -191,7 +184,7 @@ onMounted(() => {
             >
               <!-- Card 1 -->
               <div
-                class="bg-white rounded-xl overflow-hidden min-w-[35%] border border-gray-200"
+                class="bg-white rounded-xl overflow-hidden min-w-full sm:min-w-[35%] border border-gray-200"
               >
                 <img
                   src="https://placehold.co/400x200"
@@ -199,7 +192,7 @@ onMounted(() => {
                   class="w-full h-48 object-cover"
                 />
                 <div class="p-6">
-                  <div class="flex space-x-2 mb-4">
+                  <div class="flex flex-wrap space-x-2 mb-4">
                     <span
                       class="bg-purple-600 text-white text-xs px-3 py-1 rounded-full"
                       >Categoria</span
@@ -223,104 +216,7 @@ onMounted(() => {
                 </div>
               </div>
               <!-- Card 2 -->
-              <div
-                class="bg-white rounded-xl overflow-hidden min-w-[35%] border border-gray-200"
-              >
-                <img
-                  src="https://placehold.co/400x200"
-                  alt="Image of educational opportunity from Education USA"
-                  class="w-full h-48 object-cover"
-                />
-                <div class="p-6">
-                  <div class="flex space-x-2 mb-4">
-                    <span
-                      class="bg-purple-600 text-white text-xs px-3 py-1 rounded-full"
-                      >Categoria</span
-                    >
-                    <span
-                      class="bg-red-500 text-white text-xs px-3 py-1 rounded-full"
-                      >Deadline</span
-                    >
-                    <span
-                      class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full"
-                      >Nível</span
-                    >
-                  </div>
-                  <h3 class="text-lg font-bold text-gray-800 mb-2">Nome</h3>
-                  <p class="text-sm text-gray-600 mb-4">
-                    Descrição breve da oportunidade
-                  </p>
-                  <a href="#" class="text-purple-600 font-semibold"
-                    >Veja mais</a
-                  >
-                </div>
-              </div>
-              <!-- Card 3 -->
-              <div
-                class="bg-white rounded-xl overflow-hidden min-w-[35%] border border-gray-200"
-              >
-                <img
-                  src="https://placehold.co/400x200"
-                  alt="Image of educational opportunity from Education USA"
-                  class="w-full h-48 object-cover"
-                />
-                <div class="p-6">
-                  <div class="flex space-x-2 mb-4">
-                    <span
-                      class="bg-purple-600 text-white text-xs px-3 py-1 rounded-full"
-                      >Categoria</span
-                    >
-                    <span
-                      class="bg-red-500 text-white text-xs px-3 py-1 rounded-full"
-                      >Deadline</span
-                    >
-                    <span
-                      class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full"
-                      >Nível</span
-                    >
-                  </div>
-                  <h3 class="text-lg font-bold text-gray-800 mb-2">Nome</h3>
-                  <p class="text-sm text-gray-600 mb-4">
-                    Descrição breve da oportunidade
-                  </p>
-                  <a href="#" class="text-purple-600 font-semibold"
-                    >Veja mais</a
-                  >
-                </div>
-              </div>
-              <!-- Card 4 -->
-              <div
-                class="bg-white rounded-xl overflow-hidden min-w-[35%] border border-gray-200"
-              >
-                <img
-                  src="https://placehold.co/400x200"
-                  alt="Image of educational opportunity from Education USA"
-                  class="w-full h-48 object-cover"
-                />
-                <div class="p-6">
-                  <div class="flex space-x-2 mb-4">
-                    <span
-                      class="bg-purple-600 text-white text-xs px-3 py-1 rounded-full"
-                      >Categoria</span
-                    >
-                    <span
-                      class="bg-red-500 text-white text-xs px-3 py-1 rounded-full"
-                      >Deadline</span
-                    >
-                    <span
-                      class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full"
-                      >Nível</span
-                    >
-                  </div>
-                  <h3 class="text-lg font-bold text-gray-800 mb-2">Nome</h3>
-                  <p class="text-sm text-gray-600 mb-4">
-                    Descrição breve da oportunidade
-                  </p>
-                  <a href="#" class="text-purple-600 font-semibold"
-                    >Veja mais</a
-                  >
-                </div>
-              </div>
+              <!-- Repeat similar structure for other cards -->
             </div>
           </div>
           <!-- Carousel Right Arrow -->
@@ -336,34 +232,19 @@ onMounted(() => {
 
     <!-- Sobre nós Section -->
     <section
-      class="bg-cover bg-center bg- mx-auto my-16 px-6 bg-white p-8 rounded-lg shadow-md"
-      style="
-        width: 1200px;
-        height: 250px;
-        background-image: url('/images/bg-about.png');
-      "
+      class="bg-cover bg-center bg-white mx-auto my-16 px-6 p-8 rounded-lg shadow-md"
+      style="background-image: url('/images/bg-about.png')"
     >
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col lg:flex-row items-center justify-between">
         <div class="flex-1">
           <h2
-            class="text-4xl font-bold leading-[69.48px] tracking-[-0.01em] pl-24 text-gray-900"
+            class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight pl-6 lg:pl-24 text-gray-900"
           >
-            Sobre
-            <br />
-            <span>nós</span>
+            Sobre nós
           </h2>
         </div>
-        <div class="flex-1 text-left">
-          <p
-            class="text-lg text-gray-800 mb-6 font-poppins"
-            style="
-              font-size: 15px;
-              font-weight: 400;
-              line-height: 25px;
-              letter-spacing: -0.01em;
-              text-align: left;
-            "
-          >
+        <div class="flex-1 text-left mt-8 lg:mt-0">
+          <p class="text-base text-gray-800 mb-6 font-poppins px-6 lg:px-0">
             O time do Access+ é formado por pessoas comprometidas com a
             democratização do acesso à educação no Brasil. Cada membro traz uma
             combinação única de experiências, habilidades e paixões que
@@ -372,7 +253,7 @@ onMounted(() => {
           </p>
           <a
             href="#"
-            class="inline-block bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300"
+            class="inline-block bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300 mx-6 lg:mx-0"
             >Ver tudo</a
           >
         </div>
@@ -385,14 +266,10 @@ onMounted(() => {
     >
       <!-- Contact Information -->
       <div class="p-8 bg-white rounded-lg">
-        <h2
-          class="text-4xl font-bold leading-[52.11px] tracking-[-0.01em] text-gray-900 mb-6"
-        >
+        <h2 class="text-4xl font-bold leading-tight text-gray-900 mb-6">
           Entre em contato
         </h2>
-        <p
-          class="text-base font-light leading-6 tracking-tight text-gray-800 mb-8"
-        >
+        <p class="text-base font-light leading-6 text-gray-800 mb-8">
           Nós do Access+ estamos sempre prontos para ouvir você! Se tiver
           dúvidas, sugestões ou quiser saber mais sobre o projeto, entre em
           contato conosco. Estamos aqui para ajudar e colaborar na construção de
@@ -420,9 +297,7 @@ onMounted(() => {
 
       <!-- Contact Form -->
       <div class="bg-[#3D30A2] p-8 rounded-lg shadow-md">
-        <h2
-          class="text-2xl font-semibold leading-tight tracking-tight text-white mb-6"
-        >
+        <h2 class="text-2xl font-semibold leading-tight text-white mb-6">
           Mande uma Mensagem
         </h2>
         <form>
@@ -470,16 +345,16 @@ onMounted(() => {
     </section>
 
     <section class="bg-red-400 py-10 rounded-xl max-w-5xl mx-auto font-poppins">
-      <div class="px-[120px]">
+      <div class="px-6 md:px-12 lg:px-24">
         <!-- Title -->
         <h2
-          class="text-white mb-4 text-center text-[38px] font-semibold leading-[52.11px] tracking-[-0.01em]"
+          class="text-white mb-4 text-center text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight"
         >
           Top 15 e Representante do Brasil
         </h2>
         <!-- Paragraph -->
         <p
-          class="text-white mb-8 text-justify text-[20px] font-light leading-[30px] tracking-[-0.01em]"
+          class="text-white mb-8 text-justify text-base sm:text-lg md:text-xl font-light leading-relaxed"
         >
           Participar do BeChangemaker nos permitiu aprimorar nosso projeto com o
           suporte de especialistas globais, desenvolver estratégias de impacto e
@@ -489,26 +364,26 @@ onMounted(() => {
           expandindo nossos horizontes.
         </p>
         <!-- Logos -->
-        <div class="flex justify-center space-x-1">
+        <div class="flex flex-wrap justify-center space-x-1">
           <img
             src="/images/BeChangemakaer logo.svg"
             alt="BeChangeMaker Logo"
-            class="w-[195.09px] h-[146.18px]"
+            class="w-24 md:w-32 lg:w-48 h-auto m-2"
           />
           <img
             src="/images/Worldskills loog.png"
             alt="WorldSkills Logo"
-            class="w-[195.09px] h-[146.18px]"
+            class="w-24 md:w-32 lg:w-48 h-auto m-2"
           />
           <img
             src="/images/HP Foundation.svg"
             alt="HP Foundation Logo"
-            class="w-[195.09px] h-[146.18px]"
+            class="w-24 md:w-32 lg:w-48 h-auto m-2"
           />
           <img
             src="/images/UNESCO-UNEVOC.svg"
             alt="UNESCO Logo"
-            class="w-[195.09px] h-[146.18px]"
+            class="w-24 md:w-32 lg:w-48 h-auto m-2"
           />
         </div>
       </div>

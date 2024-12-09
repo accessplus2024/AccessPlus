@@ -1,12 +1,5 @@
 <template>
-  <nav
-    :class="[
-      'relative',
-      transparent
-        ? 'flex mb-12 pt-16 w-full justify-between px-[100px]'
-        : 'mt-8 max-w-6xl mx-auto flex justify-between items-center py-6 px-6',
-    ]"
-  >
+  <nav class="flex mb-12 pt-16 w-full justify-between px-[100px] text-white">
     <!-- Desktop and Mobile Logo -->
     <div class="text-xl font-bold">
       <img
