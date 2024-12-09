@@ -11,3 +11,9 @@ useHead({
   },
 });
 </script>
+
+<style lang="postcss">
+body {
+  @apply bg-white text-white;
+}
+</style>
