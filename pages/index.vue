@@ -1,5 +1,12 @@
 <script setup>
-import { Mail, Linkedin, Instagram, Youtube } from "@iconoir/vue";
+import {
+  Mail,
+  Linkedin,
+  Instagram,
+  Youtube,
+  PageLeft,
+  PageRight,
+} from "@iconoir/vue";
 const contacts = [
   {
     icon: Mail,
@@ -34,6 +41,63 @@ useHead({
     lang: "pt-br",
   },
 });
+
+const opportunities = [
+  {
+    image: "https://placehold.co/400x200",
+    category: "Categoria",
+    deadline: "Deadline",
+    level: "Nível",
+    name: "Nome",
+    description: "Descrição breve da oportunidade",
+    link: "oportunidade",
+  },
+  {
+    image: "https://placehold.co/400x200",
+    category: "Categoria",
+    deadline: "Deadline",
+    level: "Nível",
+    name: "exemplo",
+    description: "Descrição breve da oportunidade",
+    link: "oportunidade",
+  },
+  {
+    image: "https://placehold.co/400x200",
+    category: "Categoria",
+    deadline: "Deadline",
+    level: "Nível",
+    name: "arroz",
+    description: "Descrição breve da oportunidade",
+    link: "oportunidade",
+  },
+  {
+    image: "https://placehold.co/400x200",
+    category: "Categoria",
+    deadline: "Deadline",
+    level: "Nível",
+    name: "Nome",
+    description: "Descrição breve da oportunidade",
+    link: "oportunidade",
+  },
+  {
+    image: "https://placehold.co/400x200",
+    category: "Categoria",
+    deadline: "Deadline",
+    level: "Nível",
+    name: "Nome",
+    description: "Descrição breve da oportunidade",
+    link: "oportunidade",
+  },
+  {
+    image: "https://placehold.co/400x200",
+    category: "Categoria",
+    deadline: "Deadline",
+    level: "Nível",
+    name: "Nome",
+    description: "Descrição breve da oportunidade",
+    link: "oportunidade",
+  },
+];
 
 onMounted(() => {
   const carousel = document.getElementById("carousel");
@@ -167,13 +231,13 @@ onMounted(() => {
         <span class="font-bold">Novidades </span>
         <span class="font-medium">do Mês</span>
       </h2>
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between gap-4">
         <!-- Carousel Left Arrow -->
         <button
           id="prevBtn"
           class="text-purple-600 text-3xl focus:outline-none"
         >
-          <i class="fas fa-chevron-left"></i>
+          <PageLeft />
         </button>
         <!-- Cards Carousel -->
         <div id="carousel" class="relative w-full overflow-hidden">
@@ -181,39 +245,45 @@ onMounted(() => {
             id="carouselInner"
             class="flex space-x-5 transition-transform duration-300 ease-in-out"
           >
-            <!-- Card 1 -->
             <div
-              class="bg-white rounded-xl overflow-hidden min-w-full sm:min-w-[35%] border border-gray-200"
+              v-for="(opp, index) in opportunities"
+              :key="index"
+              class="bg-white rounded-xl overflow-hidden flex-shrink-0 w-[80%] sm:w-[45%] lg:w-[30%] border border-gray-200"
             >
               <img
-                src="https://placehold.co/400x200"
-                alt="Image of educational opportunity from Education USA"
+                :src="opp.image"
+                :alt="opp.name"
                 class="w-full h-48 object-cover"
               />
               <div class="p-6">
-                <div class="flex flex-wrap space-x-2 mb-4">
+                <div class="flex flex-wrap gap-2 mb-4">
                   <span
                     class="bg-purple-600 text-white text-xs px-3 py-1 rounded-full"
-                    >Categoria</span
                   >
+                    {{ opp.category }}
+                  </span>
                   <span
                     class="bg-red-500 text-white text-xs px-3 py-1 rounded-full"
-                    >Deadline</span
                   >
+                    {{ opp.deadline }}
+                  </span>
                   <span
                     class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full"
-                    >Nível</span
                   >
+                    {{ opp.level }}
+                  </span>
                 </div>
-                <h3 class="text-lg font-bold text-gray-800 mb-2">Nome</h3>
+                <h3 class="text-lg font-bold text-gray-800 mb-2">
+                  {{ opp.name }}
+                </h3>
                 <p class="text-sm text-gray-600 mb-4">
-                  Descrição breve da oportunidade
+                  {{ opp.description }}
                 </p>
-                <a href="#" class="text-purple-600 font-semibold">Veja mais</a>
+                <a :href="opp.link" class="text-purple-600 font-semibold"
+                  >Veja mais</a
+                >
               </div>
             </div>
-            <!-- Card 2 -->
-            <!-- Repeat similar structure for other cards -->
           </div>
         </div>
         <!-- Carousel Right Arrow -->
@@ -221,7 +291,7 @@ onMounted(() => {
           id="nextBtn"
           class="text-purple-600 text-3xl focus:outline-none"
         >
-          <i class="fas fa-chevron-right"></i>
+          <PageRight />
         </button>
       </div>
     </div>
@@ -383,6 +453,4 @@ onMounted(() => {
       </div>
     </div>
   </section>
-
-  <Footer />
 </template>

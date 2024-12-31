@@ -150,7 +150,4 @@ function changeContent(title, text) {
       </div>
     </div>
   </div>
-
-  <!-- footer -->
-  <Footer />
 </template>
