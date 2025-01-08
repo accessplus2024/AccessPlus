@@ -7,6 +7,7 @@ import {
   PageLeft,
   PageRight,
 } from "@iconoir/vue";
+
 const contacts = [
   {
     icon: Mail,

@@ -89,14 +89,31 @@ const opportunities = [
   },
 ];
 
+const tempOpps = ref([]);
+
 const filteredOpportunities = computed(() =>
-  opportunities.filter((o) =>
+  tempOpps.value.filter((o) =>
     [o.name, o.description]
       .join(" ")
       .toLowerCase()
       .includes(searchTerm.value.toLowerCase())
   )
 );
+
+// Using the composition API with script setup
+const { data, loading, error, fetchSheetData } = useSteinData();
+
+// Fetch data when the component mounts
+onMounted(async () => {
+  await fetchSheetData("Programas Acadêmicos")
+    .then(() => {
+      console.log("Programas Acadêmicos:", data.value);
+      tempOpps.value = data.value;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
 </script>
 
 <template>
@@ -170,8 +187,7 @@ const filteredOpportunities = computed(() =>
             class="bg-white rounded-xl overflow-hidden border border-gray-200"
           >
             <img
-              :src="opportunity.image"
-              :alt="`Image of ${opportunity.name}`"
+              src="https://placehold.co/400x200"
               class="w-full h-48 object-cover"
             />
             <div class="p-6">
@@ -179,25 +195,20 @@ const filteredOpportunities = computed(() =>
                 <span
                   class="bg-purple-600 text-white text-xs px-3 py-1 rounded-full"
                 >
-                  {{ opportunity.category }}
                 </span>
                 <span
                   class="bg-red-500 text-white text-xs px-3 py-1 rounded-full"
                 >
-                  {{ opportunity.deadline }}
                 </span>
                 <span
                   class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full"
                 >
-                  {{ opportunity.level }}
                 </span>
               </div>
               <h3 class="text-lg font-bold text-gray-800 mb-2">
-                {{ opportunity.name }}
+                {{ opportunity.Nome }}
               </h3>
-              <p class="text-sm text-gray-600 mb-4">
-                {{ opportunity.description }}
-              </p>
+              <p class="text-sm text-gray-600 mb-4"></p>
               <a :href="opportunity.link" class="text-purple-600 font-semibold"
                 >Veja mais</a
               >

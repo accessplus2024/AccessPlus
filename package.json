@@ -13,6 +13,7 @@
     "@iconoir/vue": "^7.10.0",
     "@nuxt/fonts": "^0.10.2",
     "nuxt": "^3.13.0",
+    "stein-js-client": "^0.0.2",
     "vue": "latest",
     "vue-router": "latest"
   },
