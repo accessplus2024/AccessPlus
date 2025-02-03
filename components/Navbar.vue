@@ -1,5 +1,10 @@
 <template>
-  <nav class="flex mb-12 pt-16 w-full justify-between px-[100px] text-white">
+  <nav
+    :class="[
+      'flex mb-12 pt-16 w-full justify-between px-[100px]',
+      navTextClass,
+    ]"
+  >
     <!-- Desktop and Mobile Logo -->
     <div class="text-xl font-bold">
       <img
@@ -23,10 +28,26 @@
 
     <!-- Desktop Navigation -->
     <ul class="hidden md:flex space-x-8 font-medium">
-      <li><a href="/" class="hover:text-gray-200">Início</a></li>
-      <li><a href="/sobre" class="hover:text-gray-200">Sobre Nós</a></li>
+      <li>
+        <a
+          href="/"
+          :class="transparent ? 'hover:text-gray-200' : 'hover:text-gray-600'"
+          >Início</a
+        >
+      </li>
+      <li>
+        <a
+          href="/sobre"
+          :class="transparent ? 'hover:text-gray-200' : 'hover:text-gray-600'"
+          >Sobre Nós</a
+        >
+      </li>
       <li class="relative group">
-        <a href="/oportunidades" class="hover:text-gray-200">Oportunidades</a>
+        <a
+          href="/oportunidades"
+          :class="transparent ? 'hover:text-gray-200' : 'hover:text-gray-600'"
+          >Oportunidades</a
+        >
         <div
           class="absolute left-0 hidden group-hover:block mt-2 w-128 bg-gray-200 rounded-lg p-6 shadow-lg z-10"
           style="width: 320px"
@@ -60,7 +81,7 @@
     </ul>
 
     <!-- Desktop Social Media Icons -->
-    <Socials class="hidden md:flex" theme="dark" />
+    <Socials class="hidden md:flex" :theme="transparent ? 'dark' : 'light'" />
 
     <!-- Mobile Menu Overlay -->
     <div
@@ -101,12 +122,19 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import { Youtube, Instagram, Linkedin, Menu } from "@iconoir/vue";
 
-defineProps(["transparent"]);
+const props = defineProps({
+  transparent: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const isMobileMenuOpen = ref(false);
+const navTextClass = computed(() =>
+  props.transparent ? "text-white" : "text-gray-800"
+);
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;

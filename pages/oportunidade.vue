@@ -1,4 +1,8 @@
 <script setup>
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useSteinData } from "@/composables/useSteinData"; // adjust import as needed
+
 useHead({
   title: "Oportunidades",
   meta: [
@@ -12,10 +16,36 @@ useHead({
   },
 });
 
-const contentTitle = ref("Elegibilidade e Guia de Aplicação");
-const contentText = ref(
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in rep."
-);
+// Retrieve the opportunity id from the route.
+const route = useRoute();
+const opportunityId = route.params.id;
+console.log("Loaded opportunityId:", opportunityId); // debug
+
+// Initialize content refs.
+const contentTitle = ref(`Detalhes da Oportunidade ${opportunityId}`);
+const contentText = ref("Carregando os detalhes da oportunidade...");
+
+// Fetch opportunity data based on id.
+const { data, loading, error, fetchSheetData } = useSteinData();
+
+onMounted(async () => {
+  try {
+    await fetchSheetData("Programas Acadêmicos");
+    // Assuming data.value is an array of opportunities and each has an id property.
+    const opp = data.value.find((o) => String(o.id) === String(opportunityId));
+    if (opp) {
+      contentTitle.value = opp.Nome || `Oportunidade ${opportunityId}`;
+      contentText.value = opp.description || "Sem descrição disponível.";
+    } else {
+      contentTitle.value = "Oportunidade não encontrada";
+      contentText.value = "";
+    }
+  } catch (e) {
+    console.error(e);
+    contentTitle.value = "Erro ao carregar oportunidade";
+    contentText.value = "";
+  }
+});
 
 function changeContent(title, text) {
   contentTitle.value = title;
@@ -31,8 +61,8 @@ function changeContent(title, text) {
   <div class="max-w-6xl mx-auto px-8 py-12">
     <!-- Title Section -->
     <div class="mb-8">
-      <h2 class="text-[18px] font-medium">CATEGORIA</h2>
-      <h1 class="text-[48px] font-bold">Nome</h1>
+      <h2 class="text-[18px] font-medium text-gray-800">CATEGORIA</h2>
+      <h1 class="text-[48px] font-bold text-gray-800">Nome</h1>
     </div>
 
     <!-- Main Grid -->
@@ -66,7 +96,9 @@ function changeContent(title, text) {
 
         <!-- Summary Section -->
         <div class="bg-gray-100 p-4 rounded-lg">
-          <h3 class="font-semibold text-lg">Resumo sobre a Nome</h3>
+          <h3 class="font-semibold text-lg text-gray-800">
+            Resumo sobre a Nome
+          </h3>
           <p class="text-sm text-gray-600 mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -79,7 +111,7 @@ function changeContent(title, text) {
 
         <!-- Keywords Section -->
         <div class="bg-gray-100 p-4 rounded-lg">
-          <h3 class="font-semibold text-lg">Palavras-chave</h3>
+          <h3 class="font-semibold text-lg text-gray-800">Palavras-chave</h3>
           <p class="text-sm text-gray-600 mt-2">
             Lorem ipsum &nbsp;&nbsp; Lorem ipsum &nbsp;&nbsp; Lorem ipsum
           </p>
@@ -140,7 +172,7 @@ function changeContent(title, text) {
       <!-- Right Column -->
       <div class="col-span-7">
         <div id="content-section" class="bg-gray-100 p-6 rounded-lg">
-          <h3 id="content-title" class="font-semibold text-lg">
+          <h3 id="content-title" class="font-semibold text-lg text-gray-800">
             {{ contentTitle }}
           </h3>
           <p id="content-text" class="text-sm text-gray-600 mt-2">
