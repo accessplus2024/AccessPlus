@@ -403,12 +403,12 @@ const getKeywordColor = (index) => {
                 {{ opportunity.description }}
               </p>
               <!-- Changed link element to router-link -->
-              <router-link
-                :to="{ name: 'oportunidade', params: { id: opportunity.id } }"
+              <NuxtLink
+                :to="`/oportunidade/${opportunity.id}`"
                 class="text-purple-600 font-semibold hover:text-purple-700"
               >
                 Veja mais
-              </router-link>
+              </NuxtLink>
             </div>
           </div>
         </div>

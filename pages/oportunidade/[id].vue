@@ -19,31 +19,28 @@ useHead({
 // Retrieve the opportunity id from the route.
 const route = useRoute();
 const opportunityId = route.params.id;
-console.log("Loaded opportunityId:", opportunityId); // debug
 
-// Initialize content refs.
-const contentTitle = ref(`Detalhes da Oportunidade ${opportunityId}`);
-const contentText = ref("Carregando os detalhes da oportunidade...");
+const typeDisplayNames = {
+  olympiad: "Olimpíadas Científicas",
+  mun: "MUNs",
+  academic: "Programas Acadêmicos",
+  exchange: "Programas de Intercâmbios",
+  scholarship: "Bolsas de Estudo",
+  competition: "Competições",
+  writing: "Competições de Escrita",
+  tutoring: "Mentorias",
+};
 
 // Fetch opportunity data based on id.
-const { data, loading, error, fetchSheetData } = useSteinData();
-
+const { data, loading, error, fetchRow } = useOpportunity();
+const opp = ref(null);
 onMounted(async () => {
   try {
-    await fetchSheetData("Programas Acadêmicos");
-    // Assuming data.value is an array of opportunities and each has an id property.
-    const opp = data.value.find((o) => String(o.id) === String(opportunityId));
-    if (opp) {
-      contentTitle.value = opp.Nome || `Oportunidade ${opportunityId}`;
-      contentText.value = opp.description || "Sem descrição disponível.";
-    } else {
-      contentTitle.value = "Oportunidade não encontrada";
-      contentText.value = "";
-    }
+    await fetchRow(opportunityId);
+    opp.value = data.value[0];
+    console.log(opp.value);
   } catch (e) {
     console.error(e);
-    contentTitle.value = "Erro ao carregar oportunidade";
-    contentText.value = "";
   }
 });
 
@@ -58,11 +55,13 @@ function changeContent(title, text) {
   <Navbar />
 
   <!-- Main Content -->
-  <div class="max-w-6xl mx-auto px-8 py-12">
+  <div v-if="opp" class="max-w-6xl mx-auto px-8 py-12">
     <!-- Title Section -->
     <div class="mb-8">
-      <h2 class="text-[18px] font-medium text-gray-800">CATEGORIA</h2>
-      <h1 class="text-[48px] font-bold text-gray-800">Nome</h1>
+      <h2 class="text-[18px] font-medium text-gray-800">
+        {{ typeDisplayNames[opp.type] }}
+      </h2>
+      <h1 class="text-[48px] font-bold text-gray-800">{{ opp.Nome }}</h1>
     </div>
 
     <!-- Main Grid -->
@@ -70,7 +69,7 @@ function changeContent(title, text) {
       <!-- Left Content -->
       <div class="col-span-7">
         <img
-          src="https://placehold.co/625x320"
+          :src="opp.image || 'https://placehold.co/625x320'"
           alt="Placeholder image with a gray background and rounded corners"
           class="w-full rounded-lg"
         />
@@ -97,12 +96,10 @@ function changeContent(title, text) {
         <!-- Summary Section -->
         <div class="bg-gray-100 p-4 rounded-lg">
           <h3 class="font-semibold text-lg text-gray-800">
-            Resumo sobre a Nome
+            Resumo sobre a {{ opp.Nome }}
           </h3>
           <p class="text-sm text-gray-600 mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam
+            {{ opp.about }}
           </p>
           <a href="#" class="text-indigo-500 text-sm font-medium mt-4 block"
             >Link do Site Oficial</a
