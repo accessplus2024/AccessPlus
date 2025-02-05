@@ -136,7 +136,7 @@
 				<h1
 					class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-none text-white">
 					Procurando <br />
-					<span class="block">por olimpíadas?</span>
+					<span class="block">por oportunidades?</span>
 				</h1>
 				<p class="text-base sm:text-lg mb-6 max-w-md text-white">
 					Access+ é a primeira plataforma gratuita do país focada em trazer
@@ -209,7 +209,7 @@
 				<Category category="Competições de Escrita" icon="writing_comp" />
 			</div>
 			<a
-				href="#"
+				href="/oportunidades"
 				class="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300"
 				>Ver tudo</a
 			>
@@ -300,9 +300,9 @@
 					para os estudantes de baixa renda.
 				</p>
 				<a
-					href="#"
+					href="/sobre"
 					class="inline-block bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300 mx-6 lg:mx-0"
-					>Ver tudo</a
+					>Conheça nosso time</a
 				>
 			</div>
 		</div>
@@ -347,7 +347,7 @@
 		<!-- Contact Form -->
 		<div class="bg-[#3D30A2] p-8 rounded-lg shadow-md">
 			<h2 class="text-2xl font-semibold leading-tight text-white mb-6">
-				Mande uma Mensagem
+				Fale conosco
 			</h2>
 			<form>
 				<div class="mb-6">
