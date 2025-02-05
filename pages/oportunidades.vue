@@ -11,6 +11,13 @@ useHead({
     { name: "description", content: "" },
   ],
   htmlAttrs: { lang: "pt-br" },
+  link: [
+    {
+      rel: 'icon',
+      type: 'image/png',
+      href: '/images/estrelinhas.png'
+    }
+  ]
 });
 
 // Variables for search and filters
@@ -18,8 +25,12 @@ const searchTerm = ref("");
 const showMobileFilters = ref(false);
 const selectedTypeFilters = ref(new Set());
 const selectedStatusFilters = ref(new Set());
+const selectedLevelFilters = ref(new Set());
+const selectedAudienceFilters = ref(new Set());
+const selectedTuitionFilters = ref(new Set());
+const selectedFieldFilters = ref(new Set()); // Novo filtro para fields (Interesse)
 const currentPage = ref(1);
-const itemsPerPage = 9;
+const itemsPerPage = 12;
 
 // Change from keywordFilters to typeFilters
 const typeFilters = ref([
@@ -38,14 +49,15 @@ const typeDisplayNames = {
   olympiad: "Olimpíadas Científicas",
   mun: "MUNs",
   academic: "Programas Acadêmicos",
-  exchange: "Programas de Intercâmbios",
+  exchange: "Programas de Intercâmbio",
   scholarship: "Bolsas de Estudo",
   competition: "Competições",
   writing: "Competições de Escrita",
   tutoring: "Mentorias",
 };
 
-const interestFilters = ref([
+// Filtros de Interesse (Fields)
+const fieldFilters = ref([
   "Meio Ambiente",
   "Humanas",
   "STEM",
@@ -62,24 +74,47 @@ const statusDisplayNames = {
   no: "Não",
 };
 
-const publicFilters = ref([
+const levelFilters = ref(["Fundamental", "Ensino Médio", "Gap"]);
+const audienceFilters = ref([
   "Negros",
   "LGBT",
   "Baixa Renda",
-  "Indígena",
-  "PCDs",
+  "Indígenas",
+  "Deficientes",
   "Meninas",
   "Escola Pública",
 ]);
-
-const costFilters = ref(["Bolsas", "Gratuito", "Totalmente financiado"]);
+const tuitionFilters = ref(["Bolsa", "Gratuito", "Totalmente Financiado"]);
 
 const tempOpps = ref([]);
 
 // Replace the single toggle method with a new one that handles filter types
 const toggleFilter = (filter, filterType) => {
-  const filterSet =
-    filterType === "type" ? selectedTypeFilters : selectedStatusFilters;
+  let filterSet;
+  switch (filterType) {
+    case "type":
+      filterSet = selectedTypeFilters;
+      break;
+    case "status":
+      filterSet = selectedStatusFilters;
+      break;
+    case "level":
+      filterSet = selectedLevelFilters;
+      break;
+    case "audience":
+      filterSet = selectedAudienceFilters;
+      break;
+    case "tuition":
+      // Filtros de custo são exclusivos
+      selectedTuitionFilters.value.clear();
+      selectedTuitionFilters.value.add(filter);
+      return;
+    case "field":
+      filterSet = selectedFieldFilters;
+      break;
+    default:
+      return;
+  }
   if (filterSet.value.has(filter)) {
     filterSet.value.delete(filter);
   } else {
@@ -105,6 +140,38 @@ const filteredOpportunities = computed(() => {
     );
   }
 
+  // Apply level filters
+  if (selectedLevelFilters.value.size > 0) {
+    filtered = filtered.filter((opportunity) =>
+      selectedLevelFilters.value.has(opportunity.level)
+    );
+  }
+
+  // Apply audience filters (accumulative logic)
+  if (selectedAudienceFilters.value.size > 0) {
+    filtered = filtered.filter((opportunity) => {
+      return Array.from(selectedAudienceFilters.value).some((filter) =>
+        opportunity.audience.includes(filter)
+      );
+    });
+  }
+
+  // Apply tuition filters (exclusive logic)
+  if (selectedTuitionFilters.value.size > 0) {
+    filtered = filtered.filter((opportunity) =>
+      selectedTuitionFilters.value.has(opportunity.tuition)
+    );
+  }
+
+  // Apply field filters (accumulative logic)
+  if (selectedFieldFilters.value.size > 0) {
+    filtered = filtered.filter((opportunity) => {
+      return Array.from(selectedFieldFilters.value).some((filter) =>
+        opportunity.fields.includes(filter)
+      );
+    });
+  }
+
   // Apply search term
   if (searchTerm.value) {
     const searchTermLower = searchTerm.value.toLowerCase();
@@ -126,6 +193,22 @@ const paginatedOpportunities = computed(() => {
   return filteredOpportunities.value.slice(start, end);
 });
 
+// Calcular o intervalo de páginas a serem exibidas (máximo de 10 páginas)
+const displayedPages = computed(() => {
+  const total = totalPages.value;
+  const current = currentPage.value;
+  const range = 10; // Número máximo de páginas exibidas
+  let start = Math.max(1, current - Math.floor(range / 2));
+  let end = Math.min(total, start + range - 1);
+
+  // Ajustar o início se o fim ultrapassar o total de páginas
+  if (end === total) {
+    start = Math.max(1, end - range + 1);
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+});
+
 // Total pages computed property
 const totalPages = computed(() => {
   return Math.ceil(filteredOpportunities.value.length / itemsPerPage);
@@ -143,6 +226,12 @@ onMounted(async () => {
       keywords: opp.keywords
         ? opp.keywords.split(",").map((k) => k.trim().toLowerCase())
         : [],
+      audience: opp.audience
+        ? opp.audience.split(",").map((a) => a.trim())
+        : [], // Convert audience to an array
+      fields: opp.fields
+        ? opp.fields.split(",").map((f) => f.trim())
+        : [], // Convert fields to an array
     }));
   } catch (error) {
     console.error(error);
@@ -152,7 +241,7 @@ onMounted(async () => {
 // Method to return the keyword color
 const getKeywordColor = (index) => {
   const colors = ["#3D30A2", "#F16767", "#A459D1"];
-  return colors[index % colors.length]; // Cycle through colors if more than 3 keywords
+  return colors[index % colors.length];
 };
 </script>
 
@@ -226,6 +315,10 @@ const getKeywordColor = (index) => {
           v-for="(filters, title, index) in {
             Tipo: typeFilters,
             'Inscrições abertas': openFilters,
+            Nível: levelFilters,
+            'Público Alvo': audienceFilters,
+            Custo: tuitionFilters,
+            Interesse: fieldFilters,
           }"
           :key="index"
           class="mb-6"
@@ -242,24 +335,29 @@ const getKeywordColor = (index) => {
             >
               <input
                 type="checkbox"
-                :checked="
-                  (title === 'Tipo'
-                    ? selectedTypeFilters
-                    : selectedStatusFilters
-                  ).has(filter)
-                "
+                :checked="{
+                  'Tipo': selectedTypeFilters,
+                  'Inscrições abertas': selectedStatusFilters,
+                  'Nível': selectedLevelFilters,
+                  'Público Alvo': selectedAudienceFilters,
+                  'Custo': selectedTuitionFilters,
+                  'Interesse': selectedFieldFilters,
+                }[title].has(filter)"
                 @change="
-                  toggleFilter(filter, title === 'Tipo' ? 'type' : 'status')
+                  toggleFilter(filter, {
+                    'Tipo': 'type',
+                    'Inscrições abertas': 'status',
+                    'Nível': 'level',
+                    'Público Alvo': 'audience',
+                    'Custo': 'tuition',
+                    'Interesse': 'field',
+                  }[title])
                 "
                 class="form-checkbox h-4 w-4 text-purple-600 mr-2"
               />
-              <span class="text-gray-700">
-                {{
-                  title === "Inscrições abertas"
-                    ? statusDisplayNames[filter]
-                    : typeDisplayNames[filter]
-                }}
-              </span>
+              <span class="text-gray-700">{{
+                typeDisplayNames[filter] || statusDisplayNames[filter] || filter
+              }}</span>
             </label>
           </div>
         </div>
@@ -303,11 +401,12 @@ const getKeywordColor = (index) => {
 
             <div
               v-for="(filters, title, index) in {
-                'Palavras-chave': typeFilters,
-                Interesses: interestFilters,
+                'Tipo': typeFilters,
                 'Inscrições abertas': openFilters,
-                'Público Alvo': publicFilters,
-                Custo: costFilters,
+                'Nível': levelFilters,
+                'Público Alvo': audienceFilters,
+                'Custo': tuitionFilters,
+                'Interesse': fieldFilters,
               }"
               :key="index"
               class="mb-2"
@@ -326,21 +425,28 @@ const getKeywordColor = (index) => {
                 >
                   <input
                     type="checkbox"
-                    :checked="
-                      (title === 'Tipo'
-                        ? selectedTypeFilters
-                        : selectedStatusFilters
-                      ).has(filter)
-                    "
+                    :checked="{
+                      'Tipo': selectedTypeFilters,
+                      'Inscrições abertas': selectedStatusFilters,
+                      'Nível': selectedLevelFilters,
+                      'Público Alvo': selectedAudienceFilters,
+                      'Custo': selectedTuitionFilters,
+                      'Interesse': selectedFieldFilters,
+                    }[title].has(filter)"
                     @change="
-                      toggleFilter(filter, title === 'Tipo' ? 'type' : 'status')
+                      toggleFilter(filter, {
+                        'Tipo': 'type',
+                        'Inscrições abertas': 'status',
+                        'Nível': 'level',
+                        'Público Alvo': 'audience',
+                        'Custo': 'tuition',
+                        'Interesse': 'field',
+                      }[title])
                     "
                     class="form-checkbox h-4 w-4 text-purple-600 mr-2"
                   />
                   <span class="text-sm text-gray-700">{{
-                    title === "Inscrições abertas"
-                      ? statusDisplayNames[filter]
-                      : typeDisplayNames[filter]
+                    typeDisplayNames[filter] || statusDisplayNames[filter] || filter
                   }}</span>
                 </label>
               </div>
@@ -424,7 +530,7 @@ const getKeywordColor = (index) => {
           </button>
           <div class="flex flex-wrap items-center gap-2">
             <button
-              v-for="page in totalPages"
+              v-for="page in displayedPages"
               :key="page"
               @click="currentPage = page"
               :class="{

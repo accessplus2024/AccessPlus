@@ -68,7 +68,7 @@
             <li>MUNs</li>
           </ul>
           <a
-            href="#"
+            href="/oportunidades"
             class="block mt-6 text-[#383737] font-bold hover:text-gray-700"
           >
             <div class="flex items-center justify-between">

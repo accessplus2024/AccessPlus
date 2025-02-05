@@ -1,12 +1,19 @@
 <script setup>
 	import {
-		Mail,
 		Linkedin,
 		Instagram,
 		Youtube,
-		PageLeft,
-		PageRight,
 	} from '@iconoir/vue';
+
+	useHead({
+  link: [
+    {
+      rel: 'icon',
+      type: 'image/png',
+      href: '/images/estrelinhas.png'
+    }
+  ]
+})
 
 	const contacts = [
 		{
@@ -38,88 +45,6 @@
 		},
 	});
 
-	const opportunities = [
-		{
-			image: 'https://placehold.co/400x200',
-			category: 'Categoria',
-			deadline: 'Deadline',
-			level: 'Nível',
-			name: 'Nome',
-			description: 'Descrição breve da oportunidade',
-			link: 'oportunidade',
-		},
-		{
-			image: 'https://placehold.co/400x200',
-			category: 'Categoria',
-			deadline: 'Deadline',
-			level: 'Nível',
-			name: 'exemplo',
-			description: 'Descrição breve da oportunidade',
-			link: 'oportunidade',
-		},
-		{
-			image: 'https://placehold.co/400x200',
-			category: 'Categoria',
-			deadline: 'Deadline',
-			level: 'Nível',
-			name: 'arroz',
-			description: 'Descrição breve da oportunidade',
-			link: 'oportunidade',
-		},
-		{
-			image: 'https://placehold.co/400x200',
-			category: 'Categoria',
-			deadline: 'Deadline',
-			level: 'Nível',
-			name: 'Nome',
-			description: 'Descrição breve da oportunidade',
-			link: 'oportunidade',
-		},
-		{
-			image: 'https://placehold.co/400x200',
-			category: 'Categoria',
-			deadline: 'Deadline',
-			level: 'Nível',
-			name: 'Nome',
-			description: 'Descrição breve da oportunidade',
-			link: 'oportunidade',
-		},
-		{
-			image: 'https://placehold.co/400x200',
-			category: 'Categoria',
-			deadline: 'Deadline',
-			level: 'Nível',
-			name: 'Nome',
-			description: 'Descrição breve da oportunidade',
-			link: 'oportunidade',
-		},
-	];
-
-	onMounted(() => {
-		const carousel = document.getElementById('carousel');
-		const carouselInner = document.getElementById('carouselInner');
-		const cardWidth = carousel.offsetWidth / 3.0 + 20;
-		let currentPosition = 0;
-
-		function updateCarouselPosition() {
-			carouselInner.style.transform = `translateX(-${currentPosition}px)`;
-		}
-
-		document.getElementById('nextBtn').addEventListener('click', () => {
-			const maxScrollPosition =
-				carouselInner.scrollWidth - carousel.offsetWidth;
-			currentPosition = Math.min(
-				currentPosition + cardWidth,
-				maxScrollPosition
-			);
-			updateCarouselPosition();
-		});
-
-		document.getElementById('prevBtn').addEventListener('click', () => {
-			currentPosition = Math.max(currentPosition - cardWidth, 0);
-			updateCarouselPosition();
-		});
-	});
 </script>
 
 <template>
@@ -136,14 +61,14 @@
 				<h1
 					class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-none text-white">
 					Procurando <br />
-					<span class="block">por olimpíadas?</span>
+					<span class="block">por oportunidades?</span>
 				</h1>
 				<p class="text-base sm:text-lg mb-6 max-w-md text-white">
 					Access+ é a primeira plataforma gratuita do país focada em trazer
 					oportunidades educacionais atualizadas para jovens.
 				</p>
 				<a
-					href="#"
+					href="/oportunidades"
 					class="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300"
 					>Ver tudo</a
 				>
@@ -161,32 +86,29 @@
 				class="h-8 sm:h-10 md:h-12" />
 		</h1>
 
-		<!-- Cards Container -->
-		<div class="flex flex-wrap justify-center gap-6">
-			<!-- Opp Card -->
-			<div
-				class="bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-full sm:w-64 h-48 flex flex-col justify-start items-start relative"
-				style="background-image: url('/images/oportunidades.png')">
-				<p class="text-2xl font-bold">+140</p>
-				<p class="text-lg text-left">oportunidades educacionais</p>
-			</div>
+<!-- Cards Container -->
+<!-- Cards Container -->
+<div class="flex flex-wrap justify-center gap-6 px-4">
+  <!-- Opp Card -->
+  <div class="bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-1/2 sm:w-64 h-48 flex flex-col justify-start items-start relative" style="background-image: url('/images/oportunidades.png')">
+      <p class="text-2xl font-bold">+140</p>
+      <p class="text-lg text-left">oportunidades educacionais</p>
+  </div>
 
-			<!-- Guias Card -->
-			<div
-				class="bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-full sm:w-64 h-48 flex flex-col justify-start items-start relative"
-				style="background-image: url('/images/Guias.png')">
-				<p class="text-2xl font-bold">Guias</p>
-				<p class="text-lg text-left">e informações atualizadas</p>
-			</div>
+  <!-- Guias Card -->
+  <div class="bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-1/2 sm:w-64 h-48 flex flex-col justify-start items-start relative" style="background-image: url('/images/Guias.png')">
+      <p class="text-2xl font-bold">Guias</p>
+      <p class="text-lg text-left">e informações atualizadas</p>
+  </div>
 
-			<!-- Dicas Card -->
-			<div
-				class="bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-full sm:w-64 h-48 flex flex-col justify-start items-start relative"
-				style="background-image: url('/images/Dicas.png')">
-				<p class="text-2xl font-bold">Dicas</p>
-				<p class="text-lg text-left">de premiados das mais diversas áreas</p>
-			</div>
-		</div>
+  <!-- Dicas Card -->
+  <div class="bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-1/2 mx-auto sm:mx-0 sm:w-64 h-48 flex flex-col justify-start items-start relative" style="background-image: url('/images/Dicas.png')">
+      <p class="text-2xl font-bold">Dicas</p>
+      <p class="text-lg text-left">de premiados das mais diversas áreas</p>
+  </div>
+</div>
+
+
 	</div>
 	<!-- Oportunidades Section -->
 	<section
@@ -209,7 +131,7 @@
 				<Category category="Competições de Escrita" icon="writing_comp" />
 			</div>
 			<a
-				href="#"
+				href="/oportunidades"
 				class="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300"
 				>Ver tudo</a
 			>
@@ -217,96 +139,31 @@
 	</section>
 
 	<section class="bg-gray-100 py-16">
-		<div class="container mx-auto px-6 max-w-6xl">
-			<h2 class="text-3xl font-bold text-left text-[#140E3F] mb-12 pl-6">
-				<span class="font-bold">Novidades </span>
-				<span class="font-medium">do Mês</span>
-			</h2>
-			<div class="flex items-center justify-between gap-4">
-				<!-- Carousel Left Arrow -->
-				<button
-					id="prevBtn"
-					class="text-purple-600 text-3xl focus:outline-none">
-					<PageLeft />
-				</button>
-				<!-- Cards Carousel -->
-				<div id="carousel" class="relative w-full overflow-hidden">
-					<div
-						id="carouselInner"
-						class="flex space-x-5 transition-transform duration-300 ease-in-out">
-						<div
-							v-for="(opp, index) in opportunities"
-							:key="index"
-							class="bg-white rounded-xl overflow-hidden flex-shrink-0 w-[80%] sm:w-[45%] lg:w-[30%] border border-gray-200">
-							<img
-								:src="opp.image"
-								:alt="opp.name"
-								class="w-full h-48 object-cover" />
-							<div class="p-6">
-								<div class="flex flex-wrap gap-2 mb-4">
-									<span
-										class="bg-purple-600 text-white text-xs px-3 py-1 rounded-full">
-										{{ opp.category }}
-									</span>
-									<span
-										class="bg-red-500 text-white text-xs px-3 py-1 rounded-full">
-										{{ opp.deadline }}
-									</span>
-									<span
-										class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full">
-										{{ opp.level }}
-									</span>
-								</div>
-								<h3 class="text-lg font-bold text-gray-800 mb-2">
-									{{ opp.name }}
-								</h3>
-								<p class="text-sm text-gray-600 mb-4">
-									{{ opp.description }}
-								</p>
-								<a :href="opp.link" class="text-purple-600 font-semibold"
-									>Veja mais</a
-								>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- Carousel Right Arrow -->
-				<button
-					id="nextBtn"
-					class="text-purple-600 text-3xl focus:outline-none">
-					<PageRight />
-				</button>
-			</div>
-		</div>
-	</section>
+    <div class="container mx-auto px-6 max-w-6xl">
+        <h2 class="text-3xl font-bold text-left text-[#140E3F] mb-12 pl-6">
+            <span class="font-bold">Novidades </span>
+            <span class="font-medium">do Mês</span>
+        </h2>
+        <div class="flex justify-center">
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/2P4P0YWP6cHk2o3frRVCCw/video?utm_source=generator" width="100%" height="351" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+    </section>
 
 	<!-- Sobre nós Section -->
-	<section
-		class="bg-cover bg-center bg-white mx-auto my-16 px-6 p-8 rounded-lg shadow-md"
-		style="background-image: url('/images/bg-about.png')">
-		<div class="flex flex-col lg:flex-row items-center justify-between">
-			<div class="flex-1">
-				<h2
-					class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight pl-6 lg:pl-24 text-gray-900">
-					Sobre nós
-				</h2>
-			</div>
-			<div class="flex-1 text-left mt-8 lg:mt-0">
-				<p class="text-base text-gray-800 mb-6 font-poppins px-6 lg:px-0">
-					O time do Access+ é formado por pessoas comprometidas com a
-					democratização do acesso à educação no Brasil. Cada membro traz uma
-					combinação única de experiências, habilidades e paixões que
-					impulsionam nosso objetivo de criar um futuro mais justo e igualitário
-					para os estudantes de baixa renda.
-				</p>
-				<a
-					href="#"
-					class="inline-block bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300 mx-6 lg:mx-0"
-					>Ver tudo</a
-				>
-			</div>
-		</div>
-	</section>
+	<section class="bg-cover bg-center bg-white mx-auto my-16 px-6 p-8 rounded-lg shadow-md max-w-6xl" style="background-image: url('/images/bg-about.png')">
+    <div class="flex flex-col lg:flex-row items-center justify-between">
+        <div class="flex-1">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight pl-6 lg:pl-24 text-gray-900">Sobre nós</h2>
+        </div>
+        <div class="flex-1 text-left mt-8 lg:mt-0">
+            <p class="text-base text-gray-800 mb-6 font-poppins px-6 lg:px-0">
+                O time do Access+ é formado por pessoas comprometidas com a democratização do acesso à educação no Brasil. Cada membro traz uma combinação única de experiências, habilidades e paixões que impulsionam nosso objetivo de criar um futuro mais justo e igualitário para os estudantes de baixa renda.
+            </p>
+            <a href="/oportunidades" class="inline-block bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300 mx-6 lg:mx-0">Ver tudo</a>
+        </div>
+    </div>
+</section>
 
 	<!-- Contact Section -->
 	<section
@@ -346,45 +203,23 @@
 
 		<!-- Contact Form -->
 		<div class="bg-[#3D30A2] p-8 rounded-lg shadow-md">
-			<h2 class="text-2xl font-semibold leading-tight text-white mb-6">
-				Mande uma Mensagem
-			</h2>
-			<form>
-				<div class="mb-6">
-					<label for="name" class="block text-white mb-2 text-left">Nome</label>
-					<input
-						type="text"
-						id="name"
-						class="w-full p-3 rounded-lg border border-purple-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-						placeholder="Nome" />
-				</div>
-				<div class="mb-6">
-					<label for="email" class="block text-white mb-2 text-left"
-						>E-mail</label
-					>
-					<input
-						type="email"
-						id="email"
-						class="w-full p-3 rounded-lg border border-purple-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-						placeholder="E-mail" />
-				</div>
-				<div class="mb-6">
-					<label for="message" class="block text-white mb-2 text-left"
-						>Mensagem</label
-					>
-					<textarea
-						id="message"
-						rows="4"
-						class="w-full p-3 rounded-lg border border-purple-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-						placeholder="Mensagem"></textarea>
-				</div>
-				<button
-					type="submit"
-					class="bg-[#FAD87E] text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-300">
-					Enviar
-				</button>
-			</form>
-		</div>
+    <h2 class="text-2xl font-semibold leading-tight text-white mb-6">Mande uma Mensagem</h2>
+    <form action="https://formspree.io/f/meoekypw" method="POST">
+        <div class="mb-6">
+            <label for="name" class="block text-white mb-2 text-left">Nome</label>
+            <input type="text" id="name" name="name" class="w-full p-3 rounded-lg border border-purple-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-black" placeholder="Nome" />
+        </div>
+        <div class="mb-6">
+            <label for="email" class="block text-white mb-2 text-left">E-mail</label>
+            <input type="email" id="email" name="email" class="w-full p-3 rounded-lg border border-purple-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-black" placeholder="E-mail" />
+        </div>
+        <div class="mb-6">
+            <label for="message" class="block text-white mb-2 text-left">Mensagem</label>
+            <textarea id="message" name="message" rows="4" class="w-full p-3 rounded-lg border border-purple-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-black" placeholder="Mensagem"></textarea>
+        </div>
+        <button type="submit" class="bg-[#FAD87E] text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-300">Enviar</button>
+    </form>
+</div>
 	</section>
 
 	<section class="bg-red-400 py-10 rounded-xl max-w-5xl mx-auto font-poppins">
