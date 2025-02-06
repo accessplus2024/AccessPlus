@@ -13,7 +13,6 @@ onMounted(() => {
 
   gsap.registerPlugin(ScrollTrigger);
 
-  
   gsap.from('.header-content', {
     duration: 1.5,
     y: 50,
