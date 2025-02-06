@@ -2,7 +2,7 @@
 import { onMounted } from 'vue';
 import { gsap } from 'gsap';
 import AOS from 'aos';
-import 'aos/dist/aos.css'; // Import AOS styles
+import 'aos/dist/aos.css';
 
 import {
   Linkedin,
