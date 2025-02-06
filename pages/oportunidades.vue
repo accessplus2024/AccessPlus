@@ -13,11 +13,11 @@ useHead({
   htmlAttrs: { lang: "pt-br" },
   link: [
     {
-      rel: 'icon',
-      type: 'image/png',
-      href: '/images/estrelinhas.png'
-    }
-  ]
+      rel: "icon",
+      type: "image/png",
+      href: "/images/estrelinhas.png",
+    },
+  ],
 });
 
 // Variables for search and filters
@@ -229,9 +229,7 @@ onMounted(async () => {
       audience: opp.audience
         ? opp.audience.split(",").map((a) => a.trim())
         : [], // Convert audience to an array
-      fields: opp.fields
-        ? opp.fields.split(",").map((f) => f.trim())
-        : [], // Convert fields to an array
+      fields: opp.fields ? opp.fields.split(",").map((f) => f.trim()) : [], // Convert fields to an array
     }));
   } catch (error) {
     console.error(error);
@@ -335,23 +333,28 @@ const getKeywordColor = (index) => {
             >
               <input
                 type="checkbox"
-                :checked="{
-                  'Tipo': selectedTypeFilters,
-                  'Inscrições abertas': selectedStatusFilters,
-                  'Nível': selectedLevelFilters,
-                  'Público Alvo': selectedAudienceFilters,
-                  'Custo': selectedTuitionFilters,
-                  'Interesse': selectedFieldFilters,
-                }[title].has(filter)"
+                :checked="
+                  {
+                    Tipo: selectedTypeFilters,
+                    'Inscrições abertas': selectedStatusFilters,
+                    Nível: selectedLevelFilters,
+                    'Público Alvo': selectedAudienceFilters,
+                    Custo: selectedTuitionFilters,
+                    Interesse: selectedFieldFilters,
+                  }[title].has(filter)
+                "
                 @change="
-                  toggleFilter(filter, {
-                    'Tipo': 'type',
-                    'Inscrições abertas': 'status',
-                    'Nível': 'level',
-                    'Público Alvo': 'audience',
-                    'Custo': 'tuition',
-                    'Interesse': 'field',
-                  }[title])
+                  toggleFilter(
+                    filter,
+                    {
+                      Tipo: 'type',
+                      'Inscrições abertas': 'status',
+                      Nível: 'level',
+                      'Público Alvo': 'audience',
+                      Custo: 'tuition',
+                      Interesse: 'field',
+                    }[title]
+                  )
                 "
                 class="form-checkbox h-4 w-4 text-purple-600 mr-2"
               />
@@ -401,12 +404,12 @@ const getKeywordColor = (index) => {
 
             <div
               v-for="(filters, title, index) in {
-                'Tipo': typeFilters,
+                Tipo: typeFilters,
                 'Inscrições abertas': openFilters,
-                'Nível': levelFilters,
+                Nível: levelFilters,
                 'Público Alvo': audienceFilters,
-                'Custo': tuitionFilters,
-                'Interesse': fieldFilters,
+                Custo: tuitionFilters,
+                Interesse: fieldFilters,
               }"
               :key="index"
               class="mb-2"
@@ -425,28 +428,35 @@ const getKeywordColor = (index) => {
                 >
                   <input
                     type="checkbox"
-                    :checked="{
-                      'Tipo': selectedTypeFilters,
-                      'Inscrições abertas': selectedStatusFilters,
-                      'Nível': selectedLevelFilters,
-                      'Público Alvo': selectedAudienceFilters,
-                      'Custo': selectedTuitionFilters,
-                      'Interesse': selectedFieldFilters,
-                    }[title].has(filter)"
+                    :checked="
+                      {
+                        Tipo: selectedTypeFilters,
+                        'Inscrições abertas': selectedStatusFilters,
+                        Nível: selectedLevelFilters,
+                        'Público Alvo': selectedAudienceFilters,
+                        Custo: selectedTuitionFilters,
+                        Interesse: selectedFieldFilters,
+                      }[title].has(filter)
+                    "
                     @change="
-                      toggleFilter(filter, {
-                        'Tipo': 'type',
-                        'Inscrições abertas': 'status',
-                        'Nível': 'level',
-                        'Público Alvo': 'audience',
-                        'Custo': 'tuition',
-                        'Interesse': 'field',
-                      }[title])
+                      toggleFilter(
+                        filter,
+                        {
+                          Tipo: 'type',
+                          'Inscrições abertas': 'status',
+                          Nível: 'level',
+                          'Público Alvo': 'audience',
+                          Custo: 'tuition',
+                          Interesse: 'field',
+                        }[title]
+                      )
                     "
                     class="form-checkbox h-4 w-4 text-purple-600 mr-2"
                   />
                   <span class="text-sm text-gray-700">{{
-                    typeDisplayNames[filter] || statusDisplayNames[filter] || filter
+                    typeDisplayNames[filter] ||
+                    statusDisplayNames[filter] ||
+                    filter
                   }}</span>
                 </label>
               </div>
@@ -466,12 +476,8 @@ const getKeywordColor = (index) => {
 
       <!-- Opportunities Grid -->
       <div class="w-full md:w-3/4">
-        <div v-if="loading" class="text-center py-8">
-          <p>Carregando...</p>
-        </div>
-        <div v-else-if="error" class="text-center py-8">
-          <p class="text-red-600">Erro ao carregar oportunidades.</p>
-        </div>
+        <Loading :watch="!data" />
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div
             v-for="opportunity in paginatedOpportunities"
