@@ -207,7 +207,7 @@ useHead({
           <div class="p-4">
             <h3 class="text-xl font-semibold mb-2">Camily Guimarães Carvalho</h3>
             <p class="text-gray-700">Co-Fundadora e Diretora de Tecnologia</p>
-            <p class="text-gray-700">Bahia</p>
+            <p class="text-gray-700">Camaçari, BA</p>
           </div>
         </div>
 
@@ -217,7 +217,7 @@ useHead({
           <div class="p-4">
             <h3 class="text-xl font-semibold mb-2">Izabeli Santos</h3>
             <p class="text-gray-700">Co-fundadora e Diretora de Marketing</p>
-            <p class="text-gray-700">Bahia</p>
+            <p class="text-gray-700">Camaçari, BA</p>
           </div>
         </div>
 
@@ -227,7 +227,7 @@ useHead({
           <div class="p-4">
             <h3 class="text-xl font-semibold mb-2">João Pedro Santos</h3>
             <p class="text-gray-700">Co-fundador e Analista de Tecnologia</p>
-            <p class="text-gray-700">Bahia</p>
+            <p class="text-gray-700">Alcobaça, BA</p>
           </div>
         </div>
 
@@ -237,7 +237,7 @@ useHead({
           <div class="p-4">
             <h3 class="text-xl font-semibold mb-2">Vinícius Castelli</h3>
             <p class="text-gray-700">Co-fundador e Diretor de Expansão</p>
-            <p class="text-gray-700">São Paulo</p>
+            <p class="text-gray-700">Bauru, SP</p>
           </div>
         </div>
 
@@ -247,7 +247,7 @@ useHead({
           <div class="p-4">
             <h3 class="text-xl font-semibold mb-2">Ruan Cordeiro</h3>
             <p class="text-gray-700">Co-fundador e Analista de Tecnologia</p>
-            <p class="text-gray-700">Rio Grande do Norte</p>
+            <p class="text-gray-700">São Pedro, RN</p>
           </div>
         </div>
 
@@ -257,7 +257,7 @@ useHead({
           <div class="p-4">
             <h3 class="text-xl font-semibold mb-2">Alessandra Sena</h3>
             <p class="text-gray-700">Co-fundadora e Analista de Tecnologia</p>
-            <p class="text-gray-700">Bahia</p>
+            <p class="text-gray-700">Dias d'Ávila, BA</p>
           </div>
         </div>
       </div>
