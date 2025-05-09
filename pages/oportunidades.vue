@@ -1,12 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
 import { Filter } from "@iconoir/vue";
-import OpportunitiesHeader from "../components/OpportunitiesHeader.vue";
-import SearchInput from "../components/SearchInput.vue";
-import FiltersSidebar from "../components/FiltersSidebar.vue";
-import MobileFilters from "../components/MobileFilters.vue";
-import OpportunityCard from "../components/OpportunityCard.vue";
-import Pagination from "../components/Pagination.vue";
 
 useHead({
   title: "Oportunidades",
@@ -274,7 +267,7 @@ const getKeywordColor = (index) => {
     <!-- Content Section -->
     <div class="flex flex-col md:flex-row gap-6">
       <!-- Desktop Filters -->
-      <FiltersSidebar 
+      <FiltersSidebar
         :type-filters="typeFilters"
         :open-filters="openFilters"
         :level-filters="levelFilters"
@@ -327,7 +320,7 @@ const getKeywordColor = (index) => {
         </div>
 
         <!-- Pagination -->
-        <Pagination 
+        <Pagination
           :current-page="currentPage"
           :total-pages="totalPages"
           :displayed-pages="displayedPages"
