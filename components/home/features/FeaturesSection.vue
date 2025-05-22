@@ -21,7 +21,7 @@
 		<h1
 			class="text-2xl sm:text-3xl md:text-4xl font-bold flex flex-col gap-4 justify-center items-center text-gray-800 mb-8">
 			O que você pode encontrar no &nbsp;<img
-				src="/images/logo_dark.svg"
+				src="/images/logo-dark.svg"
 				class="h-8 sm:h-10 md:h-12" />
 		</h1>
 
