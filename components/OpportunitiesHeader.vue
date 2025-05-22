@@ -12,7 +12,7 @@ import Navbar from "./Navbar.vue";
     <div
       class="container mx-auto px-6 flex flex-col items-center relative z-10"
     >
-      <Navbar transparent="true" />
+      <Navbar transparent/>
       <div class="text-left w-full max-w-4xl mt-12">
         <h1
           class="text-3xl sm:text-4xl lg:text-5xl mb-4 leading-none md:text-left lg:text-left sm:text-center"

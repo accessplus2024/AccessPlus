@@ -35,7 +35,7 @@
 		style="background-image: url('/images/Fundo.png')">
 		<div class="container mx-auto px-6 flex flex-col items-center">
 			<!-- Navbar -->
-			<Navbar transparent="true" />
+			<Navbar transparent />
 			<!-- Heading Content -->
 			<div
 				class="md:text-left text-center flex flex-col items-center md:items-start w-full max-w-4xl">
