@@ -115,13 +115,15 @@ onMounted(async () => {
 
 <template>
   <!-- Loading state -->
-  <Loading :watch="!data" />  <!-- Main Content -->
-  <div v-if="opp" class="relative">    <!-- Hero Section -->
+  <Loading :watch="!data" />
+  <!-- Main Content -->
+  <div v-if="opp" class="relative">
+    <!-- Hero Section -->
     <HeroSection
       :opportunity="opp"
       :type-display-name="typeDisplayNames[opp.type]"
     />
-    
+
     <!-- Stats Banner -->
     <div class="max-w-7xl mx-auto px-4 sm:px-8 py-20">
       <StatsBanner :opportunity="opp" />
@@ -132,21 +134,22 @@ onMounted(async () => {
         <div class="lg:col-span-7" data-aos="fade-right">
           <ImageSection :opportunity="opp" />
         </div>
-        
+
         <!-- Info Cards -->
         <div class="lg:col-span-5 space-y-6" data-aos="fade-left">
           <InfoCards :opportunity="opp" />
         </div>
       </div>
-      
+
       <!-- Details Section -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8" data-aos="fade-up">        <!-- Tab Navigation -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8" data-aos="fade-up">
+        <!-- Tab Navigation -->
         <TabNavigation
           :opportunity="opp"
           :active-tab="activeTab"
           @changeContent="changeContent"
         />
-          <!-- Content Display -->
+        <!-- Content Display -->
         <ContentDisplay
           :content-title="contentTitle"
           :content-text="contentText"
