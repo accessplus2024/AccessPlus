@@ -65,7 +65,7 @@ pnpm run preview
 # yarn
 yarn preview
 
-Don't forget npx nuxi dev
+Don't forget npx nuxi dev!
 
 # bun
 bun run preview
