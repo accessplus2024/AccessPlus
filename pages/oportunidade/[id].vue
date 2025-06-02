@@ -13,6 +13,10 @@ import InfoCards from "~/components/opportunity/InfoCards.vue";
 import TabNavigation from "~/components/opportunity/TabNavigation.vue";
 import ContentDisplay from "~/components/opportunity/ContentDisplay.vue";
 
+// Fetch opportunity data based on id.
+const { data, loading, error, fetchRow } = useOpportunity();
+const opp = ref(null);
+
 // Create a reactive title that will update when the opportunity data is loaded
 const pageTitle = computed(() => {
   return opp.value ? opp.value.name : "Oportunidades";
@@ -55,10 +59,6 @@ const typeDisplayNames = {
   writing: "Competições de Escrita",
   tutoring: "Mentorias",
 };
-
-// Fetch opportunity data based on id.
-const { data, loading, error, fetchRow } = useOpportunity();
-const opp = ref(null);
 
 // Content refs
 const contentTitle = ref("");
