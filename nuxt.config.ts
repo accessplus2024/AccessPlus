@@ -13,6 +13,10 @@ export default defineNuxtConfig({
   },
 
   modules: ["@nuxt/fonts"],
-  plugins: [{ src: '~/plugins/vercel-analytics.client.ts', mode: 'client' }],
+
+  plugins: [
+    { src: '~/plugins/vercel-analytics.client.ts', mode: 'client' },
+    { src: '~/plugins/google-analytics.ts', mode: 'client' }
+  ],
   compatibilityDate: "2025-05-09",
 });
