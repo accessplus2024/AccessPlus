@@ -35,7 +35,7 @@ yarn dev
 bun run dev
 ```
 
-## Production
+## Productionn
 
 Build the application for production:
 
