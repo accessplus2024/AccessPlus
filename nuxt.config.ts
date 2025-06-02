@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@nuxt/fonts", "@nuxtjs/google-gtag"],
+  modules: ["@nuxt/fonts"],
 
   plugins: [
     { src: '~/plugins/vercel-analytics.client.ts', mode: 'client' },
