@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import { gsap } from "gsap";
 import AOS from "aos";
@@ -13,12 +13,21 @@ import InfoCards from "~/components/opportunity/InfoCards.vue";
 import TabNavigation from "~/components/opportunity/TabNavigation.vue";
 import ContentDisplay from "~/components/opportunity/ContentDisplay.vue";
 
-useHead({
-  title: "Oportunidades",
+// Create a reactive title that will update when the opportunity data is loaded
+const pageTitle = computed(() => {
+  return opp.value ? opp.value.name : "Oportunidades";
+});
+
+useHead(() => ({
+  title: pageTitle.value,
   meta: [
     { charset: "UTF-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-    { hid: "description", name: "description", content: "" },
+    {
+      hid: "description",
+      name: "description",
+      content: opp.value ? `Detalhes sobre ${opp.value.name}` : "",
+    },
   ],
   htmlAttrs: {
     lang: "pt-br",
@@ -30,7 +39,7 @@ useHead({
       href: "/images/estrelinhas.png",
     },
   ],
-});
+}));
 
 // Retrieve the opportunity id from the route.
 const route = useRoute();
