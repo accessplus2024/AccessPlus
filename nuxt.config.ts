@@ -12,7 +12,22 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@nuxt/fonts"],
+  modules: [
+    "@nuxt/fonts",
+    [
+      "@nuxtjs/google-gtag",
+      {
+        id: 'G-KTGB0TMBDP',
+        config: {
+          anonymize_ip: true,
+          send_page_view: false,
+        },
+        debug: false,
+        disableAutoPageTrack: false,
+      }
+    ]
+  ],
+
   plugins: [{ src: '~/plugins/vercel-analytics.client.ts', mode: 'client' }],
   compatibilityDate: "2025-05-09",
 });
