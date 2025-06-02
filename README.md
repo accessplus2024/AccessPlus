@@ -37,7 +37,7 @@ bun run dev
 
 ## Productionn
 
-Build the application for production:
+Build the application for productionm:
 
 ```bash
 # npm
