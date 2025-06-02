@@ -19,31 +19,33 @@ const opp = ref(null);
 
 // Create a reactive title that will update when the opportunity data is loaded
 const pageTitle = computed(() => {
-  return opp.value ? opp.value.name : "Oportunidades";
+  return opp.value ? opp.value.Nome : "Oportunidades";
 });
 
-useHead(() => ({
-  title: pageTitle.value,
-  meta: [
-    { charset: "UTF-8" },
-    { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-    {
-      hid: "description",
-      name: "description",
-      content: opp.value ? `Detalhes sobre ${opp.value.name}` : "",
+useHead(() => {
+  return {
+    title: pageTitle.value,
+    meta: [
+      { charset: "UTF-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1.0" },
+      {
+        hid: "description",
+        name: "description",
+        content: opp.value ? `Detalhes sobre ${opp.value.Nome}` : "",
+      },
+    ],
+    htmlAttrs: {
+      lang: "pt-br",
     },
-  ],
-  htmlAttrs: {
-    lang: "pt-br",
-  },
-  link: [
-    {
-      rel: "icon",
-      type: "image/png",
-      href: "/images/estrelinhas.png",
-    },
-  ],
-}));
+    link: [
+      {
+        rel: "icon",
+        type: "image/png",
+        href: "/images/estrelinhas.png",
+      },
+    ],
+  };
+});
 
 // Retrieve the opportunity id from the route.
 const route = useRoute();
@@ -76,7 +78,13 @@ onMounted(async () => {
   try {
     await fetchRow(opportunityId);
     opp.value = data.value[0];
-    console.log(opp.value);
+    console.log("Opportunity data loaded:", opp.value);
+    console.log("Opportunity name:", opp.value?.name);
+
+    // Directly update document title as fallback
+    if (opp.value && opp.value.name) {
+      document.title = opp.value.name;
+    }
 
     // Set default content after data is loaded
     changeContent(
