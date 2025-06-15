@@ -31,7 +31,7 @@
 			<div
 				class="card bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-1/2 sm:w-64 h-48 flex flex-col justify-start items-start relative"
 				style="background-image: url('/images/oportunidades.png')">
-				<p class="text-2xl font-bold">+140</p>
+				<p class="text-2xl font-bold">+170</p>
 				<p class="text-lg text-left">oportunidades educacionais</p>
 			</div>
 
