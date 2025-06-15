@@ -45,7 +45,7 @@ onMounted(() => {
           <span class="block">por oportunidades?</span>
         </h1>
         <p class="text-base sm:text-lg mb-6 max-w-md text-white">
-          Access+ é a primeira plataforma gratuita do país focada em trazer
+          Access+ é a maior plataforma gratuita do país focada em trazer
           oportunidades educacionais atualizadas para jovens.
         </p>
         <a
