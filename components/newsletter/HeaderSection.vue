@@ -14,13 +14,21 @@
           Newsletter <br />
           <span class="block font-medium">Access+</span>
         </h1>
-        <p class="text-base sm:text-lg mb-6 max-w-md text-white" data-aos="fade-up" data-aos-delay="200">
-          Fique por dentro das últimas novidades, dicas e insights sobre 
+        <p
+          class="text-base sm:text-lg mb-6 max-w-md text-white"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
+          Fique por dentro das últimas novidades, dicas e insights sobre
           oportunidades educacionais para jovens.
         </p>
-        
+
         <!-- Newsletter Stats -->
-        <div class="flex flex-col sm:flex-row gap-6 mt-4" data-aos="fade-up" data-aos-delay="400">
+        <div
+          class="flex flex-col sm:flex-row gap-6 mt-4"
+          data-aos="fade-up"
+          data-aos-delay="400"
+        >
           <div class="text-center sm:text-left">
             <div class="text-2xl font-bold text-white">{{ totalPosts }}+</div>
             <div class="text-white/80 text-sm">Artigos publicados</div>
@@ -36,7 +44,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Decorative elements -->
     <div class="absolute top-10 right-10 opacity-20">
       <img src="/images/estrelinhas.png" alt="" class="w-16 h-16" />
@@ -51,7 +59,7 @@
 defineProps({
   totalPosts: {
     type: Number,
-    default: 50
-  }
-})
+    default: 50,
+  },
+});
 </script>

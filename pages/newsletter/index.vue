@@ -33,6 +33,12 @@ useHead({
       href: "/images/estrelinhas.png",
     },
   ],
+  script: [
+    {
+      src: "https://subscribe-forms.beehiiv.com/embed.js",
+      async: true,
+    },
+  ],
 });
 
 // Reactive data
@@ -216,7 +222,7 @@ onMounted(() => {
         class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 md:p-12 mt-20"
         data-aos="fade-up"
       >
-        <div class="text-center">
+        <div class="text-center mb-8">
           <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">
             Não perca nenhuma novidade!
           </h3>
@@ -224,28 +230,17 @@ onMounted(() => {
             Inscreva-se na nossa newsletter e receba semanalmente as melhores
             oportunidades e dicas para turbinar sua jornada educacional.
           </p>
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 bg-white text-purple-600 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors"
-          >
-            Inscrever-se gratuitamente
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
-              />
-            </svg>
-          </a>
         </div>
+
+        <!-- Beehiiv Subscription Form -->
+        <iframe
+          src="https://subscribe-forms.beehiiv.com/012188af-07b0-4875-8457-3a74a9faadc7"
+          class="w-[400px] mx-auto rounded-l h-20 max-h-20"
+          data-test-id="beehiiv-embed"
+          frameborder="0"
+          scrolling="no"
+          loading="lazy"
+        ></iframe>
       </section>
     </main>
   </div>
@@ -253,4 +248,12 @@ onMounted(() => {
 
 <style scoped>
 /* Additional custom styles if needed */
+#beehiiv-subscribe-form {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 </style>
