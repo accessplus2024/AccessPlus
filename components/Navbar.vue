@@ -44,13 +44,7 @@
           >Sobre Nós</a
         >
       </li>
-      <li>
-        <a
-          href="/newsletter"
-          :class="transparent ? 'hover:text-gray-200' : 'hover:text-gray-600'"
-          >Newsletter</a
-        >
-      </li>
+
       <li class="relative group">
         <a
           href="/oportunidades"
@@ -86,6 +80,13 @@
             </div>
           </a>
         </div>
+      </li>
+      <li>
+        <a
+          href="/newsletter"
+          :class="transparent ? 'hover:text-gray-200' : 'hover:text-gray-600'"
+          >Newsletter</a
+        >
       </li>
     </ul>
 

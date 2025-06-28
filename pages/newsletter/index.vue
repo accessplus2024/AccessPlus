@@ -104,7 +104,7 @@ onMounted(() => {
     <NewsletterHeaderSection />
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-8 py-20">
+    <main class="max-w-7xl mx-auto px-4 sm:px-8 pt-20">
       <!-- Loading State -->
       <Loading :watch="loading" />
 
@@ -217,34 +217,8 @@ onMounted(() => {
           </div>
         </div>
       </div>
-
-      <!-- Newsletter Subscription CTA -->
-      <section
-        id="newsletter-subscription"
-        class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-8 md:p-12 mt-20 shadow-xl"
-        data-aos="fade-up"
-      >
-        <div class="text-center mb-8">
-          <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">
-            Não perca nenhuma novidade!
-          </h3>
-          <p class="text-white/90 mb-8 max-w-2xl mx-auto">
-            Inscreva-se na nossa newsletter e receba semanalmente as melhores
-            oportunidades e dicas para turbinar sua jornada educacional.
-          </p>
-        </div>
-
-        <!-- Beehiiv Subscription Form -->
-        <iframe
-          src="https://subscribe-forms.beehiiv.com/012188af-07b0-4875-8457-3a74a9faadc7"
-          class="w-[400px] mx-auto rounded-l h-20 max-h-20"
-          data-test-id="beehiiv-embed"
-          frameborder="0"
-          scrolling="no"
-          loading="lazy"
-        ></iframe>
-      </section>
     </main>
+    <NewsletterCta />
   </div>
 </template>
 

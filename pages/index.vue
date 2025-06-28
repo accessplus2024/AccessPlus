@@ -38,6 +38,7 @@ onMounted(() => {
 <template>
   <HomeHeader />
   <HomeFeaturesSection />
+  <NewsletterCta />
   <HomeOpportunitiesSection />
   <HomeNewsSection />
   <HomeAboutSection />
