@@ -7,16 +7,6 @@ const props = defineProps({
 });
 
 const { formatDate, formatDateForDatetime, truncateContent } = useBeehiiv()
-
-// Extract reading time or default to 5 minutes
-const readingTime = computed(() => {
-  if (props.post.content) {
-    const wordCount = props.post.content.split(' ').length
-    const timeToRead = Math.ceil(wordCount / 200) // Average reading speed
-    return `${timeToRead} min de leitura`
-  }
-  return '5 min de leitura'
-})
 </script>
 
 <template>
@@ -44,13 +34,11 @@ const readingTime = computed(() => {
     
     <!-- Content -->
     <div class="p-6">
-      <!-- Date and Reading Time -->
-      <div class="flex items-center gap-4 text-sm text-gray-500 mb-3">
+      <!-- Date -->
+      <div class="flex items-center text-sm text-gray-500 mb-3">
         <time :datetime="formatDateForDatetime(post.publish_date)" itemprop="datePublished">
           {{ formatDate(post.publish_date) }}
         </time>
-        <span>•</span>
-        <span>{{ readingTime }}</span>
       </div>
       
       <!-- Title -->
@@ -65,18 +53,16 @@ const readingTime = computed(() => {
       
       <!-- Read More Button -->
       <div class="flex items-center justify-between">
-        <a
-          :href="post.web_url"
-          target="_blank"
-          rel="noopener noreferrer"
+        <NuxtLink
+          :to="`/newsletter/${post.id}`"
           class="inline-flex items-center gap-2 text-purple-600 font-semibold hover:text-purple-700 transition-colors"
           itemprop="url"
         >
           Ler artigo
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
-        </a>
+        </NuxtLink>
         
         <!-- Share Button (optional) -->
         <button 
@@ -107,15 +93,17 @@ const readingTime = computed(() => {
 export default {
   methods: {
     sharePost() {
+      const postUrl = `${window.location.origin}/newsletter/${this.post.id}`
+      
       if (navigator.share) {
         navigator.share({
           title: this.post.title,
           text: this.post.subtitle || this.truncateContent(this.post.content, 120),
-          url: this.post.web_url
+          url: postUrl
         })
       } else {
         // Fallback: copy to clipboard
-        navigator.clipboard.writeText(this.post.web_url)
+        navigator.clipboard.writeText(postUrl)
         // You could add a toast notification here
       }
     },

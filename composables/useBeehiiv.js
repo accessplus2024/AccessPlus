@@ -9,6 +9,16 @@ export const useBeehiiv = () => {
       throw error
     }
   }
+
+  const fetchPost = async (postId) => {
+    try {
+      const response = await $fetch(`/api/newsletter/posts/${postId}`)
+      return response
+    } catch (error) {
+      console.error('Error fetching Beehiiv post:', error)
+      throw error
+    }
+  }
   
   const formatDate = (unixTimestamp) => {
     if (!unixTimestamp) return ''
@@ -38,6 +48,7 @@ export const useBeehiiv = () => {
   
   return {
     fetchPosts,
+    fetchPost,
     formatDate,
     formatDateForDatetime,
     truncateContent
