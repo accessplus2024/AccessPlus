@@ -160,22 +160,105 @@ onMounted(() => {
     >
       <!-- Header Section with Thumbnail -->
       <header
-        class="relative bg-gradient-to-r from-purple-600 to-pink-600 pt-32 pb-4"
+        class="relative bg-gradient-to-br from-violet-600 via-purple-700 to-fuchsia-800 pt-32 pb-4 overflow-hidden"
       >
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0">
+          <!-- Floating particles -->
+          <div
+            class="absolute top-20 left-10 w-4 h-4 bg-white/20 rounded-full animate-bounce"
+            style="animation-delay: 0s"
+          ></div>
+          <div
+            class="absolute top-40 right-20 w-3 h-3 bg-white/30 rounded-full animate-bounce"
+            style="animation-delay: 1s"
+          ></div>
+          <div
+            class="absolute bottom-32 left-1/4 w-2 h-2 bg-white/25 rounded-full animate-bounce"
+            style="animation-delay: 0.5s"
+          ></div>
+
+          <!-- Gradient orbs -->
+          <div
+            class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-pink-400/30 to-purple-600/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse"
+          ></div>
+          <div
+            class="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-blue-400/30 to-indigo-600/30 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 animate-pulse"
+            style="animation-delay: 1s"
+          ></div>
+        </div>
+
+        <!-- Breadcrumb Navigation -->
+        <nav
+          class="relative z-10 max-w-4xl mx-auto px-6 pt-8"
+          data-aos="fade-down"
+        >
+          <NuxtLink
+            to="/newsletter"
+            class="group inline-flex items-center text-white/80 hover:text-white transition-all duration-300 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-white/20"
+          >
+            <svg
+              class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              ></path>
+            </svg>
+            Voltar para Newsletter
+          </NuxtLink>
+        </nav>
+
         <!-- Header Content -->
-        <div class="text-center mt-20" data-aos="fade-up" data-aos-delay="200">
+        <div
+          class="relative z-10 text-center mt-12 pb-8"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
+          <!-- Post Title -->
+          <h1
+            class="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight max-w-4xl mx-auto px-6"
+            data-aos="fade-up"
+            data-aos-delay="400"
+            itemprop="headline"
+          >
+            {{ post.title }}
+          </h1>
+
+          <!-- Post Meta -->
+          <div
+            class="flex justify-center items-center gap-4 text-white/80 mb-8"
+            data-aos="fade-up"
+            data-aos-delay="600"
+          >
+            <time
+              :datetime="datetimePublishDate"
+              itemprop="datePublished"
+              class="text-sm"
+            >
+              {{ publishDate }}
+            </time>
+            <span class="w-1 h-1 bg-white/50 rounded-full"></span>
+            <span class="text-sm">Equipe Access+</span>
+          </div>
+
           <!-- Featured Image -->
           <div
             v-if="post.thumbnail_url"
-            class="relative -mt-16 mb-16"
+            class="relative -mt-4 mb-8"
             data-aos="fade-up"
-            data-aos-delay="400"
+            data-aos-delay="800"
           >
-            <div class="container mx-auto px-6 max-w-3xl">
+            <div class="container mx-auto px-6 max-w-4xl">
               <img
                 :src="post.thumbnail_url"
                 :alt="post.title"
-                class="w-full h-64 md:h-80 object-cover rounded-2xl shadow-2xl"
+                class="w-full h-64 md:h-80 object-cover rounded-3xl shadow-2xl border border-white/20"
                 itemprop="image"
               />
             </div>
@@ -184,17 +267,23 @@ onMounted(() => {
       </header>
 
       <!-- Post Content -->
-      <main class="container mx-auto px-6 max-w-4xl pb-20">
-        <!-- Post Content -->
-        <div class="prose prose-lg prose-purple max-w-none" data-aos="fade-up">
-          <div
-            v-if="post.content?.free?.web"
-            v-html="post.content.free.web"
-            itemprop="articleBody"
-            class="newsletter-content"
-          ></div>
-          <div v-else class="text-center py-12">
-            <p class="text-gray-600">Conteúdo não disponível.</p>
+      <main class="max-w-7xl mx-auto px-4 sm:px-8 py-20">
+        <!-- Content Container -->
+        <div
+          class="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-gray-200 max-w-4xl mx-auto"
+          data-aos="fade-up"
+        >
+          <!-- Post Content -->
+          <div class="prose prose-lg prose-purple max-w-none">
+            <div
+              v-if="post.content?.free?.web"
+              v-html="post.content.free.web"
+              itemprop="articleBody"
+              class="newsletter-content"
+            ></div>
+            <div v-else class="text-center py-12">
+              <p class="text-gray-600">Conteúdo não disponível.</p>
+            </div>
           </div>
         </div>
 
@@ -202,10 +291,10 @@ onMounted(() => {
         <div class="mt-12 flex justify-center" data-aos="fade-up">
           <NuxtLink
             to="/newsletter"
-            class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-medium transition-colors"
+            class="group inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
           >
             <svg
-              class="w-5 h-5"
+              class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -217,7 +306,7 @@ onMounted(() => {
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            Ver todos os artigos
+            Ver todos os posts
           </NuxtLink>
         </div>
       </main>

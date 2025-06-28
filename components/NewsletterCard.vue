@@ -11,54 +11,58 @@ const { formatDate, formatDateForDatetime, truncateContent } = useBeehiiv();
 
 <template>
   <article
-    class="bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300"
+    class="group bg-white rounded-3xl overflow-hidden border border-gray-200 hover:shadow-xl hover:border-purple-200 transition-all duration-300 hover:scale-105"
     itemscope
     itemtype="https://schema.org/BlogPosting"
   >
     <!-- Featured Image -->
-    <div class="relative">
+    <div class="relative overflow-hidden">
       <img
         :src="
           post.thumbnail_url ||
           'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80'
         "
         :alt="post.title"
-        class="w-full h-48 object-cover"
+        class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
         loading="lazy"
         @error="handleImageError"
         itemprop="image"
       />
-      <div class="absolute top-4 left-4">
-        <span
-          class="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-medium"
-        >
-          Newsletter
-        </span>
-      </div>
+
+      <!-- Gradient overlay -->
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      ></div>
     </div>
 
     <!-- Content -->
-    <div class="p-6">
+    <div class="p-8">
       <!-- Date -->
-      <div class="flex items-center text-sm text-gray-500 mb-3">
-        <time
-          :datetime="formatDateForDatetime(post.publish_date)"
-          itemprop="datePublished"
-        >
-          {{ formatDate(post.publish_date) }}
-        </time>
+      <div class="flex items-center text-sm text-gray-500 mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+          <time
+            :datetime="formatDateForDatetime(post.publish_date)"
+            itemprop="datePublished"
+          >
+            {{ formatDate(post.publish_date) }}
+          </time>
+        </div>
       </div>
 
       <!-- Title -->
       <h3
-        class="text-xl font-bold text-gray-800 mb-3 line-clamp-2"
+        class="text-xl font-bold text-gray-800 mb-4 line-clamp-2 group-hover:text-purple-700 transition-colors"
         itemprop="headline"
       >
         {{ post.title }}
       </h3>
 
       <!-- Subtitle/Description -->
-      <p class="text-gray-600 mb-4 line-clamp-3" itemprop="description">
+      <p
+        class="text-gray-600 mb-6 line-clamp-3 leading-relaxed"
+        itemprop="description"
+      >
         {{ truncateContent(post.subtitle || post.content, 120) }}
       </p>
 
@@ -66,12 +70,12 @@ const { formatDate, formatDateForDatetime, truncateContent } = useBeehiiv();
       <div class="flex items-center justify-between">
         <NuxtLink
           :to="`/newsletter/${post.id}`"
-          class="inline-flex items-center gap-2 text-purple-600 font-semibold hover:text-purple-700 transition-colors"
+          class="group/btn inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
           itemprop="url"
         >
-          Ler artigo
+          Ler post
           <svg
-            class="w-4 h-4"
+            class="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -84,27 +88,6 @@ const { formatDate, formatDateForDatetime, truncateContent } = useBeehiiv();
             />
           </svg>
         </NuxtLink>
-
-        <!-- Share Button (optional) -->
-        <button
-          @click="sharePost"
-          class="p-2 text-gray-400 hover:text-gray-600 transition-colors"
-          :title="`Compartilhar: ${post.title}`"
-        >
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
-            />
-          </svg>
-        </button>
       </div>
     </div>
 

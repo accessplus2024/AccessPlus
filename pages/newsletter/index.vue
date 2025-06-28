@@ -101,16 +101,18 @@ onMounted(() => {
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Header Section -->
-    <NewsletterHeaderSection :total-posts="totalPosts" />
+    <NewsletterHeaderSection />
 
     <!-- Main Content -->
-    <main class="container mx-auto px-6 py-16 max-w-7xl">
+    <main class="max-w-7xl mx-auto px-4 sm:px-8 py-20">
       <!-- Loading State -->
       <Loading :watch="loading" />
 
       <!-- Error State -->
       <div v-if="!loading && error" class="text-center py-20">
-        <div class="max-w-md mx-auto">
+        <div
+          class="bg-white rounded-3xl p-8 shadow-xl border border-gray-200 max-w-md mx-auto"
+        >
           <div class="text-red-500 text-6xl mb-4">⚠️</div>
           <h2 class="text-2xl font-bold text-gray-800 mb-4">
             Ops! Algo deu errado
@@ -118,7 +120,7 @@ onMounted(() => {
           <p class="text-gray-600 mb-6">{{ error }}</p>
           <button
             @click="loadPosts"
-            class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+            class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             Tentar novamente
           </button>
@@ -130,11 +132,10 @@ onMounted(() => {
         <!-- Section Header -->
         <div class="text-center mb-12" data-aos="fade-up">
           <h2 class="text-3xl md:text-4xl font-bold text-[#140E3F] mb-4">
-            Últimos <span class="font-medium">Artigos</span>
+            Últimos <span class="font-medium">posts</span>
           </h2>
           <p class="text-gray-600 max-w-2xl mx-auto">
-            Descubra insights, dicas e oportunidades que podem transformar sua
-            jornada educacional.
+            Conteúdo que pode transformar sua jornada educacional.
           </p>
         </div>
 
@@ -152,7 +153,7 @@ onMounted(() => {
         <!-- Posts Grid -->
         <div v-else>
           <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
           >
             <div
               v-for="(post, index) in paginatedPosts"
@@ -167,14 +168,14 @@ onMounted(() => {
           <!-- Pagination -->
           <div
             v-if="totalPages > 1"
-            class="flex justify-center items-center gap-2"
+            class="flex justify-center items-center gap-3"
             data-aos="fade-up"
           >
             <!-- Previous Button -->
             <button
               @click="goToPage(currentPage - 1)"
               :disabled="currentPage === 1"
-              class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-6 py-3 text-sm font-semibold text-gray-500 bg-white border border-gray-300 rounded-2xl hover:bg-gray-50 hover:border-purple-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
             >
               Anterior
             </button>
@@ -189,17 +190,17 @@ onMounted(() => {
                 "
                 @click="goToPage(page)"
                 :class="[
-                  'px-4 py-2 text-sm font-medium rounded-lg',
+                  'px-4 py-3 text-sm font-semibold rounded-2xl transition-all duration-300',
                   page === currentPage
-                    ? 'text-white bg-purple-600 border border-purple-600'
-                    : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50',
+                    ? 'text-white bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg'
+                    : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 hover:border-purple-300',
                 ]"
               >
                 {{ page }}
               </button>
               <span
                 v-else-if="page === currentPage - 3 || page === currentPage + 3"
-                class="px-2 py-2 text-sm text-gray-400"
+                class="px-2 py-3 text-sm text-gray-400"
               >
                 ...
               </span>
@@ -209,7 +210,7 @@ onMounted(() => {
             <button
               @click="goToPage(currentPage + 1)"
               :disabled="currentPage === totalPages"
-              class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="px-6 py-3 text-sm font-semibold text-gray-500 bg-white border border-gray-300 rounded-2xl hover:bg-gray-50 hover:border-purple-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
             >
               Próximo
             </button>
@@ -219,7 +220,8 @@ onMounted(() => {
 
       <!-- Newsletter Subscription CTA -->
       <section
-        class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 md:p-12 mt-20"
+        id="newsletter-subscription"
+        class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-8 md:p-12 mt-20 shadow-xl"
         data-aos="fade-up"
       >
         <div class="text-center mb-8">
