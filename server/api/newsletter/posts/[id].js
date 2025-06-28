@@ -28,6 +28,7 @@ export default defineEventHandler(async (event) => {
         },
         query: {
           expand: "free_web_content",
+          status: "confirmed", // Only fetch published posts
         },
       }
     );

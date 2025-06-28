@@ -18,6 +18,12 @@ export default defineEventHandler(async (event) => {
           Authorization: `Bearer ${config.beehiivApiKey}`,
           "Content-Type": "application/json",
         },
+        query: {
+          status: "confirmed", // Only fetch published posts, not drafts
+          limit: 100, // Increase limit to get more posts
+          order_by: "publish_date", // Order by publish date
+          direction: "desc", // Most recent first
+        },
       }
     );
 
