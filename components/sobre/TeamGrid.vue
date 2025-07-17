@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-6xl px-4 pb-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-black">
       <TeamMemberCard
         v-for="(member, idx) in members"
@@ -73,6 +73,27 @@ const members = [
     location: "Dias d'Ávila, BA",
     image: '/images/alessandra_pic.png',
     aosDelay: 700,
+  },
+  {
+    name: 'Adriel Reis',
+    role: 'Analista de Tecnologia',
+    location: "Camaçari, BA",
+    image: '/images/adriel-reis.jpg',
+    aosDelay: 800,
+  },
+  {
+    name: 'Richard Camargo',
+    role: 'Analista de Tecnologia',
+    location: "Alfredo Guedes, SP",
+    image: '/images/richard-camargo.jpg',
+    aosDelay: 900,
+  },
+  {
+    name: 'Julia Meireles',
+    role: 'Diretora de Engajamento',
+    location: "São Paulo, SP",
+    image: '/images/julia-meireles.jpg',
+    aosDelay: 1000,
   }
 ];
 </script>
