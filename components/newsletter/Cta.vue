@@ -17,7 +17,7 @@
     <!-- Beehiiv Subscription Form -->
     <iframe
       src="https://subscribe-forms.beehiiv.com/012188af-07b0-4875-8457-3a74a9faadc7"
-      class="w-[400px] mx-auto rounded-l h-20 max-h-20"
+      class="w-[320px] mx-auto rounded-l h-20 max-h-20"
       data-test-id="beehiiv-embed"
       frameborder="0"
       scrolling="no"
