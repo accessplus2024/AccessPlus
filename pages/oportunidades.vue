@@ -228,7 +228,7 @@ onMounted(async () => {
         ? opp.audience.split(",").map((a) => a.trim())
         : [], // Convert audience to an array
       fields: opp.fields ? opp.fields.split(",").map((f) => f.trim()) : [], // Convert fields to an array
-      tuition: opp.tuition ? opp.tuition.trim() : "", 
+      tuition: opp.tuition ? opp.tuition.trim() : "", //fix tuition filter
     }));
   } catch (error) {
     console.error(error);
