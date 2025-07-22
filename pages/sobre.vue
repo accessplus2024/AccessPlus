@@ -9,6 +9,28 @@ import About from '~/components/sobre/About.vue';
 import ValuesGrid from '~/components/sobre/ValuesGrid.vue';
 import TeamGrid from '~/components/sobre/TeamGrid.vue';
 
+useHead({
+  link: [
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/images/estrelinhas.png",
+    },
+  ],
+});
+
+useHead({
+  title: "Sobre nós",
+  meta: [
+    { charset: "UTF-8" },
+    { name: "viewport", content: "width=device-width, initial-scale=1.0" },
+    { hid: "description", name: "description", content: "" },
+  ],
+  htmlAttrs: {
+    lang: "pt-br",
+  },
+});
+
 onMounted(() => {
   AOS.init({ duration: 1000, once: true });
   gsap.registerPlugin(ScrollTrigger);
