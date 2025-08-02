@@ -1,6 +1,5 @@
-// composables/useSteinData.js
+// composables/useOpportunity.js
 import { ref } from "vue";
-import { steinStore } from "~/utils/steinStore";
 
 export function useOpportunity() {
   const data = ref(null);
@@ -12,13 +11,32 @@ export function useOpportunity() {
     loading.value = true;
     error.value = null;
 
-    const response = await steinStore
-      .read("All", { limit: 1, offset: id - 1 })
-      .then((res) => {
-        data.value = res;
-      })
-      .catch((err) => console.error(err))
-      .finally(() => (loading.value = false));
+    try {
+      // Fetch specific opportunity from our cached API
+      const response = await $fetch(`/api/opportunities/${id}`);
+      
+      if (response.data) {
+        data.value = [response.data]; // Keep the same format as before (array with single item)
+        console.log(`Found opportunity with ID ${id}:`, response.data.Nome || response.data.name);
+        
+        // Log cache info
+        if (response.cached) {
+          console.log('Served from cache, last updated:', response.lastUpdated);
+        } else {
+          console.log('Served fresh data');
+        }
+      } else {
+        console.error(`Opportunity with ID ${id} not found`);
+        error.value = new Error(`Opportunity with ID ${id} not found`);
+        data.value = [];
+      }
+    } catch (err) {
+      console.error('Error fetching opportunity:', err);
+      error.value = err;
+      data.value = [];
+    } finally {
+      loading.value = false;
+    }
   }
 
   return {
