@@ -212,26 +212,16 @@ const totalPages = computed(() => {
   return Math.ceil(filteredOpportunities.value.length / itemsPerPage);
 });
 
-// Fetch opportunities data
-const { data, loading, error, fetchSheetData } = useSteinData();
+// Fetch opportunities data from cached API
+const { data, loading, error, cacheInfo, fetchOpportunities } = useCachedOpportunities();
 
 onMounted(async () => {
   try {
-    await fetchSheetData("All");
-    tempOpps.value = data.value.map((opp, index) => ({
-      id: String(index + 1), // assign id if missing
-      ...opp,
-      keywords: opp.keywords
-        ? opp.keywords.split(",").map((k) => k.trim().toLowerCase())
-        : [],
-      audience: opp.audience
-        ? opp.audience.split(",").map((a) => a.trim())
-        : [], // Convert audience to an array
-      fields: opp.fields ? opp.fields.split(",").map((f) => f.trim()) : [], // Convert fields to an array
-      tuition: opp.tuition ? opp.tuition.trim() : "", //fix tuition filter
-    }));
+    await fetchOpportunities();
+    // Data is already processed by the server API, so we can use it directly
+    tempOpps.value = data.value || [];
   } catch (error) {
-    console.error(error);
+    console.error('Error loading opportunities:', error);
   }
 });
 
