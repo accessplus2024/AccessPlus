@@ -4,7 +4,7 @@ Access+ é a maior plataforma gratuita do país focada em trazer oportunidades e
 
 ## Setup
 
-Make sure to install the required dependencies:
+Make sure to install the dependencies:
 
 ```bash
 # npm
