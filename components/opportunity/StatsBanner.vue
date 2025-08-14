@@ -49,7 +49,7 @@
           </svg>
         </div>
         <h3 class="text-lg font-bold text-gray-800 mb-2">Área de Atuação</h3>
-        <p class="text-xl font-bold text-blue-600">{{ opportunity.fields }}</p>
+        <p class="text-xl font-bold text-blue-600">{{ opportunity.fields.join(", ") }}</p>
       </div>
 
       <!-- Level Card -->
