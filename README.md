@@ -1,6 +1,6 @@
 # Access+ - Educational Opportunities Platform
 
-Access+ é a maior plataforma gratuita do país focada em trazer oportunidades educacionais atualizadas para jovens.
+Access+ é a maior plataforma gratuita do país focada em trazer oportunidades extracurriculares atualizadas para jovens.
 
 ## Setup
 
