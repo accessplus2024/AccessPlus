@@ -32,26 +32,26 @@ const itemsPerPage = 12;
 
 // Change from keywordFilters to typeFilters
 const typeFilters = ref([
-  "olympiad",
+  "olimpiada",
   "mun",
-  "academic",
-  "exchange",
-  "scholarship",
-  "competition",
-  "writing",
-  "tutoring",
+  "academico",
+  "intercambio",
+  "bolsa",
+  "competicao",
+  "escrita",
+  "mentoria",
 ]);
 
 // Add type display mapping
 const typeDisplayNames = {
-  olympiad: "Olimpíadas Científicas",
+  olimpiada: "Olimpíadas Científicas",
   mun: "MUNs",
-  academic: "Programas Acadêmicos",
-  exchange: "Programas de Intercâmbio",
-  scholarship: "Bolsas de Estudo",
-  competition: "Competições",
-  writing: "Competições de Escrita",
-  tutoring: "Mentorias",
+  academico: "Programas Acadêmicos",
+  intercambio: "Programas de Intercâmbio",
+  bolsa: "Bolsas de Estudo",
+  competicao: "Competições",
+  escrita: "Competições de Escrita",
+  mentoria: "Mentorias",
 };
 
 // Filtros de Interesse (Fields)
@@ -64,12 +64,12 @@ const fieldFilters = ref([
 ]);
 
 // Update openFilters to match database values
-const openFilters = ref(["yes", "no"]);
+const openFilters = ref(["sim", "nao"]);
 
 // Add status display mapping
 const statusDisplayNames = {
-  yes: "Sim",
-  no: "Não",
+  sim: "Sim",
+  nao: "Não",
 };
 
 const levelFilters = ref(["Fundamental", "Ensino Médio", "Gap"]);

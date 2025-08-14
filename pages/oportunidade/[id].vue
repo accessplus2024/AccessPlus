@@ -52,14 +52,14 @@ const route = useRoute();
 const opportunityId = route.params.id;
 
 const typeDisplayNames = {
-  olympiad: "Olimpíadas Científicas",
+  olimpiada: "Olimpíadas Científicas",
   mun: "MUNs",
-  academic: "Programas Acadêmicos",
-  exchange: "Programas de Intercâmbios",
-  scholarship: "Bolsas de Estudo",
-  competition: "Competições",
-  writing: "Competições de Escrita",
-  tutoring: "Mentorias",
+  academico: "Programas Acadêmicos",
+  intercambio: "Programas de Intercâmbio",
+  bolsa: "Bolsas de Estudo",
+  competicao: "Competições",
+  escrita: "Competições de Escrita",
+  mentoria: "Mentorias",
 };
 
 // Content refs
