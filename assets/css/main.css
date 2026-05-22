@@ -12,9 +12,13 @@
 
 :root {
   --color-primary: #4B3FE4;
+  --color-primary-rgb: 75 63 228;
   --color-bg: #FFFFFF;
+  --color-bg-rgb: 255 255 255;
   --color-surface: #F5F5F5;
+  --color-surface-rgb: 245 245 245;
   --color-text: #0D0B1A;
+  --color-text-rgb: 13 11 26;
   --color-accent-red: #FF4422;
   --color-accent-green: #C8F135;
   --color-accent-pink: #FF2D8A;
@@ -23,7 +27,11 @@
 
 .dark {
   --color-primary: #6B5FFF;
+  --color-primary-rgb: 107 95 255;
   --color-bg: #0D0B1A;
+  --color-bg-rgb: 13 11 26;
   --color-surface: #1A1633;
+  --color-surface-rgb: 26 22 51;
   --color-text: #FFFFFF;
+  --color-text-rgb: 255 255 255;
 }

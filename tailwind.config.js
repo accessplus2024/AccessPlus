@@ -12,10 +12,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "var(--color-primary)",
-        bg: "var(--color-bg)",
-        surface: "var(--color-surface)",
-        text: "var(--color-text)",
+        primary: "rgb(var(--color-primary-rgb) / <alpha-value>)",
+        bg: "rgb(var(--color-bg-rgb) / <alpha-value>)",
+        surface: "rgb(var(--color-surface-rgb) / <alpha-value>)",
+        text: "rgb(var(--color-text-rgb) / <alpha-value>)",
         "accent-red": "var(--color-accent-red)",
         "accent-green": "var(--color-accent-green)",
         "accent-pink": "var(--color-accent-pink)",
