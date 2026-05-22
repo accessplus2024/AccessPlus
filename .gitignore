@@ -27,3 +27,4 @@ logs
 bun.lockb
 package-lock.json
 .vercel
+.claude
