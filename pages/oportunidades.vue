@@ -227,9 +227,13 @@ onMounted(async () => {
 
 // Method to return the keyword color
 const getKeywordColor = (index) => {
-  const colors = ["#3D30A2", "#F16767", "#A459D1"];
-  return colors[index % colors.length];
-};
+  const colors = [
+    "var(--color-accent-pink)",
+    "var(--color-accent-green)",
+    "var(--color-accent-cyan)",
+  ]
+  return colors[index % colors.length]
+}
 </script>
 
 <template>
@@ -243,7 +247,7 @@ const getKeywordColor = (index) => {
       >
         <button
           @click="showMobileFilters = true"
-          class="relative w-full md:hidden flex justify-center items-center bg-[#EAEAEA] text-[#898989] px-4 py-2 rounded-lg hover:bg-[#DADADA] transition-colors"
+          class="relative w-full md:hidden flex justify-center items-center bg-surface text-text/60 px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors"
         >
           <span class="flex items-center gap-2">
             Filtrar

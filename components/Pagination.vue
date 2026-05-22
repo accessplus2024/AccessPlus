@@ -1,24 +1,12 @@
 <script setup>
 const props = defineProps({
-  currentPage: {
-    type: Number,
-    required: true,
-  },
-  totalPages: {
-    type: Number,
-    required: true,
-  },
-  displayedPages: {
-    type: Array,
-    required: true,
-  },
-});
+  currentPage: { type: Number, required: true },
+  totalPages: { type: Number, required: true },
+  displayedPages: { type: Array, required: true },
+})
 
-const emit = defineEmits(["update-page"]);
-
-const changePage = (page) => {
-  emit("update-page", page);
-};
+const emit = defineEmits(["update-page"])
+const changePage = (page) => emit("update-page", page)
 </script>
 
 <template>
@@ -26,7 +14,7 @@ const changePage = (page) => {
     <button
       @click="changePage(currentPage - 1)"
       :disabled="currentPage === 1"
-      class="px-4 py-2 rounded-lg bg-purple-600 text-white disabled:bg-gray-300"
+      class="px-4 py-2 rounded-lg bg-primary text-white disabled:opacity-40 font-body"
     >
       Anterior
     </button>
@@ -36,10 +24,10 @@ const changePage = (page) => {
         :key="page"
         @click="changePage(page)"
         :class="{
-          'bg-purple-600 text-white': currentPage === page,
-          'bg-gray-200 text-gray-600': currentPage !== page,
+          'bg-primary text-white': currentPage === page,
+          'bg-surface text-text': currentPage !== page,
         }"
-        class="px-4 py-2 rounded-lg text-sm sm:text-base"
+        class="px-4 py-2 rounded-lg text-sm sm:text-base font-body"
       >
         {{ page }}
       </button>
@@ -47,7 +35,7 @@ const changePage = (page) => {
     <button
       @click="changePage(currentPage + 1)"
       :disabled="currentPage === totalPages"
-      class="px-4 py-2 rounded-lg bg-purple-600 text-white disabled:bg-gray-300"
+      class="px-4 py-2 rounded-lg bg-primary text-white disabled:opacity-40 font-body"
     >
       Próxima
     </button>
