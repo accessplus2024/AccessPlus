@@ -36,16 +36,16 @@ const closeFilters = () => {
       class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0"
     >
       <div
-        class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+        class="fixed inset-0 bg-black/60 transition-opacity"
         @click="closeFilters"
       ></div>
       <div
-        class="relative inline-block w-full max-w-md p-6 my-8 overflow-y-auto text-left align-middle transform bg-white shadow-xl rounded-2xl"
+        class="relative inline-block w-full max-w-md p-6 my-8 overflow-y-auto text-left align-middle transform bg-bg shadow-xl rounded-2xl"
         style="max-height: 80vh; overflow-y: auto"
       >
         <button
           @click="closeFilters"
-          class="absolute top-4 right-4 text-gray-400 hover:text-gray-500 transition duration-200"
+          class="absolute top-4 right-4 text-text/60 hover:text-text transition duration-200"
         >
           <span class="sr-only">Close</span>
           <svg
@@ -120,7 +120,7 @@ const closeFilters = () => {
         <div class="mt-6">
           <button
             @click="closeFilters"
-            class="w-full bg-[#FFB84C] text-white px-6 py-3 rounded-lg hover:bg-[#FF9F00] transition duration-200"
+            class="w-full bg-primary text-white px-6 py-3 rounded-lg font-body hover:bg-primary/90 transition duration-200"
           >
             Aplicar Filtros
           </button>
