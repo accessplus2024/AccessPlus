@@ -1,8 +1,8 @@
 <template>
   <div class="lg:col-span-4 space-y-3">
-    <h2 class="text-3xl font-bold text-gray-800 mb-8 flex items-center">
+    <h2 class="font-display text-3xl font-bold text-text mb-8 flex items-center">
       <div
-        class="w-2 h-8 bg-gradient-to-b from-violet-500 to-purple-600 rounded-full mr-4"
+        class="w-2 h-8 bg-primary rounded-full mr-4"
       ></div>
       Detalhes
     </h2>
@@ -12,8 +12,8 @@
       :class="[
         'w-full p-6 rounded-2xl text-left font-semibold transition-all duration-300 border-2 group',
         activeTab === 'guide'
-          ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-indigo-500 shadow-xl transform scale-105'
-          : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:shadow-lg hover:scale-102',
+          ? 'bg-primary text-white border-primary shadow-xl transform scale-105'
+          : 'bg-surface text-text border-text/10 hover:border-primary hover:shadow-lg',
       ]"
       @click="
         $emit(
@@ -30,7 +30,7 @@
             'w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300',
             activeTab === 'guide'
               ? 'bg-white/20'
-              : 'bg-indigo-100 group-hover:bg-indigo-200',
+              : 'bg-primary/10 group-hover:bg-primary/20',
           ]"
         >
           <svg
@@ -38,7 +38,7 @@
               'w-6 h-6 transition-all duration-300',
               activeTab === 'guide'
                 ? 'text-white'
-                : 'text-indigo-600 group-hover:text-indigo-700',
+                : 'text-primary group-hover:text-primary/80',
             ]"
             fill="none"
             stroke="currentColor"
@@ -71,8 +71,8 @@
       :class="[
         'w-full p-6 rounded-2xl text-left font-semibold transition-all duration-300 border-2 group',
         activeTab === 'process'
-          ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-indigo-500 shadow-xl transform scale-105'
-          : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:shadow-lg hover:scale-102',
+          ? 'bg-primary text-white border-primary shadow-xl transform scale-105'
+          : 'bg-surface text-text border-text/10 hover:border-primary hover:shadow-lg',
       ]"
       @click="
         $emit(
@@ -89,7 +89,7 @@
             'w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300',
             activeTab === 'process'
               ? 'bg-white/20'
-              : 'bg-indigo-100 group-hover:bg-indigo-200',
+              : 'bg-primary/10 group-hover:bg-primary/20',
           ]"
         >
           <svg
@@ -97,7 +97,7 @@
               'w-6 h-6 transition-all duration-300',
               activeTab === 'process'
                 ? 'text-white'
-                : 'text-indigo-600 group-hover:text-indigo-700',
+                : 'text-primary group-hover:text-primary/80',
             ]"
             fill="none"
             stroke="currentColor"
@@ -130,8 +130,8 @@
       :class="[
         'w-full p-6 rounded-2xl text-left font-semibold transition-all duration-300 border-2 group',
         activeTab === 'tips'
-          ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-indigo-500 shadow-xl transform scale-105'
-          : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:shadow-lg hover:scale-102',
+          ? 'bg-primary text-white border-primary shadow-xl transform scale-105'
+          : 'bg-surface text-text border-text/10 hover:border-primary hover:shadow-lg',
       ]"
       @click="
         $emit(
@@ -148,7 +148,7 @@
             'w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300',
             activeTab === 'tips'
               ? 'bg-white/20'
-              : 'bg-indigo-100 group-hover:bg-indigo-200',
+              : 'bg-primary/10 group-hover:bg-primary/20',
           ]"
         >
           <svg
@@ -156,7 +156,7 @@
               'w-6 h-6 transition-all duration-300',
               activeTab === 'tips'
                 ? 'text-white'
-                : 'text-indigo-600 group-hover:text-indigo-700',
+                : 'text-primary group-hover:text-primary/80',
             ]"
             fill="none"
             stroke="currentColor"
@@ -189,8 +189,8 @@
       :class="[
         'w-full p-6 rounded-2xl text-left font-semibold transition-all duration-300 border-2 group',
         activeTab === 'additional'
-          ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-indigo-500 shadow-xl transform scale-105'
-          : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:shadow-lg hover:scale-102',
+          ? 'bg-primary text-white border-primary shadow-xl transform scale-105'
+          : 'bg-surface text-text border-text/10 hover:border-primary hover:shadow-lg',
       ]"
       @click="
         $emit(
@@ -207,7 +207,7 @@
             'w-12 h-12 rounded-xl flex items-center justify-center mr-4 transition-all duration-300',
             activeTab === 'additional'
               ? 'bg-white/20'
-              : 'bg-indigo-100 group-hover:bg-indigo-200',
+              : 'bg-primary/10 group-hover:bg-primary/20',
           ]"
         >
           <svg
@@ -215,7 +215,7 @@
               'w-6 h-6 transition-all duration-300',
               activeTab === 'additional'
                 ? 'text-white'
-                : 'text-indigo-600 group-hover:text-indigo-700',
+                : 'text-primary group-hover:text-primary/80',
             ]"
             fill="none"
             stroke="currentColor"

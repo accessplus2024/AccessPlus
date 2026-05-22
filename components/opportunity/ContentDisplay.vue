@@ -1,11 +1,11 @@
 <template>
   <div class="lg:col-span-8">
     <div
-      class="bg-white rounded-3xl p-10 shadow-xl border border-gray-200 min-h-[500px] relative overflow-hidden"
+      class="bg-surface rounded-3xl p-10 shadow-xl border border-text/10 min-h-[500px] relative overflow-hidden"
     >
       <!-- Background decoration -->
       <div
-        class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-full -translate-y-16 translate-x-16 opacity-50"
+        class="bg-primary/5 rounded-full -translate-y-16 translate-x-16 absolute top-0 right-0 w-32 h-32 opacity-50"
       ></div>
       <div
         class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-br from-violet-50 to-fuchsia-50 rounded-full translate-y-12 -translate-x-12 opacity-50"
@@ -15,11 +15,11 @@
           class="flex items-center mb-8 transition-all duration-300 ease-in-out"
         >
           <div
-            class="w-2 h-12 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full mr-6 transition-all duration-300 ease-in-out"
+            class="w-2 h-12 bg-primary rounded-full mr-6 transition-all duration-300 ease-in-out"
           ></div>
           <div>
             <h3
-              class="text-3xl font-bold text-gray-800 mb-2 transition-all duration-300 ease-in-out"
+              class="font-display text-3xl font-bold text-text mb-2 transition-all duration-300 ease-in-out"
               :class="isContentVisible ? 'opacity-100' : 'opacity-0 '"
             >
               {{ displayTitle }}
@@ -28,13 +28,13 @@
         </div>
         <div class="prose prose-lg max-w-none">
           <div
-            class="bg-gray-50 rounded-2xl p-8 shadow-sm border border-gray-200 transition-all duration-300 ease-in-out"
+            class="bg-bg rounded-2xl p-8 shadow-sm border border-text/10 transition-all duration-300 ease-in-out"
             :class="
               isContentVisible ? 'opacity-100 scale-100' : 'opacity-90 scale-98'
             "
           >
             <div
-              class="text-gray-800 leading-relaxed text-base whitespace-pre-line transition-all duration-300 ease-in-out"
+              class="font-body text-text leading-relaxed text-base whitespace-pre-line transition-all duration-300 ease-in-out"
               :class="isContentVisible ? 'opacity-100' : 'opacity-0'"
             >
               {{ displayText || "Nenhuma informação disponível." }}

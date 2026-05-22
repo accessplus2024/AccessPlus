@@ -2,7 +2,7 @@
   <div class="lg:col-span-5 space-y-6" data-aos="fade-left">
     <!-- Quick Access Card -->
     <div
-      class="info-card bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-700 rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden"
+      class="info-card bg-primary rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden"
     >
       <!-- Background Pattern -->
       <div
@@ -61,11 +61,11 @@
 
     <!-- Keywords Card with Enhanced Design -->
     <div
-      class="info-card bg-white rounded-3xl p-8 shadow-xl border border-gray-200"
+      class="info-card bg-surface rounded-3xl p-8 shadow-xl border border-text/10"
     >
-      <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+      <h3 class="font-display text-xl font-bold text-text mb-6 flex items-center">
         <div
-          class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center mr-3"
+          class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center mr-3"
         >
           <svg
             class="w-5 h-5 text-white"
@@ -87,7 +87,7 @@
         <span
           v-for="(keyword, index) in keywordsList"
           :key="index"
-          class="group px-4 py-2 bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-700 rounded-2xl text-sm font-semibold border border-indigo-200 transition-all duration-300 hover:scale-105 hover:shadow-md"
+          class="group px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-2xl text-sm font-body font-semibold border border-primary/20 transition-all duration-300 hover:scale-105"
         >
           #{{ keyword.trim() }}
         </span>

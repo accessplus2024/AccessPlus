@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gradient-to-br from-violet-600 via-purple-700 to-fuchsia-800 relative overflow-hidden"
+    class="bg-primary relative overflow-hidden"
   >
     <!-- Animated Background Elements -->
     <div class="absolute inset-0">
@@ -70,7 +70,7 @@
           {{ typeDisplayName }}
         </div>
         <h1
-          class="text-4xl sm:text-5xl lg:text-7xl font-black text-white mb-6 leading-tight"
+          class="font-display text-4xl sm:text-5xl lg:text-7xl font-black text-white mb-6 leading-tight"
           data-aos="fade-up"
           data-aos-delay="200"
         >
@@ -130,7 +130,7 @@
             :href="opportunity.site"
             target="_blank"
             ref="ctaButton"
-            class="group inline-flex items-center bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 hover:from-yellow-300 hover:via-orange-400 hover:to-red-400 text-white font-bold px-8 py-4 rounded-2xl shadow-2xl hover:shadow-yellow-500/25 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
+            class="group inline-flex items-center bg-accent-green text-[#0D0B1A] font-bold px-8 py-4 rounded-2xl shadow-2xl hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
           >
             <svg
               class="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform"
