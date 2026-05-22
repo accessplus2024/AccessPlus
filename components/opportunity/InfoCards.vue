@@ -39,7 +39,7 @@
         <a
           :href="opportunity.site"
           target="_blank"
-          class="inline-flex items-center bg-white text-violet-700 font-bold px-6 py-3 rounded-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+          class="inline-flex items-center bg-white text-[#0D0B1A] font-bold px-6 py-3 rounded-xl hover:bg-white/90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
         >
           <span>Aplicar Agora</span>
           <svg
@@ -97,6 +97,8 @@
 </template>
 
 <script setup>
+import { computed } from "vue"
+
 const props = defineProps({
   opportunity: {
     type: Object,

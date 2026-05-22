@@ -8,7 +8,7 @@
         class="bg-primary/5 rounded-full -translate-y-16 translate-x-16 absolute top-0 right-0 w-32 h-32 opacity-50"
       ></div>
       <div
-        class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-br from-violet-50 to-fuchsia-50 rounded-full translate-y-12 -translate-x-12 opacity-50"
+        class="absolute bottom-0 left-0 w-24 h-24 bg-primary/5 rounded-full translate-y-12 -translate-x-12 opacity-50"
       ></div>
       <div class="relative z-10">
         <div
