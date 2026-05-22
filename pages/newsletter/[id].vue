@@ -154,7 +154,7 @@ onMounted(() => {
     <!-- Post Content -->
     <article
       v-if="!loading && !error && post"
-      class="bg-white"
+      class="bg-bg"
       itemscope
       itemtype="https://schema.org/BlogPosting"
     >
@@ -179,13 +179,8 @@ onMounted(() => {
           ></div>
 
           <!-- Gradient orbs -->
-          <div
-            class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-pink-400/30 to-purple-600/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse"
-          ></div>
-          <div
-            class="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-blue-400/30 to-indigo-600/30 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 animate-pulse"
-            style="animation-delay: 1s"
-          ></div>
+          <div class="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+          <div class="absolute bottom-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
         </div>
 
         <!-- Breadcrumb Navigation -->
