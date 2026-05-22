@@ -3,7 +3,7 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-[60px] flex flex-col sm:flex-row justify-between items-start">
       <div class="flex flex-col items-start">
         <div class="flex flex-1 w-full h-full">
-          <img src="/images/logo-light.svg" class="mt-7" alt="Access+" />
+          <img src="/images/logo-light-footer.svg" class="mt-7" alt="Access+" />
         </div>
         <div class="text-white flex items-start sm:items-center w-full mt-4 sm:mt-6">
           <span class="text-sm mr-3 sm:text-base font-body">Siga nossas redes sociais:</span>

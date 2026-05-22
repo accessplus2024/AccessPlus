@@ -112,7 +112,7 @@ const isDark = computed(() => colorMode.value === 'dark')
 
 const logoSrc = computed(() =>
   props.transparent || isDark.value
-    ? '/images/logo-light.svg'
+    ? '/images/logo-light-navbar.svg'
     : '/images/logo-dark.svg'
 )
 
