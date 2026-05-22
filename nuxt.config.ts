@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   modules: ["@nuxt/fonts", "@nuxtjs/color-mode"],
 
   fonts: {
-    families: [{ name: "Poppins", weights: [300] }],
+    families: [{ name: "Poppins", weights: [300, 400, 500, 600, 700] }],
   },
 
   colorMode: {
