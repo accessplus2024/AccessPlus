@@ -1,5 +1,4 @@
 // nuxt.config.ts
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   nitro: { compatibilityDate: "2024-04-03" },
   devtools: { enabled: true },
@@ -12,7 +11,18 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@nuxt/fonts"],
+  modules: ["@nuxt/fonts", "@nuxtjs/color-mode"],
+
+  fonts: {
+    families: [{ name: "Poppins", weights: [300] }],
+  },
+
+  colorMode: {
+    preference: "system",
+    fallback: "light",
+    classSuffix: "",
+    storageKey: "nuxt-color-mode",
+  },
 
   plugins: [
     { src: "~/plugins/vercel-analytics.client.ts", mode: "client" },
@@ -20,10 +30,7 @@ export default defineNuxtConfig({
   ],
 
   runtimeConfig: {
-    // Private keys (only available on server-side)
     beehiivApiKey: process.env.BEEHIV_API_KEY,
-
-    // Public keys (exposed to client-side)
     public: {
       beehiivPublicationId: process.env.BEEHIV_PUBLICATION_ID,
     },
