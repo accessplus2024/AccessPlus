@@ -8,10 +8,23 @@ export default {
     "./app.vue",
     "./error.vue",
   ],
+  darkMode: "class",
   theme: {
     extend: {
+      colors: {
+        primary: "var(--color-primary)",
+        bg: "var(--color-bg)",
+        surface: "var(--color-surface)",
+        text: "var(--color-text)",
+        "accent-red": "var(--color-accent-red)",
+        "accent-green": "var(--color-accent-green)",
+        "accent-pink": "var(--color-accent-pink)",
+        "accent-cyan": "var(--color-accent-cyan)",
+      },
       fontFamily: {
-        sans: ["Montserrat", "sans-serif"],
+        sans: ["Poppins", "sans-serif"],
+        display: ["FuturaStd", "sans-serif"],
+        body: ["Poppins", "sans-serif"],
       },
     },
   },

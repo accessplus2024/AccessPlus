@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'FuturaStd';
+  src: url('/fonts/FuturaStdExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --color-primary: #4B3FE4;
+  --color-bg: #FFFFFF;
+  --color-surface: #F5F5F5;
+  --color-text: #0D0B1A;
+  --color-accent-red: #FF4422;
+  --color-accent-green: #C8F135;
+  --color-accent-pink: #FF2D8A;
+  --color-accent-cyan: #7DECE9;
+}
+
+.dark {
+  --color-primary: #6B5FFF;
+  --color-bg: #0D0B1A;
+  --color-surface: #1A1633;
+  --color-text: #FFFFFF;
+}

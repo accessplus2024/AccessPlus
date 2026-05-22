@@ -1,9 +1,8 @@
-
 <template>
   <IconoirProvider>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </IconoirProvider>
 </template>
 
@@ -18,6 +17,6 @@ useHead({
 
 <style lang="postcss">
 body {
-  @apply bg-white text-white;
+  @apply bg-bg text-text;
 }
 </style>
