@@ -5,62 +5,37 @@
       navTextClass,
     ]"
   >
-    <!-- Desktop and Mobile Logo -->
+    <!-- Logo -->
     <div class="text-xl font-bold">
       <a href="/">
-        <img
-          :src="
-            transparent
-              ? '/images/logo-light-navbar.svg'
-              : '/images/logo-dark.svg'
-          "
-          alt=""
-        />
+        <img :src="logoSrc" alt="Access+" />
       </a>
     </div>
 
     <!-- Hamburger Menu for Mobile -->
-    <div class="md:hidden flex items-center">
+    <div class="md:hidden flex items-center gap-2">
+      <ThemeToggle />
       <button @click="toggleMobileMenu" class="text-2xl focus:outline-none">
-        <div>
-          <Menu />
-        </div>
+        <Menu />
       </button>
     </div>
 
     <!-- Desktop Navigation -->
     <ul class="hidden md:flex space-x-8 font-medium">
       <li>
-        <a
-          href="/"
-          :class="transparent ? 'hover:text-gray-200' : 'hover:text-gray-600'"
-          >Início</a
-        >
+        <a href="/" :class="linkHoverClass">Início</a>
       </li>
       <li>
-        <a
-          href="/sobre"
-          :class="transparent ? 'hover:text-gray-200' : 'hover:text-gray-600'"
-          >Sobre Nós</a
-        >
+        <a href="/sobre" :class="linkHoverClass">Sobre Nós</a>
       </li>
-
       <li class="relative group">
-        <a
-          href="/oportunidades"
-          :class="transparent ? 'hover:text-gray-200' : 'hover:text-gray-600'"
-          >Oportunidades</a
-        >
+        <a href="/oportunidades" :class="linkHoverClass">Oportunidades</a>
         <div
-          class="absolute left-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible mt-2 w-128 bg-gray-200 rounded-lg p-6 shadow-lg z-10 transition-all duration-300 ease-in-out transform translate-y-2 group-hover:translate-y-0"
+          class="absolute left-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible mt-2 bg-surface rounded-lg p-6 shadow-lg z-10 transition-all duration-300 ease-in-out transform translate-y-2 group-hover:translate-y-0"
           style="width: 320px"
         >
-          <h2 class="font-semibold font-poppins text-base text-[#383737] mb-4">
-            Oportunidades
-          </h2>
-          <ul
-            class="space-y-1 font-poppins text-sm text-[#383737] font-light pr-6"
-          >
+          <h2 class="font-semibold font-body text-base text-text mb-4">Oportunidades</h2>
+          <ul class="space-y-1 font-body text-sm text-text font-light pr-6">
             <li>Olimpíadas Científicas</li>
             <li>Programas Acadêmicos</li>
             <li>Mentorias</li>
@@ -70,10 +45,7 @@
             <li>Bolsas</li>
             <li>MUNs</li>
           </ul>
-          <a
-            href="/oportunidades"
-            class="block mt-6 text-[#383737] font-bold hover:text-gray-700"
-          >
+          <a href="/oportunidades" class="block mt-6 text-text font-bold hover:text-primary transition-colors">
             <div class="flex items-center justify-between">
               <span>Veja tudo</span>
               <img src="/images/black-spark.svg" alt="" />
@@ -82,16 +54,15 @@
         </div>
       </li>
       <li>
-        <a
-          href="/newsletter"
-          :class="transparent ? 'hover:text-gray-200' : 'hover:text-gray-600'"
-          >Newsletter</a
-        >
+        <a href="/newsletter" :class="linkHoverClass">Newsletter</a>
       </li>
     </ul>
 
-    <!-- Desktop Social Media Icons -->
-    <Socials class="hidden md:flex" :theme="transparent ? 'dark' : 'light'" />
+    <!-- Desktop right: Socials + ThemeToggle -->
+    <div class="hidden md:flex items-center gap-2">
+      <Socials :theme="transparent ? 'dark' : 'light'" />
+      <ThemeToggle />
+    </div>
 
     <!-- Mobile Menu Overlay -->
     <div
@@ -103,7 +74,7 @@
     <!-- Mobile Menu Slide-out -->
     <div
       :class="[
-        'fixed top-0 right-0 w-64 h-full bg-white transform transition-transform duration-300 ease-in-out z-50',
+        'fixed top-0 right-0 w-64 h-full bg-bg border-l border-surface transform transition-transform duration-300 ease-in-out z-50',
         isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full',
       ]"
     >
@@ -112,22 +83,12 @@
           @click="toggleMobileMenu"
           class="absolute top-4 right-4 text-2xl focus:outline-none"
         ></button>
-
         <ul class="space-y-4 mt-12">
-          <li><a href="/" class="block text-gray-700">Início</a></li>
-          <li>
-            <a href="/sobre" class="block text-gray-700">Sobre Nós</a>
-          </li>
-          <li>
-            <a href="/newsletter" class="block text-gray-700">Newsletter</a>
-          </li>
-          <li>
-            <a href="/oportunidades" class="block text-gray-700"
-              >Oportunidades</a
-            >
-          </li>
+          <li><a href="/" class="block text-text">Início</a></li>
+          <li><a href="/sobre" class="block text-text">Sobre Nós</a></li>
+          <li><a href="/newsletter" class="block text-text">Newsletter</a></li>
+          <li><a href="/oportunidades" class="block text-text">Oportunidades</a></li>
         </ul>
-
         <Socials class="mt-4" theme="light" />
       </div>
     </div>
@@ -135,21 +96,35 @@
 </template>
 
 <script setup>
-import { Menu } from "@iconoir/vue";
+import { Menu } from "@iconoir/vue"
 
 const props = defineProps({
   transparent: {
     type: Boolean,
     default: false,
   },
-});
+})
 
-const isMobileMenuOpen = ref(false);
+const colorMode = useColorMode()
+const isMobileMenuOpen = ref(false)
+
+const isDark = computed(() => colorMode.value === 'dark')
+
+const logoSrc = computed(() =>
+  props.transparent || isDark.value
+    ? '/images/logo-light.svg'
+    : '/images/logo-dark.svg'
+)
+
 const navTextClass = computed(() =>
-  props.transparent ? "text-white" : "text-gray-800"
-);
+  props.transparent || isDark.value ? 'text-white' : 'text-text'
+)
+
+const linkHoverClass = computed(() =>
+  props.transparent || isDark.value ? 'hover:text-gray-200' : 'hover:text-primary'
+)
 
 const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value;
-};
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
 </script>
