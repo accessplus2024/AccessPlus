@@ -11,7 +11,7 @@ const { formatDate, formatDateForDatetime, truncateContent } = useBeehiiv();
 
 <template>
   <article
-    class="group bg-white rounded-3xl overflow-hidden border border-gray-200 hover:shadow-xl hover:border-purple-200 transition-all duration-300 hover:scale-105"
+    class="group bg-surface rounded-3xl overflow-hidden border border-text/10 hover:shadow-xl hover:border-primary/40 transition-all duration-300 hover:scale-105"
     itemscope
     itemtype="https://schema.org/BlogPosting"
   >
@@ -38,9 +38,9 @@ const { formatDate, formatDateForDatetime, truncateContent } = useBeehiiv();
     <!-- Content -->
     <div class="p-8">
       <!-- Date -->
-      <div class="flex items-center text-sm text-gray-500 mb-4">
+      <div class="flex items-center text-sm text-text/50 font-body mb-4">
         <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+          <div class="w-2 h-2 bg-accent-cyan rounded-full"></div>
           <time
             :datetime="formatDateForDatetime(post.publish_date)"
             itemprop="datePublished"
@@ -52,7 +52,7 @@ const { formatDate, formatDateForDatetime, truncateContent } = useBeehiiv();
 
       <!-- Title -->
       <h3
-        class="text-xl font-bold text-gray-800 mb-4 line-clamp-2 group-hover:text-purple-700 transition-colors"
+        class="font-display text-xl font-bold text-text mb-4 line-clamp-2 group-hover:text-primary transition-colors"
         itemprop="headline"
       >
         {{ post.title }}
@@ -60,7 +60,7 @@ const { formatDate, formatDateForDatetime, truncateContent } = useBeehiiv();
 
       <!-- Subtitle/Description -->
       <p
-        class="text-gray-600 mb-6 line-clamp-3 leading-relaxed"
+        class="font-body text-text/70 mb-6 line-clamp-3 leading-relaxed"
         itemprop="description"
       >
         {{ truncateContent(post.subtitle || post.content, 120) }}
@@ -70,7 +70,7 @@ const { formatDate, formatDateForDatetime, truncateContent } = useBeehiiv();
       <div class="flex items-center justify-between">
         <NuxtLink
           :to="`/newsletter/${post.id}`"
-          class="group/btn inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+          class="group/btn inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-body px-6 py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
           itemprop="url"
         >
           Ler post

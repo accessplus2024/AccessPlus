@@ -122,7 +122,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-bg">
     <!-- Loading State -->
     <Loading :watch="loading" />
 
@@ -137,13 +137,13 @@ onMounted(() => {
         <div class="space-y-4">
           <button
             @click="loadPost"
-            class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors w-full"
+            class="bg-primary hover:bg-primary/90 text-white font-body px-6 py-3 rounded-lg font-medium transition-colors w-full"
           >
             Tentar novamente
           </button>
           <NuxtLink
             to="/newsletter"
-            class="block text-purple-600 hover:text-purple-700 font-medium"
+            class="block text-primary hover:text-primary/80 font-body font-medium"
           >
             ← Voltar para Newsletter
           </NuxtLink>
@@ -160,7 +160,7 @@ onMounted(() => {
     >
       <!-- Header Section with Thumbnail -->
       <header
-        class="relative bg-gradient-to-br from-violet-600 via-purple-700 to-fuchsia-800 pt-32 pb-4 overflow-hidden"
+        class="relative bg-primary pt-32 pb-4 overflow-hidden"
       >
         <!-- Animated Background Elements -->
         <div class="absolute inset-0">
@@ -270,7 +270,7 @@ onMounted(() => {
       <main class="max-w-7xl mx-auto px-4 sm:px-8 py-20">
         <!-- Content Container -->
         <div
-          class="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-gray-200 max-w-4xl mx-auto"
+          class="bg-surface rounded-3xl p-8 md:p-12 shadow-xl border border-text/10 max-w-4xl mx-auto"
           data-aos="fade-up"
         >
           <!-- Post Content -->
@@ -291,7 +291,7 @@ onMounted(() => {
         <div class="mt-12 flex justify-center" data-aos="fade-up">
           <NuxtLink
             to="/newsletter"
-            class="group inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+            class="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-body px-8 py-4 rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
           >
             <svg
               class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform"
@@ -315,16 +315,17 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Custom styles for newsletter content */
 :deep(.newsletter-content) {
-  color: #1f2937;
+  color: var(--color-text);
   line-height: 1.75;
+  font-family: 'Poppins', sans-serif;
 }
 
 :deep(.newsletter-content h1) {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--color-text);
+  font-family: 'FuturaStd', sans-serif;
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
@@ -332,7 +333,8 @@ onMounted(() => {
 :deep(.newsletter-content h2) {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--color-text);
+  font-family: 'FuturaStd', sans-serif;
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
 }
@@ -340,48 +342,44 @@ onMounted(() => {
 :deep(.newsletter-content h3) {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--color-text);
+  font-family: 'FuturaStd', sans-serif;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
 
 :deep(.newsletter-content p) {
   margin-bottom: 1rem;
-  color: #374151;
+  color: var(--color-text);
+  opacity: 0.85;
 }
 
 :deep(.newsletter-content a) {
-  color: #9333ea;
+  color: var(--color-primary);
   text-decoration: underline;
 }
 
 :deep(.newsletter-content a:hover) {
-  color: #7c3aed;
+  opacity: 0.8;
 }
 
-:deep(.newsletter-content ul) {
-  list-style-type: disc;
-  list-style-position: inside;
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
+:deep(.newsletter-content ul),
 :deep(.newsletter-content ol) {
-  list-style-type: decimal;
-  list-style-position: inside;
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
+
+:deep(.newsletter-content ul) { list-style-type: disc; list-style-position: inside; }
+:deep(.newsletter-content ol) { list-style-type: decimal; list-style-position: inside; }
 
 :deep(.newsletter-content blockquote) {
-  border-left: 4px solid #9333ea;
+  border-left: 4px solid var(--color-accent-cyan);
   padding-left: 1rem;
   font-style: italic;
-  color: #4b5563;
+  color: var(--color-text);
+  opacity: 0.7;
   margin: 1.5rem 0;
 }
 
@@ -394,17 +392,16 @@ onMounted(() => {
 }
 
 :deep(.newsletter-content code) {
-  background-color: #f3f4f6;
+  background-color: var(--color-surface);
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.875rem;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas,
-    "Liberation Mono", Menlo, monospace;
+  font-family: ui-monospace, SFMono-Regular, monospace;
 }
 
 :deep(.newsletter-content pre) {
-  background-color: #111827;
-  color: #f9fafb;
+  background-color: var(--color-surface);
+  color: var(--color-text);
   padding: 1rem;
   border-radius: 0.5rem;
   overflow-x: auto;

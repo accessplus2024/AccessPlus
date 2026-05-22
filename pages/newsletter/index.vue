@@ -99,7 +99,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-bg">
     <!-- Header Section -->
     <NewsletterHeaderSection />
 
@@ -120,7 +120,7 @@ onMounted(() => {
           <p class="text-gray-600 mb-6">{{ error }}</p>
           <button
             @click="loadPosts"
-            class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
+            class="bg-primary hover:bg-primary/90 text-white font-body px-8 py-3 rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             Tentar novamente
           </button>
@@ -131,7 +131,7 @@ onMounted(() => {
       <div v-if="!loading && !error" id="newsletter-posts">
         <!-- Section Header -->
         <div class="text-center mb-12" data-aos="fade-up">
-          <h2 class="text-3xl md:text-4xl font-bold text-[#140E3F] mb-4">
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-text mb-4">
             Últimos <span class="font-medium">posts</span>
           </h2>
           <p class="text-gray-600 max-w-2xl mx-auto">
@@ -175,7 +175,7 @@ onMounted(() => {
             <button
               @click="goToPage(currentPage - 1)"
               :disabled="currentPage === 1"
-              class="px-6 py-3 text-sm font-semibold text-gray-500 bg-white border border-gray-300 rounded-2xl hover:bg-gray-50 hover:border-purple-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+              class="px-6 py-3 text-sm font-body font-semibold text-text/60 bg-surface border border-text/20 rounded-2xl hover:border-primary disabled:opacity-40 transition-all duration-300"
             >
               Anterior
             </button>
@@ -192,8 +192,8 @@ onMounted(() => {
                 :class="[
                   'px-4 py-3 text-sm font-semibold rounded-2xl transition-all duration-300',
                   page === currentPage
-                    ? 'text-white bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg'
-                    : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 hover:border-purple-300',
+                    ? 'text-white bg-primary shadow-lg'
+                    : 'text-text/60 bg-surface border border-text/20 hover:border-primary',
                 ]"
               >
                 {{ page }}
@@ -210,7 +210,7 @@ onMounted(() => {
             <button
               @click="goToPage(currentPage + 1)"
               :disabled="currentPage === totalPages"
-              class="px-6 py-3 text-sm font-semibold text-gray-500 bg-white border border-gray-300 rounded-2xl hover:bg-gray-50 hover:border-purple-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+              class="px-6 py-3 text-sm font-body font-semibold text-text/60 bg-surface border border-text/20 rounded-2xl hover:border-primary disabled:opacity-40 transition-all duration-300"
             >
               Próximo
             </button>

@@ -1,6 +1,6 @@
 <template>
   <header
-    class="relative bg-gradient-to-br from-violet-600 via-purple-700 to-fuchsia-800 pt-32 pb-16 rounded-b-lg overflow-hidden"
+    class="relative bg-accent-pink pt-32 pb-16 rounded-b-lg overflow-hidden"
   >
     <!-- Animated Background Elements -->
     <div class="absolute inset-0">
@@ -23,17 +23,8 @@
       ></div>
 
       <!-- Gradient orbs -->
-      <div
-        class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-pink-400/30 to-purple-600/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse"
-      ></div>
-      <div
-        class="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-blue-400/30 to-indigo-600/30 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 animate-pulse"
-        style="animation-delay: 1s"
-      ></div>
-      <div
-        class="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-r from-violet-400/20 to-fuchsia-600/20 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2 animate-pulse"
-        style="animation-delay: 2s"
-      ></div>
+      <div class="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+      <div class="absolute bottom-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
     </div>
 
     <div
@@ -63,13 +54,13 @@
         </div>
 
         <h1
-          class="text-3xl sm:text-4xl md:text-6xl font-black mb-6 leading-tight text-white"
+          class="font-display text-3xl sm:text-4xl md:text-6xl font-black mb-6 leading-tight text-white"
           data-aos="fade-up"
           data-aos-delay="200"
         >
           Newsletter <br />
           <span
-            class="block font-medium bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent"
+            class="block font-medium text-white"
             >Access+</span
           >
         </h1>
@@ -97,7 +88,7 @@
           </button>
           <button
             @click="scrollToSection('newsletter-subscription')"
-            class="group inline-flex items-center gap-2 bg-gradient-to-r from-white to-white/90 hover:from-white/90 hover:to-white text-purple-700 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+            class="group inline-flex items-center gap-2 bg-white hover:bg-white/90 text-[#0D0B1A] font-body px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
           >
             Inscrever-se
           </button>
