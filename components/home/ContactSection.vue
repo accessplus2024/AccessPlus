@@ -25,11 +25,11 @@
 	<section
 		class="max-w-6xl mx-auto my-16 px-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
 		<!-- Contact Information -->
-		<div data-aos="fade-right" class="p-8 bg-white rounded-lg">
-			<h2 class="text-4xl font-bold leading-tight text-gray-900 mb-6">
+		<div data-aos="fade-right" class="p-8 bg-surface rounded-lg">
+			<h2 class="font-display text-4xl font-bold leading-tight text-text mb-6">
 				Entre em contato
 			</h2>
-			<p class="text-base font-light leading-6 text-gray-800 mb-8">
+			<p class="font-body text-base font-light leading-6 text-text/80 mb-8">
 				Nós do Access+ estamos sempre prontos para ouvir você! Se tiver dúvidas,
 				sugestões ou quiser saber mais sobre o projeto, entre em contato
 				conosco. Estamos aqui para ajudar e colaborar na construção de um futuro
@@ -40,15 +40,15 @@
 				<div
 					v-for="(contact, index) in contacts"
 					:key="index"
-					class="flex items-center space-x-4 bg-gray-100 p-4 rounded-lg">
+					class="flex items-center space-x-4 bg-bg p-4 rounded-lg border border-text/10">
 					<div
-						class="bg-purple-100 contact-icon rounded-full p-3 flex-shrink-0">
-						<component class="text-[#3d30a2]" :is="contact.icon" />
+						class="bg-primary/10 contact-icon rounded-full p-3 flex-shrink-0">
+						<component class="text-primary" :is="contact.icon" />
 					</div>
 					<a class="text-decoration-none flex-grow" :href="contact.link">
 						<div>
-							<p class="text-sm font-bold text-gray-700">{{ contact.label }}</p>
-							<p v-if="contact.info" class="text-xs text-gray-500">
+							<p class="font-body text-sm font-bold text-text">{{ contact.label }}</p>
+							<p v-if="contact.info" class="font-body text-xs text-text/60">
 								{{ contact.info }}
 							</p>
 						</div>

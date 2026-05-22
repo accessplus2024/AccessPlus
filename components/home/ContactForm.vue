@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-[#3D30A2] p-8 rounded-lg shadow-md">
+	<div class="bg-primary p-8 rounded-lg shadow-md">
 		<h2 class="text-2xl font-semibold leading-tight text-white mb-6">
 			Mande uma Mensagem
 		</h2>
@@ -10,7 +10,7 @@
 					type="text"
 					id="name"
 					name="name"
-					class="w-full p-3 rounded-lg border border-purple-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-black"
+					class="w-full font-body p-3 rounded-lg border border-primary/40 focus:outline-none focus:ring-2 focus:ring-accent-green text-text bg-bg"
 					placeholder="Nome" />
 			</div>
 			<div class="mb-6">
@@ -21,7 +21,7 @@
 					type="email"
 					id="email"
 					name="email"
-					class="w-full p-3 rounded-lg border border-purple-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-black"
+					class="w-full font-body p-3 rounded-lg border border-primary/40 focus:outline-none focus:ring-2 focus:ring-accent-green text-text bg-bg"
 					placeholder="E-mail" />
 			</div>
 			<div class="mb-6">
@@ -32,12 +32,12 @@
 					id="message"
 					name="message"
 					rows="4"
-					class="w-full p-3 rounded-lg border border-purple-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 text-black"
+					class="w-full font-body p-3 rounded-lg border border-primary/40 focus:outline-none focus:ring-2 focus:ring-accent-green text-text bg-bg"
 					placeholder="Mensagem"></textarea>
 			</div>
 			<button
 				type="submit"
-				class="bg-[#FAD87E] text-black px-8 py-3 rounded-lg font-semibold hover:bg-yellow-300">
+				class="font-body bg-accent-green text-[#0D0B1A] px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity">
 				Enviar
 			</button>
 		</form>

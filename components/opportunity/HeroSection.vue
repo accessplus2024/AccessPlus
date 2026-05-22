@@ -24,15 +24,14 @@
 
       <!-- Gradient orbs -->
       <div
-        class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-pink-400/30 to-purple-600/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse"
+        class="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"
       ></div>
       <div
         class="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-blue-400/30 to-indigo-600/30 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 animate-pulse"
         style="animation-delay: 1s"
       ></div>
       <div
-        class="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-r from-violet-400/20 to-fuchsia-600/20 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2 animate-pulse"
-        style="animation-delay: 2s"
+        class="absolute top-1/2 left-1/2 w-64 h-64 bg-white/5 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2"
       ></div>
     </div>
     <div

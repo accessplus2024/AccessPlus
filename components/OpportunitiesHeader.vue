@@ -1,6 +1,6 @@
 <template>
   <header
-    class="relative bg-gradient-to-r from-purple-600 to-pink-600 pt-32 pb-16 rounded-b-lg bg-cover bg-center"
+    class="relative bg-primary pt-32 pb-16 rounded-b-lg bg-cover bg-center"
     :style="{ backgroundImage: 'url(/images/voluntariado.svg)' }"
   >
     <div class="absolute inset-0 bg-[#C47FEF6B] z-0"></div>
@@ -12,8 +12,8 @@
         <h1
           class="text-3xl sm:text-4xl lg:text-5xl mb-4 leading-none md:text-left lg:text-left sm:text-center"
         >
-          <p class="font-bold">Todas as</p>
-          <span class="block font-semibold">Oportunidades</span>
+          <p class="font-display font-bold text-white">Todas as</p>
+          <span class="block font-display font-bold text-white">Oportunidades</span>
         </h1>
       </div>
     </div>
