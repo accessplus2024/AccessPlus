@@ -1,34 +1,93 @@
 <script setup>
-import { onMounted } from "vue"
-import { gsap } from "gsap"
+import { ArrowRight } from "@iconoir/vue"
+import { categoryIcon } from "~/utils/categories"
 
-onMounted(() => {
-  gsap.from("header h1", { duration: 1.5, y: -50, opacity: 0, ease: "power3.out" })
-  gsap.from("header p", { duration: 1.5, y: 50, opacity: 0, ease: "power3.out", delay: 0.5 })
-  gsap.from("header a", { duration: 1.5, y: 50, opacity: 0, ease: "power3.out", delay: 1 })
-})
+const stats = [
+  { n: "+170", label: "oportunidades educacionais" },
+  { n: "8", label: "categorias atualizadas" },
+  { n: "100%", label: "gratuito, para sempre" },
+]
+
+// Decorative floating cluster — one tile per highlighted category.
+const cluster = [
+  { key: "olympiads",   label: "Olimpíadas",   color: "#4B3FE4", ink: "#fff",     x: "30%", y: "2%",  s: 1 },
+  { key: "mun",         label: "MUNs",         color: "#FF2D8A", ink: "#fff",     x: "0%",  y: "34%", s: .85 },
+  { key: "scholarship", label: "Bolsas",       color: "#C8F135", ink: "#15111F",  x: "52%", y: "40%", s: 1.1 },
+  { key: "mentorship",  label: "Mentorias",    color: "#7DECE9", ink: "#15111F",  x: "16%", y: "70%", s: .8 },
+]
 </script>
 
 <template>
-  <header
-    class="relative bg-primary pt-32 pb-16 rounded-b-lg bg-cover bg-center"
-    style="background-image: url('/images/Fundo.png')"
-  >
-    <div class="container mx-auto px-6 flex flex-col items-center">
-      <div class="md:text-left text-center flex flex-col items-center md:items-start w-full max-w-4xl">
-        <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-none text-white">
-          Procurando <br />
-          <span class="block">por oportunidades?</span>
-        </h1>
-        <p class="font-body text-base sm:text-lg mb-6 max-w-md text-white/90">
-          Access+ é a maior plataforma gratuita do país focada em trazer
-          oportunidades educacionais atualizadas para jovens.
-        </p>
-        <a
-          href="/oportunidades"
-          class="font-body bg-accent-green text-[#0D0B1A] px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
-        >Ver tudo</a>
+  <section class="relative" style="padding-top: 132px; padding-bottom: 40px">
+    <div class="wrap relative">
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">
+            Plataforma gratuita Brasil
+          </span>
+          <h1 class="mt-[22px]" style="font-size: clamp(38px, 8vw, 96px); text-wrap: balance">
+            Procurando<br />por
+            <span class="relative inline-block text-primary">
+              oportunidades?
+              <svg viewBox="0 0 320 24" preserveAspectRatio="none"
+                   class="absolute left-0 w-full" style="bottom: -6px; height: 16px">
+                <path d="M3 16 C 80 6, 240 6, 317 14" stroke="var(--color-lime)"
+                      stroke-width="8" fill="none" stroke-linecap="round" />
+              </svg>
+            </span>
+          </h1>
+          <p class="mt-[30px] text-ink/70 leading-relaxed" style="font-size: 19px; max-width: 500px">
+            Access+ é a maior plataforma gratuita do país focada em trazer
+            oportunidades educacionais atualizadas para jovens.
+          </p>
+          <div class="flex flex-wrap gap-3.5 mt-[34px]">
+            <NuxtLink to="/oportunidades" class="btn btn-ink">
+              Ver tudo <ArrowRight class="w-[18px] h-[18px]" />
+            </NuxtLink>
+            <NuxtLink to="/sobre" class="btn btn-out">Sobre nós</NuxtLink>
+          </div>
+          <div class="flex flex-wrap gap-12 mt-12">
+            <div v-for="s in stats" :key="s.label">
+              <div class="font-display" style="font-size: 42px; line-height: 1">{{ s.n }}</div>
+              <div class="text-ink/60 mt-1" style="font-size: 14px">{{ s.label }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- decorative cluster -->
+        <div class="hero-art relative" style="height: 440px">
+          <div
+            v-for="(b, i) in cluster"
+            :key="b.key"
+            class="floaty absolute"
+            :style="{
+              left: b.x, top: b.y, animationDelay: `${i * 0.8}s`,
+              background: b.color, color: b.ink, borderRadius: '26px',
+              padding: '20px 22px', width: `${170 * b.s}px`,
+              boxShadow: `0 18px 40px ${b.color}44`,
+            }"
+          >
+            <span class="inline-flex items-center justify-center rounded-full"
+                  style="width: 42px; height: 42px; background: rgba(255,255,255,.85)">
+              <img :src="categoryIcon(b.key)" alt="" style="width: 24px; height: 24px" />
+            </span>
+            <div class="font-body font-semibold mt-3" style="font-size: 15px; line-height: 1.15">{{ b.label }}</div>
+          </div>
+        </div>
       </div>
     </div>
-  </header>
+  </section>
 </template>
+
+<style scoped>
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 40px;
+  align-items: center;
+}
+@media (max-width: 980px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-art { display: none; }
+}
+</style>

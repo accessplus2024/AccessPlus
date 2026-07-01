@@ -1,16 +1,38 @@
 <script setup>
-defineProps({
+import { categoryIcon, isLightColor } from "~/utils/categories"
+
+const props = defineProps({
   category: { type: String, required: true },
   icon: { type: String, required: true },
+  color: { type: String, required: true },
 })
+
+const hover = ref(false)
+const light = computed(() => isLightColor(props.color))
+const ink = computed(() => (light.value ? "#15111F" : "#FFFFFF"))
 </script>
 
 <template>
-  <div class="bg-surface rounded-lg flex items-center justify-start p-3 md:p-6 border border-text/10 hover:border-primary transition-colors duration-200">
-    <div class="flex items-center">
-      <img :src="`./images/i-${icon}.svg`" alt="" class="w-8 h-8" />
+  <NuxtLink
+    to="/oportunidades"
+    class="relative flex flex-col justify-between overflow-hidden text-left transition-all duration-300 ease-brand"
+    :style="{
+      background: color, color: ink, borderRadius: 'var(--r-card)',
+      padding: '26px 24px', minHeight: '168px',
+      transform: hover ? 'translateY(-6px)' : 'none',
+      boxShadow: hover ? `0 20px 38px ${color}55` : 'none',
+    }"
+    @mouseenter="hover = true"
+    @mouseleave="hover = false"
+  >
+    <span
+      class="inline-flex items-center justify-center rounded-full"
+      :style="{ width: '50px', height: '50px', background: light ? 'rgba(255,255,255,.55)' : 'rgba(255,255,255,.9)' }"
+    >
+      <img :src="categoryIcon(icon)" alt="" style="width: 28px; height: 28px" />
+    </span>
+    <div>
+      <div class="font-body font-semibold" style="font-size: 18px; line-height: 1.15">{{ category }}</div>
     </div>
-    <div class="w-px h-8 bg-text/20 mx-4"></div>
-    <span class="font-body text-sm font-medium text-text">{{ category }}</span>
-  </div>
+  </NuxtLink>
 </template>

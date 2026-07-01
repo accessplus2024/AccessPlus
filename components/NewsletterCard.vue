@@ -1,157 +1,69 @@
 <script setup>
-const props = defineProps({
-  post: {
-    type: Object,
-    required: true,
-  },
-});
+import { ArrowRight } from "@iconoir/vue"
 
-const { formatDate, formatDateForDatetime, truncateContent } = useBeehiiv();
+const props = defineProps({
+  post: { type: Object, required: true },
+  accent: { type: String, default: "var(--color-primary)" },
+})
+
+const { formatDate, formatDateForDatetime, truncateContent } = useBeehiiv()
 </script>
 
 <template>
-  <article
-    class="group bg-surface rounded-3xl overflow-hidden border border-text/10 hover:shadow-xl hover:border-primary/40 transition-all duration-300 hover:scale-105"
+  <NuxtLink
+    :to="`/newsletter/${post.id}`"
+    class="group flex flex-col h-full bg-card overflow-hidden border border-ink/8 transition-all duration-300 ease-brand hover:-translate-y-1.5 hover:shadow-lg"
+    style="border-radius: var(--r-card)"
     itemscope
     itemtype="https://schema.org/BlogPosting"
   >
-    <!-- Featured Image -->
-    <div class="relative overflow-hidden">
-      <img
-        :src="
-          post.thumbnail_url ||
-          'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80'
-        "
-        :alt="post.title"
-        class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-        loading="lazy"
-        @error="handleImageError"
-        itemprop="image"
-      />
-
-      <!-- Gradient overlay -->
-      <div
-        class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-      ></div>
-    </div>
+    <!-- Color accent bar -->
+    <div class="h-1 w-full flex-shrink-0" :style="{ background: accent }" />
 
     <!-- Content -->
-    <div class="p-8">
+    <div class="flex flex-col flex-1" style="padding: 28px 28px 26px">
       <!-- Date -->
-      <div class="flex items-center text-sm text-text/50 font-body mb-4">
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 bg-accent-cyan rounded-full"></div>
-          <time
-            :datetime="formatDateForDatetime(post.publish_date)"
-            itemprop="datePublished"
-          >
-            {{ formatDate(post.publish_date) }}
-          </time>
-        </div>
-      </div>
+      <span
+        class="inline-flex items-center gap-2 mb-4"
+        style="font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; opacity: .45"
+      >
+        <span class="rounded-full flex-shrink-0" style="width: 6px; height: 6px; background: var(--color-cyan)" />
+        <time :datetime="formatDateForDatetime(post.publish_date)" itemprop="datePublished">
+          {{ formatDate(post.publish_date) }}
+        </time>
+      </span>
 
       <!-- Title -->
       <h3
-        class="font-display text-xl font-bold text-text mb-4 line-clamp-2 group-hover:text-primary transition-colors"
+        class="font-body font-bold text-ink line-clamp-3"
+        style="font-size: 20px; line-height: 1.2; margin-bottom: 14px"
         itemprop="headline"
       >
         {{ post.title }}
       </h3>
 
-      <!-- Subtitle/Description -->
+      <!-- Excerpt -->
       <p
-        class="font-body text-text/70 mb-6 line-clamp-3 leading-relaxed"
+        class="text-ink/60 line-clamp-3 leading-relaxed"
+        style="font-size: 14px; margin-bottom: 22px"
         itemprop="description"
       >
-        {{ truncateContent(post.subtitle || post.content, 120) }}
+        {{ truncateContent(post.subtitle || post.content, 140) }}
       </p>
 
-      <!-- Read More Button -->
-      <div class="flex items-center justify-between">
-        <NuxtLink
-          :to="`/newsletter/${post.id}`"
-          class="group/btn inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-body px-6 py-3 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-          itemprop="url"
-        >
-          Ler post
-          <svg
-            class="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M13 7l5 5m0 0l-5 5m5-5H6"
-            />
-          </svg>
-        </NuxtLink>
-      </div>
-    </div>
-
-    <!-- Hidden structured data -->
-    <div style="display: none">
-      <span
-        itemprop="author"
-        itemscope
-        itemtype="https://schema.org/Organization"
-      >
-        <span itemprop="name">Access+</span>
-      </span>
-      <span
-        itemprop="publisher"
-        itemscope
-        itemtype="https://schema.org/Organization"
-      >
-        <span itemprop="name">Access+</span>
+      <!-- CTA -->
+      <span class="mt-auto inline-flex items-center gap-1.5 font-semibold text-primary" style="font-size: 14px">
+        Ler post
+        <ArrowRight class="w-4 h-4 transition-transform duration-200 ease-brand group-hover:translate-x-1" />
       </span>
     </div>
-  </article>
+  </NuxtLink>
 </template>
 
-<script>
-export default {
-  methods: {
-    sharePost() {
-      const postUrl = `${window.location.origin}/newsletter/${this.post.id}`;
-
-      if (navigator.share) {
-        navigator.share({
-          title: this.post.title,
-          text:
-            this.post.subtitle || this.truncateContent(this.post.content, 120),
-          url: postUrl,
-        });
-      } else {
-        // Fallback: copy to clipboard
-        navigator.clipboard.writeText(postUrl);
-        // You could add a toast notification here
-      }
-    },
-    handleImageError(event) {
-      // Fallback to a default newsletter image if the thumbnail fails to load
-      event.target.src =
-        "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=400&h=300&fit=crop&crop=entropy&auto=format&q=80";
-    },
-  },
-};
-</script>
-
 <style scoped>
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
-  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

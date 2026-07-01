@@ -1,194 +1,80 @@
-<template>
-  <div
-    class="bg-primary relative overflow-hidden"
-  >
-    <!-- Animated Background Elements -->
-    <div class="absolute inset-0">
-      <!-- Floating particles -->
-      <div
-        class="absolute top-20 left-10 w-4 h-4 bg-white/20 rounded-full animate-bounce"
-        style="animation-delay: 0s"
-      ></div>
-      <div
-        class="absolute top-40 right-20 w-3 h-3 bg-white/30 rounded-full animate-bounce"
-        style="animation-delay: 1s"
-      ></div>
-      <div
-        class="absolute bottom-32 left-1/4 w-2 h-2 bg-white/25 rounded-full animate-bounce"
-        style="animation-delay: 0.5s"
-      ></div>
-      <div
-        class="absolute bottom-20 right-1/3 w-5 h-5 bg-white/15 rounded-full animate-bounce"
-        style="animation-delay: 1.5s"
-      ></div>
-
-      <!-- Gradient orbs -->
-      <div
-        class="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"
-      ></div>
-      <div
-        class="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-blue-400/30 to-indigo-600/30 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 animate-pulse"
-        style="animation-delay: 1s"
-      ></div>
-      <div
-        class="absolute top-1/2 left-1/2 w-64 h-64 bg-white/5 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2"
-      ></div>
-    </div>
-    <div
-      class="max-w-7xl mx-auto px-4 sm:px-8 pt-20 pb-16 relative z-10 w-full"
-    >
-      <!-- Breadcrumb -->
-      <nav class="mt-8" data-aos="fade-down">
-        <NuxtLink
-          to="/oportunidades"
-          class="group inline-flex items-center text-white/80 hover:text-white transition-all duration-300 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-white/20"
-        >
-          <svg
-            class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 19l-7-7 7-7"
-            ></path>
-          </svg>
-          Voltar para oportunidades
-        </NuxtLink>
-      </nav>
-      <!-- Title Section -->
-      <div class="hero-title text-center mt-8">
-        <div
-          class="inline-block bg-gradient-to-r from-white/20 to-white/30 backdrop-blur-sm px-6 py-3 rounded-full text-white text-sm font-semibold mb-6 border border-white/20"
-          data-aos="zoom-in"
-        >
-          <span class="text-yellow-300 font-bold">✨</span>
-          {{ typeDisplayName }}
-        </div>
-        <h1
-          class="font-display text-4xl sm:text-5xl lg:text-7xl font-black text-white mb-6 leading-tight"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
-          {{ opportunity.Nome }}
-        </h1>
-        <div class="max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="400">
-          <div
-            class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 transition-all duration-700 ease-in-out"
-            :class="{ 'shadow-2xl shadow-white/10': showFullText }"
-          >
-            <div
-              class="overflow-hidden transition-all duration-700 ease-in-out"
-              :style="{ maxHeight: showFullText ? textHeight + 'px' : '96px' }"
-            >
-              <p
-                ref="textElement"
-                class="text-sm md:text-base text-white/95 font-medium leading-relaxed text-center transition-opacity duration-300 ease-in-out"
-                :class="clampLine ? 'line-clamp-4' : 'line-clamp-none'"
-              >
-                {{ opportunity.about }}
-              </p>
-            </div>
-            <!-- Show more/less button if text is long -->
-            <div
-              v-if="opportunity.about && opportunity.about.length > 200"
-              class="transition-all duration-300 ease-in-out"
-            >
-              <button
-                @click="toggleText"
-                class="mt-4 text-white/80 hover:text-white text-sm font-medium underline underline-offset-4 hover:underline-offset-2 transition-all duration-300 block mx-auto group"
-              >
-                <span class="inline-flex items-center">
-                  {{ showFullText ? "Mostrar menos" : "Ler mais" }}
-                  <svg
-                    class="w-4 h-4 ml-1 transition-transform duration-700"
-                    :class="{ 'rotate-180': showFullText }"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
-                  </svg>
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- CTA Button -->
-        <div class="mt-8" data-aos="fade-up" data-aos-delay="600">
-          <a
-            :href="opportunity.site"
-            target="_blank"
-            ref="ctaButton"
-            class="group inline-flex items-center bg-accent-green text-[#0D0B1A] font-bold px-8 py-4 rounded-2xl shadow-2xl hover:opacity-90 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
-          >
-            <svg
-              class="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-              ></path>
-            </svg>
-            Acessar Oportunidade
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
-import { ref, nextTick, onMounted } from "vue";
+import { ref, onMounted } from "vue"
+import { NavArrowLeft, OpenNewWindow } from "@iconoir/vue"
+import { categoryIcon, isLightColor } from "~/utils/categories"
 
 const props = defineProps({
-  opportunity: {
-    type: Object,
-    required: true,
-  },
-  typeDisplayName: {
-    type: String,
-    required: true,
-  },
-});
+  opportunity: { type: Object, required: true },
+  category: { type: Object, required: true },
+})
 
-const showFullText = ref(false);
-const textElement = ref(null);
-const ctaButton = ref(null);
-const textHeight = ref(0);
-const clampLine = ref(true);
-
-onMounted(() => {
-  // Calculate the full height of the text for smooth animation
-  if (textElement.value) {
-    // Temporarily set max-height to auto to measure full height
-    const originalStyle = textElement.value.style.maxHeight;
-    textElement.value.style.maxHeight = "auto";
-    textHeight.value = textElement.value.scrollHeight;
-    textElement.value.style.maxHeight = originalStyle;
-  }
-});
-
-const toggleText = async () => {
-  showFullText.value = !showFullText.value;
-  if (showFullText.value) clampLine.value = false;
-  else
-    setTimeout(() => {
-      clampLine.value = true;
-    }, 750);
-};
+const open = computed(() => props.opportunity.status === "sim")
+const onColor = computed(() => (isLightColor(props.category.color) ? "#15111F" : "#FFFFFF"))
+const showFullText = ref(false)
+const longAbout = computed(() => (props.opportunity.about || "").length > 220)
 </script>
+
+<template>
+  <header
+    class="relative overflow-hidden text-[color:var(--on)]"
+    :style="{ '--on': onColor, background: category.color, paddingTop: '108px' }"
+  >
+    <div class="wrap relative" style="padding-top: 24px; padding-bottom: 56px">
+      <NuxtLink
+        to="/oportunidades"
+        class="inline-flex items-center gap-2 rounded-full px-4 py-2 font-medium transition-colors"
+        :style="{ background: isLightColor(category.color) ? 'rgba(21,17,31,.08)' : 'rgba(255,255,255,.15)', color: onColor }"
+      >
+        <NavArrowLeft class="w-4 h-4" /> Voltar para oportunidades
+      </NuxtLink>
+
+      <div class="flex items-center gap-3 mt-10">
+        <span class="inline-flex items-center justify-center rounded-full bg-white/90" style="width: 54px; height: 54px">
+          <img :src="categoryIcon(category.key)" alt="" style="width: 30px; height: 30px" />
+        </span>
+        <span class="kicker" style="opacity: 1" :style="{ color: onColor }">{{ category.label }}</span>
+      </div>
+
+      <h1 class="mt-5" style="font-size: clamp(34px, 5.5vw, 72px); max-width: 18ch; text-wrap: balance">
+        {{ opportunity.Nome }}
+      </h1>
+
+      <p
+        v-if="opportunity.about"
+        class="mt-6 leading-relaxed"
+        :class="{ 'line-clamp-4': !showFullText }"
+        :style="{ maxWidth: '70ch', fontSize: '17px', opacity: .92 }"
+      >
+        {{ opportunity.about }}
+      </p>
+      <button
+        v-if="longAbout"
+        class="mt-3 underline underline-offset-4 font-medium"
+        :style="{ color: onColor, fontSize: '14px' }"
+        @click="showFullText = !showFullText"
+      >
+        {{ showFullText ? "Mostrar menos" : "Ler mais" }}
+      </button>
+
+      <div class="flex flex-wrap items-center gap-4 mt-8">
+        <a v-if="opportunity.site" :href="opportunity.site" target="_blank" rel="noopener" class="btn btn-ink">
+          Acessar oportunidade <OpenNewWindow class="w-[18px] h-[18px]" />
+        </a>
+        <span class="inline-flex items-center gap-2 font-medium" :style="{ color: onColor }" style="font-size: 14px">
+          <span class="rounded-full" style="width: 9px; height: 9px"
+                :style="{ background: onColor, opacity: open ? 1 : .4 }" />
+          {{ open ? "Inscrições abertas" : "Inscrições encerradas" }}
+        </span>
+      </div>
+    </div>
+  </header>
+</template>
+
+<style scoped>
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

@@ -1,130 +1,126 @@
-<template>
-  <nav
-    :class="[
-      'flex items-center justify-between pt-16 w-full px-6 md:px-[100px] z-50',
-      navTextClass,
-    ]"
-  >
-    <!-- Logo -->
-    <div class="text-xl font-bold">
-      <a href="/">
-        <img :src="logoSrc" alt="Access+" />
-      </a>
-    </div>
+<script setup>
+import { Menu, Xmark } from "@iconoir/vue"
 
-    <!-- Hamburger Menu for Mobile -->
-    <div class="md:hidden flex items-center gap-2">
-      <ThemeToggle />
-      <button @click="toggleMobileMenu" class="text-2xl focus:outline-none">
-        <Menu />
+const links = [
+  { text: "Início", href: "/" },
+  { text: "Oportunidades", href: "/oportunidades" },
+  { text: "Sobre", href: "/sobre" },
+  { text: "Newsletter", href: "/newsletter" },
+]
+
+const route = useRoute()
+const isActive = (href) =>
+  href === "/" ? route.path === "/" : route.path.startsWith(href)
+
+const scrolled = ref(false)
+const isMobileMenuOpen = ref(false)
+
+// The opportunity detail page has a full-bleed colored hero behind the nav;
+// keep the nav solid there so the dark logo/links stay legible.
+const forceSolid = computed(() => route.path.startsWith("/oportunidade/"))
+const solid = computed(() => scrolled.value || forceSolid.value)
+
+const onScroll = () => { scrolled.value = window.scrollY > 30 }
+onMounted(() => {
+  onScroll()
+  window.addEventListener("scroll", onScroll, { passive: true })
+})
+onBeforeUnmount(() => window.removeEventListener("scroll", onScroll))
+
+const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.value }
+</script>
+
+<template>
+  <header
+    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-brand"
+    :class="solid
+      ? 'bg-paper/85 backdrop-blur-md backdrop-saturate-150 border-b border-ink/10'
+      : 'bg-transparent border-b border-transparent'"
+  >
+    <div class="wrap flex items-center justify-between h-[76px]">
+      <!-- Logo -->
+      <NuxtLink to="/" class="flex items-center" aria-label="Access+ — início">
+        <img src="/images/logo-dark.svg" alt="Access+" class="h-[22px]" />
+      </NuxtLink>
+
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex items-center gap-[30px]">
+        <NuxtLink
+          v-for="l in links"
+          :key="l.href"
+          :to="l.href"
+          class="text-[15.5px] font-medium pb-[3px] border-b-2 transition-opacity duration-200"
+          :class="isActive(l.href)
+            ? 'opacity-100 border-primary'
+            : 'opacity-60 hover:opacity-100 border-transparent'"
+        >{{ l.text }}</NuxtLink>
+      </nav>
+
+      <!-- Desktop CTA -->
+      <NuxtLink
+        to="/oportunidades"
+        class="hidden md:inline-flex btn btn-lime"
+        style="padding: 11px 20px; font-size: 15px"
+      >
+        Explorar
+      </NuxtLink>
+
+      <!-- Mobile hamburger -->
+      <button
+        class="md:hidden text-ink p-1"
+        aria-label="Abrir menu"
+        @click="toggleMobileMenu"
+      >
+        <Menu class="w-7 h-7" />
       </button>
     </div>
 
-    <!-- Desktop Navigation -->
-    <ul class="hidden md:flex space-x-8 font-medium">
-      <li>
-        <a href="/" :class="linkHoverClass">Início</a>
-      </li>
-      <li>
-        <a href="/sobre" :class="linkHoverClass">Sobre Nós</a>
-      </li>
-      <li class="relative group">
-        <a href="/oportunidades" :class="linkHoverClass">Oportunidades</a>
-        <div
-          class="absolute left-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible mt-2 bg-surface rounded-lg p-6 shadow-lg z-10 transition-all duration-300 ease-in-out transform translate-y-2 group-hover:translate-y-0"
-          style="width: 320px"
-        >
-          <h2 class="font-semibold font-body text-base text-text mb-4">Oportunidades</h2>
-          <ul class="space-y-1 font-body text-sm text-text font-light pr-6">
-            <li>Olimpíadas Científicas</li>
-            <li>Programas Acadêmicos</li>
-            <li>Mentorias</li>
-            <li>Competições</li>
-            <li>Competições de Redação</li>
-            <li>Programas de Intercâmbio</li>
-            <li>Bolsas</li>
-            <li>MUNs</li>
-          </ul>
-          <a href="/oportunidades" class="block mt-6 text-text font-bold hover:text-primary transition-colors">
-            <div class="flex items-center justify-between">
-              <span>Veja tudo</span>
-              <img src="/images/black-spark.svg" alt="" />
-            </div>
-          </a>
-        </div>
-      </li>
-      <li>
-        <a href="/newsletter" :class="linkHoverClass">Newsletter</a>
-      </li>
-    </ul>
-
-    <!-- Desktop right: Socials + ThemeToggle -->
-    <div class="hidden md:flex items-center gap-2">
-      <Socials :theme="transparent ? 'dark' : 'light'" />
-      <ThemeToggle />
-    </div>
-
-    <!-- Mobile Menu Overlay -->
-    <div
-      v-if="isMobileMenuOpen"
-      class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-      @click="toggleMobileMenu"
-    ></div>
-
-    <!-- Mobile Menu Slide-out -->
-    <div
-      :class="[
-        'fixed top-0 right-0 w-64 h-full bg-bg border-l border-surface transform transition-transform duration-300 ease-in-out z-50',
-        isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full',
-      ]"
+    <!-- Mobile overlay -->
+    <Transition
+      enter-active-class="transition-opacity duration-200"
+      leave-active-class="transition-opacity duration-200"
+      enter-from-class="opacity-0"
+      leave-to-class="opacity-0"
     >
-      <div class="p-6">
+      <div
+        v-if="isMobileMenuOpen"
+        class="fixed inset-0 bg-ink/40 z-40 md:hidden"
+        @click="toggleMobileMenu"
+      ></div>
+    </Transition>
+
+    <!-- Mobile drawer -->
+    <div
+      class="fixed top-0 right-0 w-72 h-full bg-paper z-50 md:hidden shadow-2xl transform transition-transform duration-300 ease-brand"
+      :class="isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'"
+    >
+      <div class="p-6 flex flex-col h-full">
         <button
+          class="self-end text-ink p-1 mb-6"
+          aria-label="Fechar menu"
           @click="toggleMobileMenu"
-          class="absolute top-4 right-4 text-2xl focus:outline-none"
-        ></button>
-        <ul class="space-y-4 mt-12">
-          <li><a href="/" class="block text-text">Início</a></li>
-          <li><a href="/sobre" class="block text-text">Sobre Nós</a></li>
-          <li><a href="/newsletter" class="block text-text">Newsletter</a></li>
-          <li><a href="/oportunidades" class="block text-text">Oportunidades</a></li>
-        </ul>
-        <Socials class="mt-4" theme="light" />
+        >
+          <Xmark class="w-7 h-7" />
+        </button>
+        <nav class="flex flex-col gap-5">
+          <NuxtLink
+            v-for="l in links"
+            :key="l.href"
+            :to="l.href"
+            class="text-xl font-display"
+            :class="isActive(l.href) ? 'text-primary' : 'text-ink'"
+            @click="toggleMobileMenu"
+          >{{ l.text }}</NuxtLink>
+        </nav>
+        <NuxtLink
+          to="/oportunidades"
+          class="btn btn-lime mt-8"
+          @click="toggleMobileMenu"
+        >
+          Explorar
+        </NuxtLink>
+        <Socials class="mt-auto" theme="light" />
       </div>
     </div>
-  </nav>
+  </header>
 </template>
-
-<script setup>
-import { Menu } from "@iconoir/vue"
-
-const props = defineProps({
-  transparent: {
-    type: Boolean,
-    default: false,
-  },
-})
-
-const colorMode = useColorMode()
-const isMobileMenuOpen = ref(false)
-
-const isDark = computed(() => colorMode.value === 'dark')
-
-const logoSrc = computed(() =>
-  props.transparent || isDark.value
-    ? '/images/logo-light-navbar.svg'
-    : '/images/logo-dark.svg'
-)
-
-const navTextClass = computed(() =>
-  props.transparent || isDark.value ? 'text-white' : 'text-text'
-)
-
-const linkHoverClass = computed(() =>
-  props.transparent || isDark.value ? 'hover:text-gray-200' : 'hover:text-primary'
-)
-
-const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value
-}
-</script>

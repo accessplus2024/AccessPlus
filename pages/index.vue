@@ -1,47 +1,31 @@
 <script setup>
-import { onMounted } from "vue";
-import { gsap } from "gsap";
-import AOS from "aos";
-import "aos/dist/aos.css";
+const marquee = [
+  "Olimpíadas", "Bolsas", "Intercâmbios", "MUNs",
+  "Mentorias", "Competições", "Redação", "Programas Acadêmicos",
+]
 
 useHead({
-  link: [
-    {
-      rel: "icon",
-      type: "image/png",
-      href: "/images/estrelinhas.png",
-    },
-  ],
-});
-
-useHead({
-  title: "Home",
+  title: "Access+ — Oportunidades educacionais para jovens",
   meta: [
     { charset: "UTF-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-    { hid: "description", name: "description", content: "" },
+    { name: "description", content: "A maior plataforma gratuita do Brasil focada em trazer oportunidades educacionais atualizadas para jovens." },
   ],
-  htmlAttrs: {
-    lang: "pt-br",
-  },
-});
-
-onMounted(() => {
-  // Initialize AOS
-  AOS.init({
-    duration: 1000,
-    once: true,
-  });
-});
+  htmlAttrs: { lang: "pt-br" },
+  link: [{ rel: "icon", type: "image/png", href: "/images/estrelinhas.png" }],
+})
 </script>
 
 <template>
-  <HomeHeader />
-  <HomeFeaturesSection />
-  <NewsletterCta />
-  <HomeOpportunitiesSection />
-  <HomeNewsSection />
-  <HomeAboutSection />
-  <HomeContactSection />
-  <HomeAwardsSection />
+  <main>
+    <HomeHeader />
+    <Marquee :items="marquee" />
+    <HomeOpportunitiesSection />
+    <HomeFeaturesSection />
+    <HomeNewsSection />
+    <NewsletterCta />
+    <HomeAboutSection />
+    <HomeContactSection />
+    <HomeAwardsSection />
+  </main>
 </template>

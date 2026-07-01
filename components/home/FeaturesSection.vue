@@ -1,40 +1,41 @@
 <script setup>
-import { onMounted } from 'vue'
-import { gsap } from 'gsap'
-
-onMounted(() => {
-  gsap.from('.card', {
-    duration: 1, y: 50, opacity: 0, stagger: 0.2, ease: 'power3.out', delay: 1.5,
-  })
-})
+const features = [
+  { big: "+170", label: "oportunidades educacionais", color: "var(--color-primary)", ink: "#fff" },
+  { big: "Guias", label: "e informações atualizadas", color: "var(--color-lime)", ink: "#15111F" },
+  { big: "Dicas", label: "de premiados das mais diversas áreas", color: "var(--color-magenta)", ink: "#fff" },
+]
 </script>
 
 <template>
-  <div class="text-center mt-12">
-    <h1 class="font-display text-2xl sm:text-3xl md:text-4xl font-bold flex flex-col gap-4 justify-center items-center text-text mb-8">
-      O que você pode encontrar no &nbsp;<img src="/images/logo-dark.svg" class="h-8 sm:h-10 md:h-12" />
-    </h1>
-    <div class="flex flex-wrap justify-center gap-6 px-4">
-      <div
-        class="card bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-1/2 sm:w-64 h-48 flex flex-col justify-start items-start relative"
-        style="background-image: url('/images/oportunidades.png')">
-        <p class="font-display text-2xl font-bold">+170</p>
-        <p class="font-body text-lg text-left">oportunidades educacionais</p>
+  <section class="section" style="padding-top: 0">
+    <div class="wrap">
+      <div class="mb-[42px]">
+        <span class="kicker">O que tem aqui</span>
+        <h2 class="mt-3.5 flex flex-wrap items-baseline gap-x-3" style="font-size: clamp(34px, 4.5vw, 56px); text-wrap: balance">
+          O que você encontra no
+          <img src="/images/logo-dark.svg" alt="Access+" class="h-9 md:h-12 translate-y-1" />
+        </h2>
       </div>
-      <div
-        data-aos-delay="200"
-        class="card bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-1/2 sm:w-64 h-48 flex flex-col justify-start items-start relative"
-        style="background-image: url('/images/Guias.png')">
-        <p class="font-display text-2xl font-bold">Guias</p>
-        <p class="font-body text-lg text-left">e informações atualizadas</p>
-      </div>
-      <div
-        data-aos-delay="400"
-        class="card bg-cover bg-bottom md:bg-center text-white p-6 rounded-lg w-1/2 mx-auto sm:mx-0 sm:w-64 h-48 flex flex-col justify-start items-start relative"
-        style="background-image: url('/images/Dicas.png')">
-        <p class="font-display text-2xl font-bold">Dicas</p>
-        <p class="font-body text-lg text-left">de premiados das mais diversas áreas</p>
+      <div class="feat-grid">
+        <div
+          v-for="f in features"
+          :key="f.label"
+          class="relative flex flex-col justify-between overflow-hidden"
+          :style="{ background: f.color, color: f.ink, borderRadius: 'var(--r-card)', padding: '32px 30px', minHeight: '210px' }"
+        >
+          <div class="font-display" style="font-size: 52px; line-height: .95">{{ f.big }}</div>
+          <p class="font-body" style="font-size: 18px; line-height: 1.35; max-width: 90%">{{ f.label }}</p>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
+
+<style scoped>
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 900px) { .feat-grid { grid-template-columns: 1fr; } }
+</style>

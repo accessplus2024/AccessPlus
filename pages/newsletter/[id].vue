@@ -1,307 +1,131 @@
 <script setup>
-import { onMounted } from "vue";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { NavArrowLeft } from "@iconoir/vue"
 
-// Get the post ID from the route
-const route = useRoute();
-const postId = route.params.id;
+const route = useRoute()
+const postId = route.params.id
 
-// Reactive data
-const post = ref(null);
-const loading = ref(true);
-const error = ref(null);
+const post = ref(null)
+const loading = ref(true)
+const error = ref(null)
 
-// Composables
-const { fetchPost, formatDate, formatDateForDatetime } = useBeehiiv();
+const { fetchPost, formatDate, formatDateForDatetime } = useBeehiiv()
 
-// Computed properties
-const publishDate = computed(() => {
-  return post.value?.publish_date ? formatDate(post.value.publish_date) : "";
-});
+const publishDate = computed(() =>
+  post.value?.publish_date ? formatDate(post.value.publish_date) : "")
+const datetimePublishDate = computed(() =>
+  post.value?.publish_date ? formatDateForDatetime(post.value.publish_date) : "")
 
-const datetimePublishDate = computed(() => {
-  return post.value?.publish_date
-    ? formatDateForDatetime(post.value.publish_date)
-    : "";
-});
-
-// Methods
 const loadPost = async () => {
   try {
-    loading.value = true;
-    error.value = null;
-    const response = await fetchPost(postId);
-    post.value = response.data;
+    loading.value = true
+    error.value = null
+    const response = await fetchPost(postId)
+    post.value = response.data
 
-    // Update SEO meta tags
     if (post.value) {
       useHead({
-        title: `${post.value.title} - Newsletter Access+`,
+        title: `${post.value.title} — Newsletter Access+`,
         meta: [
-          {
-            name: "description",
-            content: post.value.subtitle || post.value.title,
-          },
+          { name: "description", content: post.value.subtitle || post.value.title },
           { property: "og:title", content: post.value.title },
-          {
-            property: "og:description",
-            content: post.value.subtitle || post.value.title,
-          },
+          { property: "og:description", content: post.value.subtitle || post.value.title },
           { property: "og:type", content: "article" },
           { property: "og:image", content: post.value.thumbnail_url },
-          {
-            property: "article:published_time",
-            content: datetimePublishDate.value,
-          },
+          { property: "article:published_time", content: datetimePublishDate.value },
           { name: "twitter:card", content: "summary_large_image" },
           { name: "twitter:title", content: post.value.title },
-          {
-            name: "twitter:description",
-            content: post.value.subtitle || post.value.title,
-          },
+          { name: "twitter:description", content: post.value.subtitle || post.value.title },
           { name: "twitter:image", content: post.value.thumbnail_url },
         ],
-      });
+      })
     }
   } catch (err) {
-    error.value = "Erro ao carregar o post. Tente novamente mais tarde.";
-    console.error("Error loading newsletter post:", err);
+    error.value = "Erro ao carregar o post. Tente novamente mais tarde."
+    console.error("Error loading newsletter post:", err)
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 
-const sharePost = () => {
-  if (navigator.share && post.value) {
-    navigator.share({
-      title: post.value.title,
-      text: post.value.subtitle || post.value.title,
-      url: window.location.href,
-    });
-  } else if (post.value) {
-    // Fallback: copy to clipboard
-    navigator.clipboard.writeText(window.location.href);
-  }
-};
-
-// SEO and Meta (initial)
 useHead({
-  title: "Newsletter - Access+",
+  title: "Newsletter — Access+",
   meta: [
     { charset: "UTF-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-    {
-      name: "description",
-      content: "Artigo da newsletter Access+ sobre oportunidades educacionais.",
-    },
+    { name: "description", content: "Artigo da newsletter Access+ sobre oportunidades educacionais." },
   ],
-  htmlAttrs: {
-    lang: "pt-br",
-  },
-  link: [
-    {
-      rel: "icon",
-      type: "image/png",
-      href: "/images/estrelinhas.png",
-    },
-  ],
-});
+  htmlAttrs: { lang: "pt-br" },
+  link: [{ rel: "icon", type: "image/png", href: "/images/estrelinhas.png" }],
+})
 
-// Lifecycle
-onMounted(() => {
-  // Initialize AOS
-  AOS.init({
-    duration: 1000,
-    once: true,
-  });
-
-  // Load post
-  loadPost();
-});
+onMounted(loadPost)
 </script>
 
 <template>
-  <div class="min-h-screen bg-bg">
-    <!-- Loading State -->
+  <div class="min-h-screen bg-paper">
     <Loading :watch="loading" />
 
     <!-- Error State -->
-    <div v-if="!loading && error" class="container mx-auto px-6 py-20 pt-32">
-      <div class="max-w-md mx-auto text-center">
-        <div class="text-red-500 text-6xl mb-4">⚠️</div>
-        <h1 class="text-2xl font-bold text-gray-800 mb-4">
-          Post não encontrado
-        </h1>
-        <p class="text-gray-600 mb-6">{{ error }}</p>
-        <div class="space-y-4">
-          <button
-            @click="loadPost"
-            class="bg-primary hover:bg-primary/90 text-white font-body px-6 py-3 rounded-lg font-medium transition-colors w-full"
-          >
-            Tentar novamente
-          </button>
-          <NuxtLink
-            to="/newsletter"
-            class="block text-primary hover:text-primary/80 font-body font-medium"
-          >
-            ← Voltar para Newsletter
-          </NuxtLink>
-        </div>
+    <div v-if="!loading && error" class="wrap" style="padding-top: 132px; padding-bottom: 60px">
+      <div class="mx-auto text-center bg-card border border-ink/8" style="max-width: 28rem; border-radius: var(--r-lg); padding: 40px">
+        <h1 class="font-body font-bold text-ink mb-3" style="font-size: 22px">Post não encontrado</h1>
+        <p class="text-ink/65 mb-6">{{ error }}</p>
+        <button @click="loadPost" class="btn btn-ink w-full">Tentar novamente</button>
+        <NuxtLink to="/newsletter" class="block mt-4 text-primary font-medium">Voltar para a newsletter</NuxtLink>
       </div>
     </div>
 
     <!-- Post Content -->
     <article
       v-if="!loading && !error && post"
-      class="bg-bg"
       itemscope
       itemtype="https://schema.org/BlogPosting"
     >
-      <!-- Header Section with Thumbnail -->
-      <header
-        class="relative bg-primary pt-32 pb-4 overflow-hidden"
-      >
-        <!-- Animated Background Elements -->
-        <div class="absolute inset-0">
-          <!-- Floating particles -->
-          <div
-            class="absolute top-20 left-10 w-4 h-4 bg-white/20 rounded-full animate-bounce"
-            style="animation-delay: 0s"
-          ></div>
-          <div
-            class="absolute top-40 right-20 w-3 h-3 bg-white/30 rounded-full animate-bounce"
-            style="animation-delay: 1s"
-          ></div>
-          <div
-            class="absolute bottom-32 left-1/4 w-2 h-2 bg-white/25 rounded-full animate-bounce"
-            style="animation-delay: 0.5s"
-          ></div>
-
-          <!-- Gradient orbs -->
-          <div class="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-          <div class="absolute bottom-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
-        </div>
-
-        <!-- Breadcrumb Navigation -->
-        <nav
-          class="relative z-10 max-w-4xl mx-auto px-6 pt-8"
-          data-aos="fade-down"
-        >
-          <NuxtLink
-            to="/newsletter"
-            class="group inline-flex items-center text-white/80 hover:text-white transition-all duration-300 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-white/20"
-          >
-            <svg
-              class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 19l-7-7 7-7"
-              ></path>
-            </svg>
-            Voltar para Newsletter
-          </NuxtLink>
-        </nav>
-
-        <!-- Header Content -->
-        <div
-          class="relative z-10 text-center mt-12 pb-8"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
-          <!-- Post Title -->
-          <h1
-            class="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight max-w-4xl mx-auto px-6"
-            data-aos="fade-up"
-            data-aos-delay="400"
-            itemprop="headline"
-          >
-            {{ post.title }}
-          </h1>
-
-          <!-- Post Meta -->
-          <div
-            class="flex justify-center items-center gap-4 text-white/80 mb-8"
-            data-aos="fade-up"
-            data-aos-delay="600"
-          >
-            <time
-              :datetime="datetimePublishDate"
-              itemprop="datePublished"
-              class="text-sm"
-            >
-              {{ publishDate }}
-            </time>
-            <span class="w-1 h-1 bg-white/50 rounded-full"></span>
-            <span class="text-sm">Equipe Access+</span>
-          </div>
-
-          <!-- Featured Image -->
-          <div
-            v-if="post.thumbnail_url"
-            class="relative -mt-4 mb-8"
-            data-aos="fade-up"
-            data-aos-delay="800"
-          >
-            <div class="container mx-auto px-6 max-w-4xl">
-              <img
-                :src="post.thumbnail_url"
-                :alt="post.title"
-                class="w-full h-64 md:h-80 object-cover rounded-3xl shadow-2xl border border-white/20"
-                itemprop="image"
-              />
+      <!-- Header -->
+      <header class="relative overflow-hidden" style="padding-top: 108px">
+        <div class="wrap" style="padding-top: 24px">
+          <div style="max-width: 820px">
+            <NuxtLink to="/newsletter" class="inline-flex items-center gap-2 rounded-full bg-ink/[.06] hover:bg-ink/10 text-ink/80 px-4 py-2 font-medium transition-colors">
+              <NavArrowLeft class="w-4 h-4" /> Voltar para a newsletter
+            </NuxtLink>
+            <div class="flex items-center gap-3 mt-8 text-ink/55" style="font-size: 14px">
+              <time :datetime="datetimePublishDate" itemprop="datePublished">{{ publishDate }}</time>
+              <span class="rounded-full bg-ink/30" style="width: 4px; height: 4px" />
+              <span>Equipe Access+</span>
             </div>
+            <h1 class="mt-4" style="font-size: clamp(32px, 5vw, 64px); text-wrap: balance" itemprop="headline">
+              {{ post.title }}
+            </h1>
           </div>
+        </div>
+        <div v-if="post.thumbnail_url" class="wrap mt-10">
+          <img
+            :src="post.thumbnail_url"
+            :alt="post.title"
+            class="w-full object-cover border border-ink/8"
+            style="max-height: 440px; border-radius: var(--r-lg)"
+            itemprop="image"
+          />
         </div>
       </header>
 
-      <!-- Post Content -->
-      <main class="max-w-7xl mx-auto px-4 sm:px-8 py-20">
-        <!-- Content Container -->
-        <div
-          class="bg-surface rounded-3xl p-8 md:p-12 shadow-xl border border-text/10 max-w-4xl mx-auto"
-          data-aos="fade-up"
-        >
-          <!-- Post Content -->
-          <div class="prose prose-lg prose-purple max-w-none">
-            <div
-              v-if="post.content?.free?.web"
-              v-html="post.content.free.web"
-              itemprop="articleBody"
-              class="newsletter-content"
-            ></div>
-            <div v-else class="text-center py-12">
-              <p class="text-gray-600">Conteúdo não disponível.</p>
-            </div>
+      <!-- Body -->
+      <main class="wrap" style="padding-top: 48px; padding-bottom: 40px">
+        <div class="mx-auto bg-card border border-ink/8" style="max-width: 760px; border-radius: var(--r-lg); padding: 40px">
+          <div
+            v-if="post.content?.free?.web"
+            v-html="post.content.free.web"
+            itemprop="articleBody"
+            class="newsletter-content"
+          ></div>
+          <div v-else class="text-center text-ink/55" style="padding: 48px 0">
+            <p>Conteúdo não disponível.</p>
           </div>
         </div>
 
-        <!-- Navigation -->
-        <div class="mt-12 flex justify-center" data-aos="fade-up">
-          <NuxtLink
-            to="/newsletter"
-            class="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-body px-8 py-4 rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-          >
-            <svg
-              class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            Ver todos os posts
+        <div class="mt-10 flex justify-center">
+          <NuxtLink to="/newsletter" class="btn btn-out">
+            <NavArrowLeft class="w-[18px] h-[18px]" /> Ver todos os posts
           </NuxtLink>
         </div>
       </main>
@@ -311,94 +135,54 @@ onMounted(() => {
 
 <style scoped>
 :deep(.newsletter-content) {
-  color: var(--color-text);
+  color: var(--color-ink);
   line-height: 1.75;
   font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  max-width: 70ch;
 }
-
-:deep(.newsletter-content h1) {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: var(--color-text);
-  font-family: 'FuturaStd', sans-serif;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-}
-
-:deep(.newsletter-content h2) {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-text);
-  font-family: 'FuturaStd', sans-serif;
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
-}
-
+:deep(.newsletter-content h1),
+:deep(.newsletter-content h2),
 :deep(.newsletter-content h3) {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--color-text);
-  font-family: 'FuturaStd', sans-serif;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+  font-family: 'FuturaStd', 'Poppins', sans-serif;
+  color: var(--color-ink);
+  letter-spacing: -.01em;
 }
-
-:deep(.newsletter-content p) {
-  margin-bottom: 1rem;
-  color: var(--color-text);
-  opacity: 0.85;
-}
-
-:deep(.newsletter-content a) {
-  color: var(--color-primary);
-  text-decoration: underline;
-}
-
-:deep(.newsletter-content a:hover) {
-  opacity: 0.8;
-}
-
+:deep(.newsletter-content h1) { font-size: 1.875rem; margin: 2rem 0 1rem; }
+:deep(.newsletter-content h2) { font-size: 1.5rem; margin: 1.5rem 0 .75rem; }
+:deep(.newsletter-content h3) { font-size: 1.25rem; margin: 1rem 0 .5rem; }
+:deep(.newsletter-content p) { margin-bottom: 1rem; color: rgb(var(--color-ink-rgb) / .82); }
+:deep(.newsletter-content a) { color: var(--color-primary); text-decoration: underline; }
+:deep(.newsletter-content a:hover) { opacity: .8; }
 :deep(.newsletter-content ul),
-:deep(.newsletter-content ol) {
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
+:deep(.newsletter-content ol) { margin-bottom: 1rem; display: flex; flex-direction: column; gap: .5rem; }
 :deep(.newsletter-content ul) { list-style-type: disc; list-style-position: inside; }
 :deep(.newsletter-content ol) { list-style-type: decimal; list-style-position: inside; }
-
 :deep(.newsletter-content blockquote) {
-  border-left: 4px solid var(--color-accent-cyan);
+  border-left: 4px solid var(--color-cyan);
   padding-left: 1rem;
   font-style: italic;
-  color: var(--color-text);
-  opacity: 0.7;
+  color: rgb(var(--color-ink-rgb) / .7);
   margin: 1.5rem 0;
 }
-
 :deep(.newsletter-content img) {
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
   margin: 1.5rem 0;
   max-width: 100%;
   height: auto;
 }
-
 :deep(.newsletter-content code) {
-  background-color: var(--color-surface);
-  padding: 0.125rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
+  background-color: var(--color-paper-2);
+  padding: .125rem .5rem;
+  border-radius: .25rem;
+  font-size: .875rem;
   font-family: ui-monospace, SFMono-Regular, monospace;
 }
-
 :deep(.newsletter-content pre) {
-  background-color: var(--color-surface);
-  color: var(--color-text);
+  background-color: var(--color-paper-2);
+  color: var(--color-ink);
   padding: 1rem;
-  border-radius: 0.5rem;
+  border-radius: .5rem;
   overflow-x: auto;
   margin: 1rem 0;
 }

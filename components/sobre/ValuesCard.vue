@@ -1,16 +1,21 @@
-<template>
-  <div :class="bgClass + ' text-white p-6 rounded-lg w-full md:w-80 h-64 flex flex-col justify-start items-start'" data-aos="fade-up" :data-aos-delay="aosDelay">
-    <p class="font-display text-2xl font-bold">{{ title }}</p>
-    <p class="font-body text-base text-left">
-      <slot />
-    </p>
-  </div>
-</template>
-
 <script setup>
-defineProps({
+const props = defineProps({
+  n: String,
   title: String,
-  bgClass: String,
-  aosDelay: { type: [Number, String], default: 0 }
+  color: { type: String, required: true },
+  ink: { type: String, default: "#fff" },
 })
 </script>
+
+<template>
+  <div
+    class="relative flex flex-col justify-between overflow-hidden"
+    :style="{ background: color, color: ink, borderRadius: 'var(--r-card)', padding: '30px', minHeight: '230px' }"
+  >
+    <div class="font-display" style="font-size: 16px; opacity: .8">{{ n }}</div>
+    <div>
+      <h3 class="mb-3" style="font-size: 32px">{{ title }}</h3>
+      <p style="font-size: 15.5px; line-height: 1.55"><slot /></p>
+    </div>
+  </div>
+</template>

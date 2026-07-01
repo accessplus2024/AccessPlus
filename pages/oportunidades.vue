@@ -225,39 +225,29 @@ onMounted(async () => {
   }
 });
 
-// Method to return the keyword color
-const getKeywordColor = (index) => {
-  const colors = [
-    "var(--color-accent-pink)",
-    "var(--color-accent-green)",
-    "var(--color-accent-cyan)",
-  ]
-  return colors[index % colors.length]
-}
 </script>
 
 <template>
   <OpportunitiesHeader />
 
-  <main class="container mx-auto py-8 px-4 sm:px-8 md:px-16">
+  <main class="wrap" style="padding-top: 32px; padding-bottom: 40px">
     <!-- Search and Filter Section -->
-    <div class="flex flex-col md:flex-row items-center gap-6 mb-8">
-      <div
-        class="w-full flex flex-col sm:flex-row gap-4 items-center sm:items-start"
+    <div class="flex flex-col sm:flex-row gap-3 items-stretch mb-4" style="max-width: 720px">
+      <SearchInput v-model:search-term="searchTerm" />
+      <button
+        @click="showMobileFilters = true"
+        class="md:hidden btn btn-out flex-none"
+        style="padding: 14px 20px"
       >
-        <button
-          @click="showMobileFilters = true"
-          class="relative w-full md:hidden flex justify-center items-center bg-surface text-text/60 px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors"
-        >
-          <span class="flex items-center gap-2">
-            Filtrar
-            <Filter class="w-6 h-6" />
-          </span>
-        </button>
-
-        <SearchInput v-model:search-term="searchTerm" />
-      </div>
+        Filtrar <Filter class="w-5 h-5" />
+      </button>
     </div>
+
+    <!-- Result count -->
+    <p class="text-ink/55 font-medium mb-6" style="font-size: 14px">
+      {{ filteredOpportunities.length }}
+      {{ filteredOpportunities.length === 1 ? "oportunidade encontrada" : "oportunidades encontradas" }}
+    </p>
 
     <!-- Content Section -->
     <div class="flex flex-col md:flex-row gap-6">
@@ -305,13 +295,21 @@ const getKeywordColor = (index) => {
       <div class="w-full md:w-3/4">
         <Loading :watch="!data" />
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
           <OpportunityCard
             v-for="opportunity in paginatedOpportunities"
             :key="opportunity.id"
             :opportunity="opportunity"
-            :get-keyword-color="getKeywordColor"
           />
+        </div>
+
+        <!-- Empty state -->
+        <div
+          v-if="data && filteredOpportunities.length === 0"
+          class="text-center text-ink/55"
+          style="padding: 60px 0"
+        >
+          <p style="font-size: 18px">Nenhuma oportunidade encontrada. Tente outros filtros.</p>
         </div>
 
         <!-- Pagination -->

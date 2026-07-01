@@ -1,25 +1,18 @@
 <template>
-  <header
-    class="relative bg-primary pt-24 pb-16 rounded-b-lg bg-cover bg-center"
-    style="background-image: url('/images/stanford.svg')"
-  >
-    <div
-      class="absolute inset-0 bg-[#53366470]"
-      style="z-index: 0; pointer-events: none"
-    ></div>
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center relative z-10">
-      <div class="text-center w-full max-w-4xl my-12 md:my-24 header-content">
-        <h1
-          class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-4 leading-none text-white"
-          data-aos="fade-up"
-        >
-          <slot>Sobre nós</slot>
+  <header class="relative overflow-hidden" style="padding-top: 132px">
+    <div class="wrap">
+      <div style="max-width: 860px">
+        <span class="kicker">Quem somos</span>
+        <h1 class="mt-4" style="font-size: clamp(40px, 6vw, 82px); text-wrap: balance">
+          Um futuro mais <span class="text-magenta">justo</span> começa com acesso.
         </h1>
+        <p class="text-ink/72 leading-relaxed mt-7" style="font-size: 20px">
+          O time do Access+ é formado por pessoas comprometidas com a democratização
+          do acesso à educação no Brasil. Cada membro traz uma combinação única de
+          experiências, habilidades e paixões que impulsionam nosso objetivo de criar
+          um futuro mais justo e igualitário para os estudantes de baixa renda.
+        </p>
       </div>
     </div>
   </header>
 </template>
-
-<script setup>
-import Navbar from "../Navbar.vue"
-</script>

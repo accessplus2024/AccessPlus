@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted } from "vue";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { NavArrowLeft, NavArrowRight } from "@iconoir/vue";
 
 // SEO and Meta
 useHead({
@@ -26,13 +25,7 @@ useHead({
   htmlAttrs: {
     lang: "pt-br",
   },
-  link: [
-    {
-      rel: "icon",
-      type: "image/png",
-      href: "/images/estrelinhas.png",
-    },
-  ],
+  link: [{ rel: "icon", href: "/favicon.ico" }],
   script: [
     {
       src: "https://subscribe-forms.beehiiv.com/embed.js",
@@ -40,6 +33,17 @@ useHead({
     },
   ],
 });
+
+const ACCENTS = [
+  "var(--color-primary)",
+  "var(--color-magenta)",
+  "var(--color-lime)",
+  "var(--color-cyan)",
+  "var(--color-red)",
+  "var(--color-amber)",
+  "var(--color-teal)",
+  "var(--color-purple)",
+]
 
 // Reactive data
 const posts = ref([]);
@@ -87,132 +91,92 @@ const goToPage = (page) => {
 
 // Lifecycle
 onMounted(() => {
-  // Initialize AOS
-  AOS.init({
-    duration: 1000,
-    once: true,
-  });
-
-  // Load posts
   loadPosts();
 });
 </script>
 
 <template>
-  <div class="min-h-screen bg-bg">
+  <div class="min-h-screen bg-paper">
     <!-- Header Section -->
     <NewsletterHeaderSection />
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-8 pt-20">
+    <main class="wrap" style="padding-top: 64px">
       <!-- Loading State -->
       <Loading :watch="loading" />
 
       <!-- Error State -->
-      <div v-if="!loading && error" class="text-center py-20">
-        <div
-          class="bg-white rounded-3xl p-8 shadow-xl border border-gray-200 max-w-md mx-auto"
-        >
-          <div class="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 class="text-2xl font-bold text-gray-800 mb-4">
-            Ops! Algo deu errado
-          </h2>
-          <p class="text-gray-600 mb-6">{{ error }}</p>
-          <button
-            @click="loadPosts"
-            class="bg-primary hover:bg-primary/90 text-white font-body px-8 py-3 rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
-          >
-            Tentar novamente
-          </button>
+      <div v-if="!loading && error" class="text-center" style="padding: 60px 0">
+        <div class="bg-card border border-ink/8 mx-auto" style="border-radius: var(--r-lg); padding: 40px; max-width: 28rem">
+          <h2 class="font-body font-bold text-ink mb-3" style="font-size: 22px">Ops! Algo deu errado</h2>
+          <p class="text-ink/65 mb-6">{{ error }}</p>
+          <button @click="loadPosts" class="btn btn-ink mx-auto">Tentar novamente</button>
         </div>
       </div>
 
       <!-- Posts Grid -->
       <div v-if="!loading && !error" id="newsletter-posts">
         <!-- Section Header -->
-        <div class="text-center mb-12" data-aos="fade-up">
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-text mb-4">
-            Últimos <span class="font-medium">posts</span>
+        <div class="mb-[42px]">
+          <span class="kicker">Arquivo</span>
+          <h2 class="mt-3.5" style="font-size: clamp(34px, 4.5vw, 56px)">
+            Últimos <span class="font-body font-light italic">posts</span>
           </h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">
-            Conteúdo que pode transformar sua jornada educacional.
-          </p>
         </div>
 
         <!-- Empty State -->
-        <div v-if="posts.length === 0" class="text-center py-20">
-          <div class="text-6xl mb-4">📰</div>
-          <h3 class="text-2xl font-bold text-gray-800 mb-4">
-            Nenhum post encontrado
-          </h3>
-          <p class="text-gray-600">
-            Em breve teremos novos conteúdos para você!
-          </p>
+        <div v-if="posts.length === 0" class="text-center text-ink/55" style="padding: 60px 0">
+          <h3 class="font-body font-bold text-ink mb-2" style="font-size: 22px">Nenhum post encontrado</h3>
+          <p>Em breve teremos novos conteúdos para você!</p>
         </div>
 
         <!-- Posts Grid -->
         <div v-else>
-          <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
-          >
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-14">
             <div
               v-for="(post, index) in paginatedPosts"
               :key="post.id"
               :data-aos="'fade-up'"
               :data-aos-delay="index * 100"
             >
-              <NewsletterCard :post="post" />
+              <NewsletterCard :post="post" :accent="ACCENTS[index % ACCENTS.length]" />
             </div>
           </div>
 
           <!-- Pagination -->
-          <div
-            v-if="totalPages > 1"
-            class="flex justify-center items-center gap-3"
-            data-aos="fade-up"
-          >
-            <!-- Previous Button -->
+          <div v-if="totalPages > 1" class="flex flex-wrap justify-center items-center gap-2">
             <button
               @click="goToPage(currentPage - 1)"
               :disabled="currentPage === 1"
-              class="px-6 py-3 text-sm font-body font-semibold text-text/60 bg-surface border border-text/20 rounded-2xl hover:border-primary disabled:opacity-40 transition-all duration-300"
+              aria-label="Página anterior"
+              class="w-11 h-11 inline-flex items-center justify-center rounded-full border border-ink/15 text-ink hover:bg-ink hover:text-paper transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-ink"
             >
-              Anterior
+              <NavArrowLeft class="w-5 h-5" />
             </button>
 
-            <!-- Page Numbers -->
             <template v-for="page in totalPages" :key="page">
               <button
-                v-if="
-                  page === 1 ||
-                  page === totalPages ||
-                  Math.abs(page - currentPage) <= 2
-                "
+                v-if="page === 1 || page === totalPages || Math.abs(page - currentPage) <= 2"
                 @click="goToPage(page)"
-                :class="[
-                  'px-4 py-3 text-sm font-semibold rounded-2xl transition-all duration-300',
-                  page === currentPage
-                    ? 'text-white bg-primary shadow-lg'
-                    : 'text-text/60 bg-surface border border-text/20 hover:border-primary',
-                ]"
+                class="min-w-11 h-11 px-3 inline-flex items-center justify-center rounded-full font-body font-medium transition-colors"
+                :class="page === currentPage ? 'bg-primary text-white' : 'text-ink/70 hover:bg-ink/5'"
+                style="font-size: 15px"
               >
                 {{ page }}
               </button>
               <span
                 v-else-if="page === currentPage - 3 || page === currentPage + 3"
-                class="px-2 py-3 text-sm text-gray-400"
-              >
-                ...
-              </span>
+                class="px-1 text-ink/40"
+              >…</span>
             </template>
 
-            <!-- Next Button -->
             <button
               @click="goToPage(currentPage + 1)"
               :disabled="currentPage === totalPages"
-              class="px-6 py-3 text-sm font-body font-semibold text-text/60 bg-surface border border-text/20 rounded-2xl hover:border-primary disabled:opacity-40 transition-all duration-300"
+              aria-label="Próxima página"
+              class="w-11 h-11 inline-flex items-center justify-center rounded-full border border-ink/15 text-ink hover:bg-ink hover:text-paper transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-ink"
             >
-              Próximo
+              <NavArrowRight class="w-5 h-5" />
             </button>
           </div>
         </div>

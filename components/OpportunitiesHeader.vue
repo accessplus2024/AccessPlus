@@ -1,21 +1,10 @@
 <template>
-  <header
-    class="relative bg-primary pt-32 pb-16 rounded-b-lg bg-cover bg-center"
-    :style="{ backgroundImage: 'url(/images/voluntariado.svg)' }"
-  >
-    <div class="absolute inset-0 bg-[#C47FEF6B] z-0"></div>
-
-    <div
-      class="container mx-auto px-6 flex flex-col items-center relative z-10"
-    >
-      <div class="text-left w-full max-w-4xl mt-12">
-        <h1
-          class="text-3xl sm:text-4xl lg:text-5xl mb-4 leading-none md:text-left lg:text-left sm:text-center"
-        >
-          <p class="font-display font-bold text-white">Todas as</p>
-          <span class="block font-display font-bold text-white">Oportunidades</span>
-        </h1>
-      </div>
+  <header class="relative overflow-hidden" style="padding-top: 116px">
+    <div class="wrap" style="padding-top: 28px">
+      <span class="kicker">Catálogo completo</span>
+      <h1 class="mt-3.5" style="font-size: clamp(34px, 7vw, 84px); text-wrap: balance">
+        Todas as <span class="text-primary">oportunidades</span>
+      </h1>
     </div>
   </header>
 </template>

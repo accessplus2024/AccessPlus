@@ -1,88 +1,63 @@
 <script setup>
-import { onMounted } from 'vue';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import HeaderSection from '~/components/sobre/HeaderSection.vue';
-import About from '~/components/sobre/About.vue';
-import ValuesGrid from '~/components/sobre/ValuesGrid.vue';
-import TeamGrid from '~/components/sobre/TeamGrid.vue';
+import { ArrowRight } from "@iconoir/vue"
+import HeaderSection from "~/components/sobre/HeaderSection.vue"
+import About from "~/components/sobre/About.vue"
+import ValuesGrid from "~/components/sobre/ValuesGrid.vue"
+import TeamGrid from "~/components/sobre/TeamGrid.vue"
 
 useHead({
-  link: [
-    {
-      rel: "icon",
-      type: "image/png",
-      href: "/images/estrelinhas.png",
-    },
-  ],
-});
-
-useHead({
-  title: "Sobre nós",
+  title: "Sobre nós — Access+",
   meta: [
     { charset: "UTF-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-    { hid: "description", name: "description", content: "" },
+    { name: "description", content: "Conheça o time do Access+ e nossa missão de democratizar o acesso à educação no Brasil." },
   ],
-  htmlAttrs: {
-    lang: "pt-br",
-  },
-});
-
-onMounted(() => {
-  AOS.init({ duration: 1000, once: true });
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from('.header-content', {
-    duration: 1.5,
-    y: 50,
-    opacity: 0,
-    ease: 'power3.out',
-  });
-
-  gsap.from('.team-member', {
-    duration: 1,
-    opacity: 0,
-    y: 50,
-    stagger: 0.2,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.team-member',
-      start: 'top 80%',
-    },
-  });
-});
+  htmlAttrs: { lang: "pt-br" },
+  link: [{ rel: "icon", type: "image/png", href: "/images/estrelinhas.png" }],
+})
 </script>
 
 <template>
-  <HeaderSection>
-    Sobre nós
-  </HeaderSection>
+  <HeaderSection />
 
   <About>
-    <p class="text-gray-800">
+    <p>
       O Access+ nasceu de uma necessidade real e coletiva em 2024. Crescendo na periferia, vivenciamos de perto as dificuldades de acesso a oportunidades educacionais. Mesmo sendo estudantes dedicados, enfrentamos enormes desafios para encontrar atividades extracurriculares e programas que pudessem expandir nossos horizontes além da sala de aula.
     </p>
-    <br />
-    <p class="text-gray-800">
+    <p>
       Ao longo dos anos, percebemos que muitos jovens de baixa renda compartilhavam das mesmas dificuldades: a falta de informações centralizadas e acessíveis sobre oportunidades como olimpíadas acadêmicas, programas de mentoria e atividades culturais. Inspirados por essas experiências e pelo desejo de democratizar o acesso à educação, decidimos criar o Access+.
     </p>
   </About>
 
-  <div class="mt-16 md:mt-28">
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-medium text-center mb-8" style="color: #380f45" data-aos="fade-up">
-      Nossos <span class="font-semibold">Valores</span>
-    </h1>
-  </div>
-  <ValuesGrid />
+  <section class="section" style="padding-bottom: 0">
+    <div class="wrap">
+      <div class="mb-[42px]">
+        <span class="kicker">No que acreditamos</span>
+        <h2 class="mt-3.5" style="font-size: clamp(34px, 4.5vw, 56px)">Nossos valores</h2>
+      </div>
+      <ValuesGrid />
+    </div>
+  </section>
 
-  <div class="container mx-auto mt-16 md:mt-28 px-4 sm:px-6 lg:px-8">
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-medium mb-8 text-center" style="color: #380f45" data-aos="fade-up">
-      Nossos <br />
-      <span class="font-semibold">Integrantes</span>
-    </h1>
-    <TeamGrid />
-  </div>
+  <section class="section">
+    <div class="wrap">
+      <div class="mb-[42px]">
+        <span class="kicker">Quem faz acontecer</span>
+        <h2 class="mt-3.5" style="font-size: clamp(34px, 4.5vw, 56px)">Nosso time</h2>
+      </div>
+      <TeamGrid />
+    </div>
+  </section>
+
+  <section class="wrap" style="padding-bottom: 40px">
+    <div class="relative overflow-hidden bg-ink text-paper text-center"
+         style="border-radius: var(--r-lg); padding: 60px 48px">
+      <h2 class="mx-auto" style="font-size: clamp(30px, 4vw, 48px); max-width: 720px; text-wrap: balance">
+        Pronto para encontrar a sua próxima oportunidade?
+      </h2>
+      <NuxtLink to="/oportunidades" class="btn btn-lime mt-7">
+        Explorar oportunidades <ArrowRight class="w-[18px] h-[18px]" />
+      </NuxtLink>
+    </div>
+  </section>
 </template>
