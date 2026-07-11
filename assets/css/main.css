@@ -10,28 +10,174 @@
   font-display: swap;
 }
 
+/* ============================================================
+   Access+ — "Editorial Cosmos"
+   Warm cream canvas · oversized FuturaStd display
+   · candy color-blocking from the brand palette.
+   ============================================================ */
 :root {
-  --color-primary: #4B3FE4;
+  /* Surfaces */
+  --color-paper: #F4F1E8;     /* warm cream canvas */
+  --color-paper-2: #ECE7D9;   /* deeper cream */
+  --color-paper-rgb: 244 241 232;
+  --color-card: #FFFFFF;      /* card fill on cream */
+  --color-card-rgb: 255 255 255;
+  --color-ink: #15111F;       /* near-black ink */
+  --color-ink-rgb: 21 17 31;
+
+  /* Brand palette (fixed) */
+  --color-primary: #4B3FE4;   /* indigo */
   --color-primary-rgb: 75 63 228;
-  --color-bg: #FFFFFF;
-  --color-bg-rgb: 255 255 255;
-  --color-surface: #F5F5F5;
-  --color-surface-rgb: 245 245 245;
-  --color-text: #0D0B1A;
-  --color-text-rgb: 13 11 26;
-  --color-accent-red: #FF4422;
-  --color-accent-green: #C8F135;
-  --color-accent-pink: #FF2D8A;
-  --color-accent-cyan: #7DECE9;
+  --color-lime: #C8F135;
+  --color-magenta: #FF2D8A;
+  --color-cyan: #7DECE9;
+  --color-red: #FF4422;
+  --color-purple: #A459D1;
+  --color-teal: #15B8A6;
+  --color-amber: #FF8A3D;
+
+  /* Type */
+  --font-display: "FuturaStd", "Poppins", sans-serif;
+  --font-body: "Poppins", sans-serif;
+
+  /* Radii */
+  --r-pill: 999px;
+  --r-card: 22px;
+  --r-lg: 34px;
+
+  /* Layout + motion */
+  --maxw: 1240px;
+  --ease: cubic-bezier(.2, .8, .2, 1);
 }
 
-.dark {
-  --color-primary: #6B5FFF;
-  --color-primary-rgb: 107 95 255;
-  --color-bg: #0D0B1A;
-  --color-bg-rgb: 13 11 26;
-  --color-surface: #1A1633;
-  --color-surface-rgb: 26 22 51;
-  --color-text: #FFFFFF;
-  --color-text-rgb: 255 255 255;
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: .95;
+  margin: 0;
+  letter-spacing: -.02em;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+h2, h3, h4 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: -.01em;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+::selection { background: var(--color-lime); color: var(--color-ink); }
+
+@media (max-width: 1440px) {
+  :root { --maxw: 1100px; }
+  body { font-size: 15px; }
+  .section { padding: 80px 0; }
+  .section-sm { padding: 52px 0; }
+}
+
+@media (max-width: 1280px) {
+  body { font-size: 14px; }
+  .wrap { padding: 0 24px; }
+}
+
+@media (max-width: 780px) {
+  body { font-size: 16px; }
+  :root { --maxw: 1240px; }
+}
+
+/* ---- Layout helper ---------------------------------------- */
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+.section { padding: 96px 0; }
+.section-sm { padding: 64px 0; }
+@media (max-width: 780px) {
+  .section { padding: 64px 0; }
+  .section-sm { padding: 48px 0; }
+  .wrap { padding: 0 20px; }
+}
+
+/* ---- Eyebrow / kicker ------------------------------------- */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  opacity: .65;
+}
+
+/* ---- Buttons ---------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 16px;
+  padding: 15px 26px;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  border: none;
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), background .2s, opacity .2s;
+}
+.btn-lime { background: var(--color-lime); color: var(--color-ink); }
+.btn-ink  { background: var(--color-ink); color: var(--color-paper); }
+.btn-out  { background: transparent; color: var(--color-ink); box-shadow: inset 0 0 0 2px var(--color-ink); }
+.btn:hover { transform: translateY(-2px); }
+.btn-lime:hover { box-shadow: 0 10px 24px rgba(200, 241, 53, .5); }
+.btn-ink:hover  { box-shadow: 0 10px 24px rgba(21, 17, 31, .28); }
+.btn:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ---- Motion ------------------------------------------------ */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-14px); }
+}
+.floaty { animation: float 6s ease-in-out infinite; }
+
+@keyframes scrollx {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ---- Reveal on scroll: visible by default, motion enhances - */
+.rise {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floaty { animation: none !important; }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
 }

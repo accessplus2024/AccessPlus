@@ -190,7 +190,7 @@ onMounted(() => {
 /* Additional custom styles if needed */
 #beehiiv-subscribe-form {
   width: 100%;
-  margin: 0 auto;
+  margin: 30px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;

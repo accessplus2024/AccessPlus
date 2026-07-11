@@ -23,7 +23,7 @@ const year = new Date().getFullYear()
     <div class="wrap relative" style="padding: 72px 28px 40px">
       <div class="flex flex-wrap justify-between gap-10">
         <div class="max-w-sm">
-          <img src="/images/logo-light-footer.svg" alt="Access+" class="h-[30px]" />
+          <img src="/images/icons/logo-longo.svg" alt="Access+" class="w-36" style="filter: brightness(0) invert(1)" />
           <p class="mt-5 text-paper/70 leading-relaxed" style="font-size: 16px">
             A maior plataforma gratuita do país focada em trazer oportunidades
             educacionais atualizadas para jovens.

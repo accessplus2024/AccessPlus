@@ -1,25 +1,20 @@
 <template>
-  <section
-    data-aos="fade-up"
-    class="bg-accent-pink py-10 rounded-xl max-w-5xl mx-auto font-body mb-12"
-  >
-    <div class="px-6 md:px-12 lg:px-24">
-      <h2 class="font-display text-white mb-4 text-center text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
+  <section class="section" style="padding-top: 0">
+    <div class="wrap text-center" style="max-width: 860px">
+      <span class="kicker" style="justify-content: center; display: flex">Reconhecimento</span>
+      <h2 class="mt-4" style="font-size: clamp(30px, 4vw, 50px); text-wrap: balance">
         Top 15 e Representante do Brasil
       </h2>
-      <p class="font-body text-white mb-8 text-justify text-base sm:text-lg md:text-xl font-light leading-relaxed">
+      <p class="text-ink/72 leading-relaxed mt-6 mx-auto" style="font-size: 18px; max-width: 68ch">
         Participar do BeChangemaker nos permitiu aprimorar nosso projeto com o
         suporte de especialistas globais, desenvolver estratégias de impacto e
-        fortalecer nossa visão de criar uma plataforma que transforme vidas. Foi
-        um marco importante na nossa jornada, nos conectando com outras
-        iniciativas inovadoras ao redor do mundo e nos inspirando a continuar
-        expandindo nossos horizontes.
+        fortalecer nossa visão de criar uma plataforma que transforme vidas.
       </p>
-      <div class="flex flex-wrap justify-center space-x-1">
-        <img src="/images/BeChangemaker_logo.svg" alt="BeChangeMaker Logo" class="w-24 md:w-32 lg:w-48 h-auto m-2" />
-        <img src="/images/Worldskills_logo.png" alt="WorldSkills Logo" class="w-24 md:w-32 lg:w-48 h-auto m-2" />
-        <img src="/images/HP_Foundation.svg" alt="HP Foundation Logo" class="w-24 md:w-32 lg:w-48 h-auto m-2" />
-        <img src="/images/UNESCO_UNEVOC.svg" alt="UNESCO Logo" class="w-24 md:w-32 lg:w-48 h-auto m-2" />
+      <div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-8 mt-12">
+        <img src="/images/BeChangemaker_logo.svg" alt="BeChangemaker" class="h-14 md:h-16 w-auto opacity-80" />
+        <img src="/images/Worldskills_logo.png" alt="WorldSkills" class="h-14 md:h-16 w-auto opacity-80" />
+        <img src="/images/HP_Foundation.svg" alt="HP Foundation" class="h-14 md:h-16 w-auto opacity-80" />
+        <img src="/images/UNESCO_UNEVOC.svg" alt="UNESCO-UNEVOC" class="h-14 md:h-16 w-auto opacity-80" />
       </div>
     </div>
   </section>

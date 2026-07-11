@@ -13,7 +13,7 @@ useHead({
     { name: "description", content: "Conheça o time do Access+ e nossa missão de democratizar o acesso à educação no Brasil." },
   ],
   htmlAttrs: { lang: "pt-br" },
-  link: [{ rel: "icon", type: "image/png", href: "/images/estrelinhas.png" }],
+  link: [{ rel: "icon", href: "/favicon.ico" }],
 })
 </script>
 

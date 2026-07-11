@@ -36,16 +36,17 @@ const closeFilters = () => {
       class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0"
     >
       <div
-        class="fixed inset-0 bg-black/60 transition-opacity"
+        class="fixed inset-0 bg-ink/50 transition-opacity"
         @click="closeFilters"
       ></div>
       <div
-        class="relative inline-block w-full max-w-md p-6 my-8 overflow-y-auto text-left align-middle transform bg-bg shadow-xl rounded-2xl"
-        style="max-height: 80vh; overflow-y: auto"
+        class="relative inline-block w-full max-w-md p-6 my-8 overflow-y-auto text-left align-middle transform bg-paper shadow-2xl"
+        style="max-height: 80vh; overflow-y: auto; border-radius: var(--r-lg)"
       >
+        <h2 class="font-body font-bold text-ink mb-5" style="font-size: 18px">Filtros</h2>
         <button
           @click="closeFilters"
-          class="absolute top-4 right-4 text-text/60 hover:text-text transition duration-200"
+          class="absolute top-5 right-5 text-ink/60 hover:text-ink transition duration-200"
         >
           <span class="sr-only">Close</span>
           <svg
@@ -118,11 +119,8 @@ const closeFilters = () => {
         />
 
         <div class="mt-6">
-          <button
-            @click="closeFilters"
-            class="w-full bg-primary text-white px-6 py-3 rounded-lg font-body hover:bg-primary/90 transition duration-200"
-          >
-            Aplicar Filtros
+          <button @click="closeFilters" class="btn btn-lime w-full">
+            Aplicar filtros
           </button>
         </div>
       </div>

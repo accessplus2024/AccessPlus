@@ -11,17 +11,10 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@nuxt/fonts", "@nuxtjs/color-mode"],
+  modules: ["@nuxt/fonts"],
 
   fonts: {
     families: [{ name: "Poppins", weights: [300, 400, 500, 600, 700] }],
-  },
-
-  colorMode: {
-    preference: "system",
-    fallback: "light",
-    classSuffix: "",
-    storageKey: "nuxt-color-mode",
   },
 
   plugins: [

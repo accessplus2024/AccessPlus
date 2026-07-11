@@ -9,13 +9,7 @@ useHead({
     { name: "description", content: "" },
   ],
   htmlAttrs: { lang: "pt-br" },
-  link: [
-    {
-      rel: "icon",
-      type: "image/png",
-      href: "/images/estrelinhas.png",
-    },
-  ],
+  link: [{ rel: "icon", href: "/favicon.ico" }],
 });
 
 // Variables for search and filters

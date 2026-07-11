@@ -1,5 +1,5 @@
 <script setup>
-import { categoryIcon, isLightColor } from "~/utils/categories"
+import { categoryIcon, categoryIconHover, isLightColor } from "~/utils/categories"
 
 const props = defineProps({
   category: { type: String, required: true },
@@ -27,9 +27,9 @@ const ink = computed(() => (light.value ? "#15111F" : "#FFFFFF"))
   >
     <span
       class="inline-flex items-center justify-center rounded-full"
-      :style="{ width: '50px', height: '50px', background: light ? 'rgba(255,255,255,.55)' : 'rgba(255,255,255,.9)' }"
+      :style="{ width: '64px', height: '64px', background: light ? 'rgba(255,255,255,.55)' : 'rgba(255,255,255,.9)' }"
     >
-      <img :src="categoryIcon(icon)" alt="" style="width: 28px; height: 28px" />
+      <img :src="hover ? categoryIcon(icon) : categoryIconHover(icon)" alt="" style="width: 44px; height: 44px" />
     </span>
     <div>
       <div class="font-body font-semibold" style="font-size: 18px; line-height: 1.15">{{ category }}</div>

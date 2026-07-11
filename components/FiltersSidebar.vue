@@ -27,10 +27,10 @@ const toggleFilter = (filter, filterType) => {
 
 <template>
   <aside
-    class="hidden md:block w-1/4 bg-surface text-text p-6 rounded-lg h-fit sticky top-4"
-    style="min-width: 300px"
+    class="hidden md:block w-1/4 bg-card text-ink p-6 border border-ink/8 h-fit sticky top-24"
+    style="min-width: 300px; border-radius: var(--r-card)"
   >
-    <h2 class="text-xl font-display font-bold text-text mb-3">Filtros</h2>
+    <h2 class="font-body font-bold text-ink mb-5" style="font-size: 18px">Filtros</h2>
 
     <FilterGroup
       title="Tipo"

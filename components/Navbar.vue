@@ -40,7 +40,7 @@ const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.valu
     <div class="wrap flex items-center justify-between h-[76px]">
       <!-- Logo -->
       <NuxtLink to="/" class="flex items-center" aria-label="Access+ — início">
-        <img src="/images/logo-dark.svg" alt="Access+" class="h-[22px]" />
+        <img src="/images/icons/logo-longo.svg" alt="Access+" class="w-44" />
       </NuxtLink>
 
       <!-- Desktop nav -->

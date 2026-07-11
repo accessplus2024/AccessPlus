@@ -1,7 +1,7 @@
 <template>
   <div v-if="watch" class="flex justify-center items-center h-screen">
     <svg
-      class="animate-spin h-10 w-10 text-gray-600"
+      class="animate-spin h-10 w-10 text-primary"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

@@ -13,7 +13,7 @@ const features = [
         <span class="kicker">O que tem aqui</span>
         <h2 class="mt-3.5 flex flex-wrap items-baseline gap-x-3" style="font-size: clamp(34px, 4.5vw, 56px); text-wrap: balance">
           O que você encontra no
-          <img src="/images/logo-dark.svg" alt="Access+" class="h-9 md:h-12 translate-y-1" />
+          <img src="/images/icons/logo-longo.svg" alt="Access+" class="h-60 md:h-12 translate-y-1" />
         </h2>
       </div>
       <div class="feat-grid">

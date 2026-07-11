@@ -12,7 +12,7 @@ useHead({
     { name: "description", content: "A maior plataforma gratuita do Brasil focada em trazer oportunidades educacionais atualizadas para jovens." },
   ],
   htmlAttrs: { lang: "pt-br" },
-  link: [{ rel: "icon", type: "image/png", href: "/images/estrelinhas.png" }],
+  link: [{ rel: "icon", href: "/favicon.ico" }],
 })
 </script>
 

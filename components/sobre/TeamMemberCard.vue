@@ -1,14 +1,3 @@
-<template>
-  <div class="bg-surface shadow-md rounded-lg p-6 flex flex-col justify-start items-start team-member hover:border-accent-cyan border border-transparent transition-colors duration-300">
-    <img :src="image" :alt="name" class="w-full h-48 object-cover rounded-lg" />
-    <div class="p-4">
-      <h3 class="font-display text-xl font-bold mb-2 text-text">{{ name }}</h3>
-      <p class="font-body text-text/70">{{ role }}</p>
-      <p class="font-body text-text/70">{{ location }}</p>
-    </div>
-  </div>
-</template>
-
 <script setup>
 defineProps({
   name: String,
@@ -17,3 +6,23 @@ defineProps({
   image: String,
 })
 </script>
+
+<template>
+  <div
+    class="group bg-card border border-ink/8 overflow-hidden transition-all duration-300 ease-brand hover:-translate-y-1.5 hover:shadow-lg"
+    style="border-radius: var(--r-card)"
+  >
+    <div class="overflow-hidden" style="aspect-ratio: 4 / 3">
+      <img
+        :src="image"
+        :alt="name"
+        class="w-full h-full object-cover transition-transform duration-500 ease-brand group-hover:scale-105"
+      />
+    </div>
+    <div class="p-5">
+      <h3 class="font-body font-bold text-ink" style="font-size: 18px">{{ name }}</h3>
+      <p class="text-primary font-medium mt-0.5" style="font-size: 14px">{{ role }}</p>
+      <p class="text-ink/55 mt-0.5" style="font-size: 13.5px">{{ location }}</p>
+    </div>
+  </div>
+</template>

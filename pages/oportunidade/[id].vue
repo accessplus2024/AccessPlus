@@ -24,7 +24,7 @@ useHead(() => ({
     { name: "description", content: opp.value ? `Detalhes sobre ${opp.value.Nome}` : "" },
   ],
   htmlAttrs: { lang: "pt-br" },
-  link: [{ rel: "icon", type: "image/png", href: "/images/estrelinhas.png" }],
+  link: [{ rel: "icon", href: "/favicon.ico" }],
 }));
 
 const route = useRoute();

@@ -1,8 +1,6 @@
 <template>
-  <div class="relative overflow-x-hidden bg-bg text-text min-h-screen">
-    <div class="absolute top-0 left-0 w-full z-30">
-      <Navbar transparent />
-    </div>
+  <div class="relative overflow-x-hidden bg-paper text-ink min-h-screen">
+    <Navbar />
     <slot></slot>
     <Footer />
   </div>

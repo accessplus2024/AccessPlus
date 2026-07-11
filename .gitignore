@@ -28,3 +28,5 @@ bun.lockb
 package-lock.json
 .vercel
 .claude
+# Added by code-review-graph
+.code-review-graph/
