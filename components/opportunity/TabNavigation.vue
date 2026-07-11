@@ -1,5 +1,5 @@
 <script setup>
-import { Page, InfoCircle, LightBulb, BookmarkBook } from "@iconoir/vue"
+import { Page, InfoCircle, LightBulb, BookmarkBook, Link } from "@iconoir/vue"
 
 const props = defineProps({
   opportunity: { type: Object, required: true },
@@ -7,16 +7,23 @@ const props = defineProps({
 })
 const emit = defineEmits(["changeContent"])
 
-const tabs = computed(() => [
-  { key: "guide", icon: BookmarkBook, title: "Elegibilidade e guia", sub: "Critérios e processo de aplicação",
-    contentTitle: "Elegibilidade e guia de aplicação", text: props.opportunity.eligibility },
-  { key: "process", icon: InfoCircle, title: "Sobre o processo", sub: "Informações do processo seletivo",
-    contentTitle: "Sobre o processo", text: props.opportunity.process },
-  { key: "tips", icon: LightBulb, title: "Dicas de contemplados", sub: "Experiências de quem foi aprovado",
-    contentTitle: "Dicas de contemplados", text: props.opportunity.applicants },
-  { key: "additional", icon: Page, title: "Informações adicionais", sub: "Detalhes complementares",
-    contentTitle: "Informações adicionais", text: props.opportunity.additionals },
-])
+const tabs = computed(() => {
+  const list = [
+    { key: "guide", icon: BookmarkBook, title: "Elegibilidade e guia", sub: "Critérios e processo de aplicação",
+      contentTitle: "Elegibilidade e guia de aplicação", text: props.opportunity.eligibility },
+    { key: "process", icon: InfoCircle, title: "Sobre o processo", sub: "Informações do processo seletivo",
+      contentTitle: "Sobre o processo", text: props.opportunity.process },
+    { key: "tips", icon: LightBulb, title: "Dicas de contemplados", sub: "Experiências de quem foi aprovado",
+      contentTitle: "Dicas de contemplados", text: props.opportunity.applicants },
+    { key: "additional", icon: Page, title: "Informações adicionais", sub: "Detalhes complementares",
+      contentTitle: "Informações adicionais", text: props.opportunity.additionals },
+  ]
+  if ((props.opportunity.resources || []).length > 0) {
+    list.push({ key: "resources", icon: Link, title: "Links úteis", sub: "Discussões, vídeos e depoimentos",
+      contentTitle: "Links úteis", text: props.opportunity.resources })
+  }
+  return list
+})
 </script>
 
 <template>

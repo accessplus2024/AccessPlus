@@ -3,8 +3,8 @@ import { ArrowRight } from "@iconoir/vue"
 import { categoryIcon } from "~/utils/categories"
 
 const stats = [
-  { n: "+170", label: "oportunidades educacionais" },
-  { n: "8", label: "categorias atualizadas" },
+  { n: "+200", label: "oportunidades educacionais" },
+  { n: "9", label: "categorias atualizadas" },
   { n: "100%", label: "gratuito, para sempre" },
 ]
 
