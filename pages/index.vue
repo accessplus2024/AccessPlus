@@ -1,7 +1,7 @@
 <script setup>
 const marquee = [
   "Olimpíadas", "Bolsas", "Intercâmbios", "MUNs",
-  "Mentorias", "Competições", "Redação", "Programas Acadêmicos",
+  "Mentorias", "Competições", "Redação", "Estágios", "Programas Acadêmicos",
 ]
 
 useHead({
