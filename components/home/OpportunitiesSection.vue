@@ -25,6 +25,7 @@ import CategoryButton from "./CategoryButton.vue"
           :category="c.label"
           :icon="c.key"
           :color="c.color"
+          :to="`/oportunidades?type=${encodeURIComponent(c.type)}`"
         />
       </div>
     </div>

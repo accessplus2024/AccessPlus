@@ -9,13 +9,13 @@ const emit = defineEmits(["changeContent"])
 
 const tabs = computed(() => [
   { key: "guide", icon: BookmarkBook, title: "Elegibilidade e guia", sub: "Critérios e processo de aplicação",
-    contentTitle: "Elegibilidade e guia de aplicação", text: props.opportunity.guide },
+    contentTitle: "Elegibilidade e guia de aplicação", text: props.opportunity.eligibility },
   { key: "process", icon: InfoCircle, title: "Sobre o processo", sub: "Informações do processo seletivo",
-    contentTitle: "Sobre o processo", text: props.opportunity.regInfo },
+    contentTitle: "Sobre o processo", text: props.opportunity.process },
   { key: "tips", icon: LightBulb, title: "Dicas de contemplados", sub: "Experiências de quem foi aprovado",
-    contentTitle: "Dicas de contemplados", text: props.opportunity.appTips },
+    contentTitle: "Dicas de contemplados", text: props.opportunity.applicants },
   { key: "additional", icon: Page, title: "Informações adicionais", sub: "Detalhes complementares",
-    contentTitle: "Informações adicionais", text: props.opportunity.addInfo },
+    contentTitle: "Informações adicionais", text: props.opportunity.additionals },
 ])
 </script>
 

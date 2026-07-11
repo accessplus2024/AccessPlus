@@ -5,6 +5,7 @@ const props = defineProps({
   category: { type: String, required: true },
   icon: { type: String, required: true },
   color: { type: String, required: true },
+  to: { type: String, default: "/oportunidades" },
 })
 
 const hover = ref(false)
@@ -14,7 +15,7 @@ const ink = computed(() => (light.value ? "#15111F" : "#FFFFFF"))
 
 <template>
   <NuxtLink
-    to="/oportunidades"
+    :to="to"
     class="relative flex flex-col justify-between overflow-hidden text-left transition-all duration-300 ease-brand"
     :style="{
       background: color, color: ink, borderRadius: 'var(--r-card)',

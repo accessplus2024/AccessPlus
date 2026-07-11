@@ -4,19 +4,15 @@ import FilterGroup from "./FilterGroup.vue";
 const props = defineProps({
   show: Boolean,
   typeFilters: Array,
-  openFilters: Array,
   levelFilters: Array,
   audienceFilters: Array,
   tuitionFilters: Array,
   fieldFilters: Array,
   selectedTypeFilters: Object,
-  selectedStatusFilters: Object,
   selectedLevelFilters: Object,
   selectedAudienceFilters: Object,
   selectedTuitionFilters: Object,
   selectedFieldFilters: Object,
-  typeDisplayNames: Object,
-  statusDisplayNames: Object,
 });
 
 const emit = defineEmits(["toggle-filter", "close"]);
@@ -68,17 +64,8 @@ const closeFilters = () => {
           title="Tipo"
           :filters="typeFilters"
           :selected-filters="selectedTypeFilters"
-          :display-names="typeDisplayNames"
+          :display-names="{}"
           filter-type="type"
-          @toggle-filter="toggleFilter"
-        />
-
-        <FilterGroup
-          title="Inscrições abertas"
-          :filters="openFilters"
-          :selected-filters="selectedStatusFilters"
-          :display-names="statusDisplayNames"
-          filter-type="status"
           @toggle-filter="toggleFilter"
         />
 

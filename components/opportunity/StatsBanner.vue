@@ -1,5 +1,5 @@
 <script setup>
-import { Calendar, Compass, GraduationCap } from "@iconoir/vue"
+import { Calendar, Compass, GraduationCap, MapPin } from "@iconoir/vue"
 
 const props = defineProps({
   opportunity: { type: Object, required: true },
@@ -8,13 +8,14 @@ const props = defineProps({
 
 const stats = computed(() => [
   { icon: Calendar, label: "Prazo de inscrição", value: props.opportunity.deadline || "A confirmar" },
-  { icon: Compass, label: "Área de atuação", value: (props.opportunity.fields || []).join(", ") || "Diversas" },
-  { icon: GraduationCap, label: "Nível", value: props.opportunity.level || "Todos" },
+  { icon: Compass, label: "Área de atuação", value: (props.opportunity.areas || []).join(", ") || "Diversas" },
+  { icon: GraduationCap, label: "Nível", value: (props.opportunity.level || []).join(", ") || "Todos" },
+  { icon: MapPin, label: "Localização", value: props.opportunity.location || "A confirmar" },
 ])
 </script>
 
 <template>
-  <div class="bg-card border border-ink/8 grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-ink/8"
+  <div class="bg-card border border-ink/8 grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-ink/8"
        style="border-radius: var(--r-card); overflow: hidden">
     <div v-for="s in stats" :key="s.label" class="flex items-center gap-4" style="padding: 26px 28px">
       <span class="inline-flex items-center justify-center rounded-full flex-none"

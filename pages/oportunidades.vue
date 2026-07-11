@@ -16,39 +16,27 @@ useHead({
 const searchTerm = ref("");
 const showMobileFilters = ref(false);
 const selectedTypeFilters = ref(new Set());
-const selectedStatusFilters = ref(new Set());
 const selectedLevelFilters = ref(new Set());
 const selectedAudienceFilters = ref(new Set());
 const selectedTuitionFilters = ref(new Set());
-const selectedFieldFilters = ref(new Set()); // Novo filtro para fields (Interesse)
+const selectedFieldFilters = ref(new Set()); // Filtro de Interesse (Areas)
 const currentPage = ref(1);
 const itemsPerPage = 12;
 
-// Change from keywordFilters to typeFilters
+// Filtro de Tipo (categoria)
 const typeFilters = ref([
-  "olimpiada",
-  "mun",
-  "academico",
-  "intercambio",
-  "bolsa",
-  "competicao",
-  "escrita",
-  "mentoria",
+  "Olimpíadas Científicas",
+  "MUNs",
+  "Programas de Intercâmbio",
+  "Bolsas de Estudo",
+  "Programas Acadêmicos",
+  "Competições",
+  "Competições de Escrita",
+  "Mentorias",
+  "Estágios",
 ]);
 
-// Add type display mapping
-const typeDisplayNames = {
-  olimpiada: "Olimpíadas Científicas",
-  mun: "MUNs",
-  academico: "Programas Acadêmicos",
-  intercambio: "Programas de Intercâmbio",
-  bolsa: "Bolsas de Estudo",
-  competicao: "Competições",
-  escrita: "Competições de Escrita",
-  mentoria: "Mentorias",
-};
-
-// Filtros de Interesse (Fields)
+// Filtros de Interesse (Areas)
 const fieldFilters = ref([
   "Meio Ambiente",
   "Humanas",
@@ -57,16 +45,7 @@ const fieldFilters = ref([
   "Artes",
 ]);
 
-// Update openFilters to match database values
-const openFilters = ref(["sim", "nao"]);
-
-// Add status display mapping
-const statusDisplayNames = {
-  sim: "Sim",
-  nao: "Não",
-};
-
-const levelFilters = ref(["Fundamental", "Ensino Médio", "Gap"]);
+const levelFilters = ref(["Fundamental", "Ensino Médio", "Gap Year", "Faculdade"]);
 const audienceFilters = ref([
   "Negros",
   "LGBT",
@@ -86,9 +65,6 @@ const toggleFilter = (filter, filterType) => {
   switch (filterType) {
     case "type":
       filterSet = selectedTypeFilters;
-      break;
-    case "status":
-      filterSet = selectedStatusFilters;
       break;
     case "level":
       filterSet = selectedLevelFilters;
@@ -118,32 +94,27 @@ const toggleFilter = (filter, filterType) => {
 const filteredOpportunities = computed(() => {
   let filtered = tempOpps.value;
 
-  // Apply type filters
+  // Apply type filters (accumulative logic)
   if (selectedTypeFilters.value.size > 0) {
     filtered = filtered.filter((opportunity) =>
       selectedTypeFilters.value.has(opportunity.type)
     );
   }
 
-  // Apply status filters
-  if (selectedStatusFilters.value.size > 0) {
-    filtered = filtered.filter((opportunity) =>
-      selectedStatusFilters.value.has(opportunity.status)
-    );
-  }
-
-  // Apply level filters
+  // Apply level filters (accumulative logic)
   if (selectedLevelFilters.value.size > 0) {
-    filtered = filtered.filter((opportunity) =>
-      selectedLevelFilters.value.has(opportunity.level)
-    );
+    filtered = filtered.filter((opportunity) => {
+      return Array.from(selectedLevelFilters.value).some((filter) =>
+        (opportunity.level || []).includes(filter)
+      );
+    });
   }
 
   // Apply audience filters (accumulative logic)
   if (selectedAudienceFilters.value.size > 0) {
     filtered = filtered.filter((opportunity) => {
       return Array.from(selectedAudienceFilters.value).some((filter) =>
-        opportunity.audience.includes(filter)
+        (opportunity.audience || []).includes(filter)
       );
     });
   }
@@ -151,7 +122,7 @@ const filteredOpportunities = computed(() => {
   // Apply tuition filters (exclusive logic)
   if (selectedTuitionFilters.value.size > 0) {
     filtered = filtered.filter((opportunity) =>
-      selectedTuitionFilters.value.has(opportunity.tuition)
+      selectedTuitionFilters.value.has(opportunity.cost)
     );
   }
 
@@ -159,7 +130,7 @@ const filteredOpportunities = computed(() => {
   if (selectedFieldFilters.value.size > 0) {
     filtered = filtered.filter((opportunity) => {
       return Array.from(selectedFieldFilters.value).some((filter) =>
-        opportunity.fields.includes(filter)
+        (opportunity.areas || []).includes(filter)
       );
     });
   }
@@ -168,7 +139,7 @@ const filteredOpportunities = computed(() => {
   if (searchTerm.value) {
     const searchTermLower = searchTerm.value.toLowerCase();
     filtered = filtered.filter((o) =>
-      [o.Nome, o.description, ...(o.keywords || [])]
+      [o.title, o.description, ...(o.keywords || [])]
         .join(" ")
         .toLowerCase()
         .includes(searchTermLower)
@@ -209,11 +180,19 @@ const totalPages = computed(() => {
 // Fetch opportunities data from cached API
 const { data, loading, error, cacheInfo, fetchOpportunities } = useCachedOpportunities();
 
+const route = useRoute();
+
 onMounted(async () => {
   try {
     await fetchOpportunities();
     // Data is already processed by the server API, so we can use it directly
     tempOpps.value = data.value || [];
+
+    // Pre-select the "Tipo" filter when arriving from a homepage category tile
+    const typeParam = route.query.type;
+    if (typeParam && typeFilters.value.includes(typeParam)) {
+      selectedTypeFilters.value.add(typeParam);
+    }
   } catch (error) {
     console.error('Error loading opportunities:', error);
   }
@@ -248,19 +227,15 @@ onMounted(async () => {
       <!-- Desktop Filters -->
       <FiltersSidebar
         :type-filters="typeFilters"
-        :open-filters="openFilters"
         :level-filters="levelFilters"
         :audience-filters="audienceFilters"
         :tuition-filters="tuitionFilters"
         :field-filters="fieldFilters"
         :selected-type-filters="selectedTypeFilters"
-        :selected-status-filters="selectedStatusFilters"
         :selected-level-filters="selectedLevelFilters"
         :selected-audience-filters="selectedAudienceFilters"
         :selected-tuition-filters="selectedTuitionFilters"
         :selected-field-filters="selectedFieldFilters"
-        :type-display-names="typeDisplayNames"
-        :status-display-names="statusDisplayNames"
         @toggle-filter="toggleFilter"
       />
 
@@ -268,19 +243,15 @@ onMounted(async () => {
       <MobileFilters
         :show="showMobileFilters"
         :type-filters="typeFilters"
-        :open-filters="openFilters"
         :level-filters="levelFilters"
         :audience-filters="audienceFilters"
         :tuition-filters="tuitionFilters"
         :field-filters="fieldFilters"
         :selected-type-filters="selectedTypeFilters"
-        :selected-status-filters="selectedStatusFilters"
         :selected-level-filters="selectedLevelFilters"
         :selected-audience-filters="selectedAudienceFilters"
         :selected-tuition-filters="selectedTuitionFilters"
         :selected-field-filters="selectedFieldFilters"
-        :type-display-names="typeDisplayNames"
-        :status-display-names="statusDisplayNames"
         @toggle-filter="toggleFilter"
         @close="showMobileFilters = false"
       />

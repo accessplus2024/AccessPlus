@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue"
+import { ref } from "vue"
 import { NavArrowLeft, OpenNewWindow } from "@iconoir/vue"
 import { categoryIcon, isLightColor } from "~/utils/categories"
 
@@ -8,10 +8,9 @@ const props = defineProps({
   category: { type: Object, required: true },
 })
 
-const open = computed(() => props.opportunity.status === "sim")
 const onColor = computed(() => (isLightColor(props.category.color) ? "#15111F" : "#FFFFFF"))
 const showFullText = ref(false)
-const longAbout = computed(() => (props.opportunity.about || "").length > 220)
+const longAbout = computed(() => (props.opportunity.description || "").length > 220)
 </script>
 
 <template>
@@ -36,16 +35,16 @@ const longAbout = computed(() => (props.opportunity.about || "").length > 220)
       </div>
 
       <h1 class="mt-5" style="font-size: clamp(34px, 5.5vw, 72px); max-width: 18ch; text-wrap: balance">
-        {{ opportunity.Nome }}
+        {{ opportunity.title }}
       </h1>
 
       <p
-        v-if="opportunity.about"
+        v-if="opportunity.description"
         class="mt-6 leading-relaxed"
         :class="{ 'line-clamp-4': !showFullText }"
         :style="{ maxWidth: '70ch', fontSize: '17px', opacity: .92 }"
       >
-        {{ opportunity.about }}
+        {{ opportunity.description }}
       </p>
       <button
         v-if="longAbout"
@@ -57,14 +56,9 @@ const longAbout = computed(() => (props.opportunity.about || "").length > 220)
       </button>
 
       <div class="flex flex-wrap items-center gap-4 mt-8">
-        <a v-if="opportunity.site" :href="opportunity.site" target="_blank" rel="noopener" class="btn btn-ink">
+        <a v-if="opportunity.link" :href="opportunity.link" target="_blank" rel="noopener" class="btn btn-ink">
           Acessar oportunidade <OpenNewWindow class="w-[18px] h-[18px]" />
         </a>
-        <span class="inline-flex items-center gap-2 font-medium" :style="{ color: onColor }" style="font-size: 14px">
-          <span class="rounded-full" style="width: 9px; height: 9px"
-                :style="{ background: onColor, opacity: open ? 1 : .4 }" />
-          {{ open ? "Inscrições abertas" : "Inscrições encerradas" }}
-        </span>
       </div>
     </div>
   </header>

@@ -5,7 +5,6 @@ import { categoryFor } from "~/utils/categories";
 
 import HeroSection from "~/components/opportunity/HeroSection.vue";
 import StatsBanner from "~/components/opportunity/StatsBanner.vue";
-import ImageSection from "~/components/opportunity/ImageSection.vue";
 import InfoCards from "~/components/opportunity/InfoCards.vue";
 import TabNavigation from "~/components/opportunity/TabNavigation.vue";
 import ContentDisplay from "~/components/opportunity/ContentDisplay.vue";
@@ -13,7 +12,7 @@ import ContentDisplay from "~/components/opportunity/ContentDisplay.vue";
 const { data, loading, error, fetchRow } = useOpportunity();
 const opp = ref(null);
 
-const pageTitle = computed(() => (opp.value ? opp.value.Nome : "Oportunidade"));
+const pageTitle = computed(() => (opp.value ? opp.value.title : "Oportunidade"));
 const cat = computed(() => categoryFor(opp.value?.type));
 
 useHead(() => ({
@@ -21,7 +20,7 @@ useHead(() => ({
   meta: [
     { charset: "UTF-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-    { name: "description", content: opp.value ? `Detalhes sobre ${opp.value.Nome}` : "" },
+    { name: "description", content: opp.value ? `Detalhes sobre ${opp.value.title}` : "" },
   ],
   htmlAttrs: { lang: "pt-br" },
   link: [{ rel: "icon", href: "/favicon.ico" }],
@@ -46,7 +45,7 @@ onMounted(async () => {
     opp.value = data.value[0];
     changeContent(
       "Elegibilidade e guia de aplicação",
-      opp.value?.guide || "Nenhuma informação disponível.",
+      opp.value?.eligibility || "Nenhuma informação disponível.",
       "guide"
     );
   } catch (e) {
@@ -64,14 +63,9 @@ onMounted(async () => {
     <div class="wrap" style="padding-top: 64px; padding-bottom: 40px">
       <StatsBanner :opportunity="opp" :category="cat" />
 
-      <!-- Image + Info -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 mb-12">
-        <div class="lg:col-span-7">
-          <ImageSection :opportunity="opp" />
-        </div>
-        <div class="lg:col-span-5 space-y-5">
-          <InfoCards :opportunity="opp" />
-        </div>
+      <!-- Info -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-12 mb-12">
+        <InfoCards :opportunity="opp" />
       </div>
 
       <!-- Details -->

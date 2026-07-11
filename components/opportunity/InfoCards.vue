@@ -22,8 +22,8 @@ const keywordsList = computed(() => {
       Vá direto para o site oficial da oportunidade.
     </p>
     <a
-      v-if="opportunity.site"
-      :href="opportunity.site"
+      v-if="opportunity.link"
+      :href="opportunity.link"
       target="_blank"
       rel="noopener"
       class="btn btn-lime mt-5"

@@ -1,16 +1,13 @@
 <script setup>
 import { ArrowRight } from "@iconoir/vue"
-import { categoryFor, categoryIcon, isLightColor } from "~/utils/categories"
+import { categoryFor, categoryIcon, categoryIconHover, isLightColor } from "~/utils/categories"
 
 const props = defineProps({
   opportunity: { type: Object, required: true },
-  // kept for backwards compat with the catalog page; styling now derives from category.
-  getKeywordColor: { type: Function, required: false, default: null },
 })
 
 const cat = computed(() => categoryFor(props.opportunity.type))
-const open = computed(() => props.opportunity.status === "sim")
-const tags = computed(() => (props.opportunity.keywords || []).slice(0, 3))
+const tags = computed(() => (props.opportunity.areas || []).slice(0, 3))
 const labelColor = computed(() => (isLightColor(cat.value.color) ? "#15111F" : cat.value.color))
 const hover = ref(false)
 </script>
@@ -37,12 +34,12 @@ const hover = ref(false)
         style="width: 48px; height: 48px; box-shadow: 0 2px 8px rgba(21,17,31,.1)"
         :style="{ outline: `2px solid ${cat.color}`, outlineOffset: '-2px' }"
       >
-        <img :src="categoryIcon(cat.key)" alt="" style="width: 27px; height: 27px" />
+        <img :src="hover ? categoryIcon(cat.key) : categoryIconHover(cat.key)" alt="" class="w-8" />
       </span>
     </div>
 
     <h3 class="font-body font-bold text-ink" style="font-size: 24px; line-height: 1.1; margin: 16px 0 12px; max-width: 92%">
-      {{ opportunity.Nome }}
+      {{ opportunity.title }}
     </h3>
     <p class="text-ink/66 leading-snug" style="font-size: 14.5px; margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">
       {{ opportunity.description }}
@@ -57,13 +54,7 @@ const hover = ref(false)
       >{{ t }}</span>
     </div>
 
-    <div class="mt-auto flex items-center justify-between border-t border-ink/8" style="padding-top: 16px">
-      <span class="inline-flex items-center gap-2" style="font-size: 13px; font-weight: 500"
-            :style="{ color: open ? 'var(--color-teal)' : 'rgba(21,17,31,.45)' }">
-        <span class="rounded-full" style="width: 8px; height: 8px"
-              :style="{ background: open ? 'var(--color-teal)' : 'rgba(21,17,31,.3)' }" />
-        {{ open ? "Inscrições abertas" : "Encerrado" }}
-      </span>
+    <div class="mt-auto flex items-center justify-end border-t border-ink/8" style="padding-top: 16px">
       <span class="inline-flex items-center gap-1.5 font-semibold text-ink transition-transform duration-200 ease-brand group-hover:translate-x-1" style="font-size: 14.5px">
         Ver mais <ArrowRight class="w-[17px] h-[17px]" />
       </span>
