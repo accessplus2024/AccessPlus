@@ -22,9 +22,15 @@ const stats = computed(() => [
             style="width: 48px; height: 48px" :style="{ background: `${category.color}1f`, color: category.color }">
         <component :is="s.icon" class="w-6 h-6" />
       </span>
-      <div class="min-w-0">
-        <p class="text-ink/55 font-medium" style="font-size: 12px; letter-spacing: .06em; text-transform: uppercase">{{ s.label }}</p>
-        <p class="font-body font-bold text-ink mt-0.5 truncate" style="font-size: 17px">{{ s.value }}</p>
+      <div class="flex flex-wrap gap-4 items-start">
+        <div class="min-w-0">
+        <p class="text-ink/55 font-medium" style="font-size: 12px; letter-spacing: .06em; text-transform: uppercase">
+          {{ s.label }}
+        </p>
+        <p class="font-body font-bold text-ink mt-0.5 leading-tight" style="font-size: 17px">
+          {{ s.value }}
+        </p>
+        </div>
       </div>
     </div>
   </div>

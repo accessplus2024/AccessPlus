@@ -7,8 +7,13 @@ const props = defineProps({
 })
 const emit = defineEmits(["changeContent"])
 
+function hasContent(text) {
+  if (Array.isArray(text)) return text.length > 0
+  return typeof text === "string" && text.trim().length > 0
+}
+
 const tabs = computed(() => {
-  const list = [
+  const candidates = [
     { key: "guide", icon: BookmarkBook, title: "Elegibilidade e guia", sub: "Critérios e processo de aplicação",
       contentTitle: "Elegibilidade e guia de aplicação", text: props.opportunity.eligibility },
     { key: "process", icon: InfoCircle, title: "Sobre o processo", sub: "Informações do processo seletivo",
@@ -17,12 +22,10 @@ const tabs = computed(() => {
       contentTitle: "Dicas de contemplados", text: props.opportunity.applicants },
     { key: "additional", icon: Page, title: "Informações adicionais", sub: "Detalhes complementares",
       contentTitle: "Informações adicionais", text: props.opportunity.additionals },
+    { key: "resources", icon: Link, title: "Links úteis", sub: "Discussões, vídeos e depoimentos",
+      contentTitle: "Links úteis", text: props.opportunity.resources },
   ]
-  if ((props.opportunity.resources || []).length > 0) {
-    list.push({ key: "resources", icon: Link, title: "Links úteis", sub: "Discussões, vídeos e depoimentos",
-      contentTitle: "Links úteis", text: props.opportunity.resources })
-  }
-  return list
+  return candidates.filter((t) => hasContent(t.text))
 })
 </script>
 
