@@ -25,7 +25,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     beehiivApiKey: process.env.BEEHIV_API_KEY,
     supabaseUrl: process.env.SUPABASE_URL,
-    supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    supabaseKey: process.env.SUPABASE_KEY,
     public: {
       beehiivPublicationId: process.env.BEEHIV_PUBLICATION_ID,
     },
