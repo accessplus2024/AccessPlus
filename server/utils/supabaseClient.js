@@ -5,7 +5,7 @@ let client = null;
 export function useSupabase() {
   if (!client) {
     const config = useRuntimeConfig();
-    client = createClient(config.supabaseUrl, config.supabaseServiceRoleKey);
+    client = createClient(config.supabaseUrl, config.supabaseKey);
   }
   return client;
 }
