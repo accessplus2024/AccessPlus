@@ -95,6 +95,7 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 - 🎯 Educational opportunities platform
 - 📰 Newsletter integration with Beehiiv
 - 📱 Responsive design
+- 🤖 Accesia
 - 🎨 Modern UI with Tailwind CSS
 - ⚡ Fast performance with Nuxt 3
 - 🔍 SEO optimized
