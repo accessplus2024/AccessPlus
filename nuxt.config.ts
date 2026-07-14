@@ -28,6 +28,10 @@ export default defineNuxtConfig({
     supabaseKey: process.env.SUPABASE_KEY,
     public: {
       beehiivPublicationId: process.env.BEEHIV_PUBLICATION_ID,
+      // Credenciais PÚBLICAS do Supabase (chave anon/publishable — pode ir pro navegador).
+      // Usadas para login com Google e para postar/ler comentários no site.
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
     },
   },
 

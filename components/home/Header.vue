@@ -25,7 +25,7 @@ const cluster = [
           <span class="kicker">
             Plataforma gratuita Brasil
           </span>
-          <h1 class="mt-[22px]" style="font-size: clamp(38px, 8vw, 96px); text-wrap: balance">
+          <h1 class="mt-[22px]" style="font-size: clamp(28px, 6vw, 72px); text-wrap: balance">
             Procurando<br />por
             <span class="relative inline-block text-primary">
               oportunidades?
@@ -54,24 +54,32 @@ const cluster = [
           </div>
         </div>
 
-        <!-- decorative cluster -->
-        <div class="hero-art relative" style="height: 440px">
-          <div
-            v-for="(b, i) in cluster"
-            :key="b.key"
-            class="floaty absolute"
-            :style="{
-              left: b.x, top: b.y, animationDelay: `${i * 0.8}s`,
-              background: b.color, color: b.ink, borderRadius: '26px',
-              padding: '20px 22px', width: `${170 * b.s}px`,
-              boxShadow: `0 18px 40px ${b.color}44`,
-            }"
-          >
-            <span class="inline-flex items-center justify-center rounded-full"
-                  style="width: 42px; height: 42px; background: rgba(255,255,255,.85)">
-              <img :src="categoryIcon(b.key)" alt="" style="width: 24px; height: 24px" />
-            </span>
-            <div class="font-body font-semibold mt-3" style="font-size: 15px; line-height: 1.15">{{ b.label }}</div>
+        <!-- coluna direita: oportunidades flutuantes + AccessIA logo abaixo -->
+        <div class="hero-right">
+          <!-- decorative cluster -->
+          <div class="hero-art relative" style="height: 500px">
+            <div
+              v-for="(b, i) in cluster"
+              :key="b.key"
+              class="floaty absolute"
+              :style="{
+                left: b.x, top: b.y, animationDelay: `${i * 0.8}s`,
+                background: b.color, color: b.ink, borderRadius: '26px',
+                padding: '20px 22px', width: `${170 * b.s}px`,
+                boxShadow: `0 18px 40px ${b.color}44`,
+              }"
+            >
+              <span class="inline-flex items-center justify-center rounded-full"
+                    style="width: 42px; height: 42px; background: rgba(255,255,255,.85)">
+                <img :src="categoryIcon(b.key)" alt="" style="width: 24px; height: 24px" />
+              </span>
+              <div class="font-body font-semibold mt-3" style="font-size: 15px; line-height: 1.15">{{ b.label }}</div>
+            </div>
+          </div>
+
+          <!-- AccessIA: abaixo das oportunidades flutuantes, ao lado das estatísticas -->
+          <div class="accessia-slot">
+            <AccessIA />
           </div>
         </div>
       </div>
@@ -84,10 +92,26 @@ const cluster = [
   display: grid;
   grid-template-columns: 1.15fr .85fr;
   gap: 40px;
-  align-items: center;
+  /* topo-alinhado: ao abrir a AccessIA, o texto do hero NÃO se mexe;
+     só os componentes abaixo do hero descem. */
+  align-items: start;
 }
+
+/* coluna direita: cluster no topo, AccessIA logo abaixo */
+.hero-right {
+  display: flex;
+  flex-direction: column;
+}
+.accessia-slot {
+  position: relative;
+  z-index: 20; /* garante que o painel flutuante fique acima do resto */
+  margin-top: 4px;
+}
+
 @media (max-width: 980px) {
   .hero-grid { grid-template-columns: 1fr; }
   .hero-art { display: none; }
+  /* no mobile o cluster some, mas a AccessIA continua visível abaixo do conteúdo */
+  .accessia-slot { margin-top: 8px; }
 }
 </style>

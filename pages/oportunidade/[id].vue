@@ -8,6 +8,7 @@ import StatsBanner from "~/components/opportunity/StatsBanner.vue";
 import InfoCards from "~/components/opportunity/InfoCards.vue";
 import TabNavigation from "~/components/opportunity/TabNavigation.vue";
 import ContentDisplay from "~/components/opportunity/ContentDisplay.vue";
+import Comments from "~/components/opportunity/Comments.vue";
 
 const { data, loading, error, fetchRow } = useOpportunity();
 const opp = ref(null);
@@ -77,6 +78,9 @@ onMounted(async () => {
         />
         <ContentDisplay :content-title="contentTitle" :content-text="contentText" />
       </div>
+
+      <!-- Comentários da comunidade -->
+      <Comments :opportunity-id="opportunityId" />
     </div>
   </div>
 </template>

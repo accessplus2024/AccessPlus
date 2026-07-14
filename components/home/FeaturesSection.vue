@@ -1,9 +1,22 @@
 <script setup>
-const features = [
-  { big: "+170", label: "oportunidades educacionais", color: "var(--color-primary)", ink: "#fff" },
+const { data, fetchOpportunities } = useCachedOpportunities()
+
+const total = ref(null)
+
+onMounted(async () => {
+  try {
+    await fetchOpportunities()
+    total.value = data.value?.length ?? null
+  } catch (err) {
+    console.error('Error loading opportunities count:', err)
+  }
+})
+
+const features = computed(() => [
+  { big: total.value ? `+${total.value}` : "+200", label: "oportunidades educacionais", color: "var(--color-primary)", ink: "#fff" },
   { big: "Guias", label: "e informações atualizadas", color: "var(--color-lime)", ink: "#15111F" },
   { big: "Dicas", label: "de premiados das mais diversas áreas", color: "var(--color-magenta)", ink: "#fff" },
-]
+])
 </script>
 
 <template>
