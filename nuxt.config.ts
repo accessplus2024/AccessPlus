@@ -30,6 +30,7 @@ export default defineNuxtConfig({
   plugins: [
     { src: "~/plugins/vercel-analytics.client.ts", mode: "client" },
     { src: "~/plugins/google-analytics.ts", mode: "client" },
+    { src: "~/plugins/supabase-auth.client.js", mode: "client" },
   ],
 
   runtimeConfig: {
