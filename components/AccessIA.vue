@@ -234,6 +234,11 @@ async function enviar() {
       }
       return
     }
+    // 504 = a busca demorou demais (tempo limite do servidor).
+    if (status === 504) {
+      erro.value = 'A busca demorou mais que o esperado. Tenta de novo, por favor 🙂'
+      return
+    }
     console.error('Erro completo:', e)
     erro.value = payload?.error || e?.message || 'Algo deu errado ao buscar suas oportunidades. Tenta de novo?'
   } finally {

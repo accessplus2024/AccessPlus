@@ -6,8 +6,9 @@ function normalizeVector(vec) {
   return vec.map(val => val / magnitude);
 }
 
-// Tenta a chamada até 3 vezes se o modelo estiver sobrecarregado (503)
-async function gerarComRetry(url, options, tentativas = 3) {
+// Tenta a chamada de novo se o modelo estiver sobrecarregado (503),
+// com espera curta para não estourar o tempo da função (evita 504).
+async function gerarComRetry(url, options, tentativas = 2) {
   for (let i = 0; i < tentativas; i++) {
     try {
       return await $fetch(url, options);
@@ -15,7 +16,7 @@ async function gerarComRetry(url, options, tentativas = 3) {
       const status = err?.response?.status || err?.status;
       const ultimaTentativa = i === tentativas - 1;
       if (status === 503 && !ultimaTentativa) {
-        await new Promise(r => setTimeout(r, 1000 * (i + 1))); // espera 1s, depois 2s
+        await new Promise(r => setTimeout(r, 500)); // espera curta
         continue;
       }
       throw err;

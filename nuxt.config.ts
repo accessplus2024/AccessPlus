@@ -1,6 +1,16 @@
 // nuxt.config.ts
 export default defineNuxtConfig({
-  nitro: { compatibilityDate: "2024-04-03" },
+  nitro: {
+    compatibilityDate: "2024-04-03",
+    // A rota /api/rag/search chama a IA (embedding + geração) e pode passar dos
+    // ~10s padrão da Vercel, causando 504. Damos mais tempo à função.
+    // 60s é o máximo no plano Hobby/grátis da Vercel.
+    vercel: {
+      functions: {
+        maxDuration: 60,
+      },
+    },
+  },
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
 
