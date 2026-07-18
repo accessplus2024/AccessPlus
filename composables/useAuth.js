@@ -42,9 +42,9 @@ export function useAuth() {
   }
 
   // Entra com o Google e volta para a MESMA página (URL limpa, sem #hash nem query).
-  async function signInWithGoogle() {
+   async function signInWithGoogle() {
     if (!supabase) return
-    const destino = `${window.location.origin}${window.location.pathname}`
+    const destino = window.location.href
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: destino },
