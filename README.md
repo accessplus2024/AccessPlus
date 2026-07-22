@@ -107,3 +107,4 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 - **Newsletter** (`/newsletter`) - Latest newsletter posts from Beehiiv
 - **Opportunities** (`/oportunidades`) - Browse all educational opportunities
 - **Opportunity Details** (`/oportunidade/[id]`) - Individual opportunity pages
+
