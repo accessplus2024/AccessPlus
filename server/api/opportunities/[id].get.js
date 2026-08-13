@@ -1,4 +1,10 @@
-import { getOpportunities } from "../../utils/opportunitiesCache";
+import { useSupabase } from "../../utils/supabaseClient";
+
+// Todas as colunas da oportunidade, exceto `embedding` (vetor de 1024
+// números usado só pela busca por IA — nunca lido pelo front-end, mas
+// pesado o bastante para inflar o tráfego do Supabase sozinho).
+const DETAIL_COLUMNS =
+  "id, title, description, link, deadline, areas, level, location, audience, cost, language, keywords, eligibility, process, applicants, additionals, resources, status, review, created_at, type";
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, "id");
@@ -10,15 +16,27 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const result = await getOpportunities();
-  const opportunity = result.data.find((opp) => String(opp.id) === String(id));
+  const supabase = useSupabase();
+  const { data, error } = await supabase
+    .from("opportunities")
+    .select(DETAIL_COLUMNS)
+    .eq("id", id)
+    .eq("status", "Aprovada")
+    .maybeSingle();
 
-  if (!opportunity) {
+  if (error) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Failed to fetch opportunity data",
+    });
+  }
+
+  if (!data) {
     throw createError({
       statusCode: 404,
       statusMessage: `Opportunity with ID ${id} not found`,
     });
   }
 
-  return { ...result, data: opportunity };
+  return { data };
 });

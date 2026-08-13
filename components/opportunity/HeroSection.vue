@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue"
-import { NavArrowLeft, OpenNewWindow } from "@iconoir/vue"
+import { NavArrowLeft } from "@iconoir/vue"
 import { categoryIcon, isLightColor } from "~/utils/categories"
 
 const props = defineProps({
@@ -54,12 +54,6 @@ const longAbout = computed(() => (props.opportunity.description || "").length > 
       >
         {{ showFullText ? "Mostrar menos" : "Ler mais" }}
       </button>
-
-      <div class="flex flex-wrap items-center gap-4 mt-8">
-        <a v-if="opportunity.link" :href="opportunity.link" target="_blank" rel="noopener" class="btn btn-ink">
-          Acessar oportunidade <OpenNewWindow class="w-[18px] h-[18px]" />
-        </a>
-      </div>
     </div>
   </header>
 </template>

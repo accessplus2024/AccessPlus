@@ -9,6 +9,8 @@ import InfoCards from "~/components/opportunity/InfoCards.vue";
 import TabNavigation from "~/components/opportunity/TabNavigation.vue";
 import ContentDisplay from "~/components/opportunity/ContentDisplay.vue";
 import Comments from "~/components/opportunity/Comments.vue";
+import AccessGate from "~/components/opportunity/AccessGate.vue";
+import { OpenNewWindow } from "@iconoir/vue";
 
 const { data, loading, error, fetchRow } = useOpportunity();
 const opp = ref(null);
@@ -62,25 +64,42 @@ onMounted(async () => {
     <HeroSection :opportunity="opp" :category="cat" />
 
     <div class="wrap" style="padding-top: 64px; padding-bottom: 40px">
-      <StatsBanner :opportunity="opp" :category="cat" />
+      <ClientOnly>
+        <AccessGate>
+          <a
+            v-if="opp.link"
+            :href="opp.link"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-ink mb-10"
+          >
+            Acessar oportunidade <OpenNewWindow class="w-[18px] h-[18px]" />
+          </a>
 
-      <!-- Info -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-12 mb-12">
-        <InfoCards :opportunity="opp" />
-      </div>
+          <StatsBanner :opportunity="opp" :category="cat" />
 
-      <!-- Details -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <TabNavigation
-          :opportunity="opp"
-          :active-tab="activeTab"
-          @changeContent="changeContent"
-        />
-        <ContentDisplay :content-title="contentTitle" :content-text="contentText" />
-      </div>
+          <!-- Info -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-12 mb-12">
+            <InfoCards :opportunity="opp" />
+          </div>
 
-      <!-- Comentários da comunidade -->
-      <Comments :opportunity-id="opportunityId" />
+          <!-- Details -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <TabNavigation
+              :opportunity="opp"
+              :active-tab="activeTab"
+              @changeContent="changeContent"
+            />
+            <ContentDisplay :content-title="contentTitle" :content-text="contentText" />
+          </div>
+
+          <!-- Comentários da comunidade -->
+          <Comments :opportunity-id="opportunityId" />
+        </AccessGate>
+        <template #fallback>
+          <p class="text-ink/50" style="font-size: 14px">Carregando...</p>
+        </template>
+      </ClientOnly>
     </div>
   </div>
 </template>

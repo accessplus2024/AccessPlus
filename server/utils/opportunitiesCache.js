@@ -4,11 +4,19 @@ let cachedData = null;
 let lastFetch = 0;
 const CACHE_DURATION = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
 
+// Colunas leves usadas pela listagem/home. NÃO inclui os textos-guia
+// (eligibility/process/applicants/additionals/resources) nem o `embedding`
+// (vetor de 1024 números usado só pela busca por IA) — esses campos só são
+// necessários na página de detalhe, que busca a linha individualmente
+// (ver server/api/opportunities/[id].get.js). Buscar tudo aqui multiplicava
+// o tráfego do Supabase por ~200x sem necessidade.
+const LIST_COLUMNS = "id, title, description, type, level, audience, cost, areas, keywords";
+
 async function fetchFromSupabase() {
   const supabase = useSupabase();
   const { data, error } = await supabase
     .from("opportunities")
-    .select("*")
+    .select(LIST_COLUMNS)
     .eq("status", "Aprovada")
     .order("id");
 

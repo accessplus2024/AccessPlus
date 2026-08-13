@@ -1,9 +1,4 @@
 <script setup>
-const marquee = [
-  "Olimpíadas", "Bolsas", "Intercâmbios", "MUNs",
-  "Mentorias", "Competições", "Redação", "Estágios", "Programas Acadêmicos",
-]
-
 useHead({
   title: "Access+ — Oportunidades educacionais para jovens",
   meta: [
@@ -19,10 +14,7 @@ useHead({
 <template>
   <main>
     <HomeHeader />
-    <Marquee :items="marquee" />
     <HomeOpportunitiesSection />
-    <HomeFeaturesSection />
-    <HomeNewsSection />
     <NewsletterCta />
     <HomeAboutSection />
     <HomeContactSection />
