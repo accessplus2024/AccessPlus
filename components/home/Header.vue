@@ -1,20 +1,80 @@
 <script setup>
 import { ArrowRight, Search } from "@iconoir/vue"
 
+const router = useRouter()
 const { data: opportunities, fetchOpportunities } = useCachedOpportunities()
+
+const searchQuery = ref("")
+
+function buscar(termo) {
+  const q = (termo ?? searchQuery.value).trim()
+  if (!q) return
+  router.push(`/oportunidades?q=${encodeURIComponent(q)}`)
+}
+
+// Efeito de "digitando e apagando" no placeholder, alternando entre
+// níveis de ensino e nomes reais de oportunidades — só roda enquanto
+// o campo estiver vazio (pausa assim que o estudante começa a digitar).
+const nomesPlaceholder = ["Ensino Fundamental", "Ensino Médio", "Bolsa de estudo", "Intercâmbio"]
+const placeholderText = ref("Buscar oportunidades...")
+let animacaoTimer = null
+
+const poolPlaceholder = computed(() => {
+  const titulos = opportunities.value?.length
+    ? [...opportunities.value].sort(() => Math.random() - 0.5).slice(0, 4).map((o) => o.title || o.Nome).filter(Boolean)
+    : []
+  return [...nomesPlaceholder, ...titulos]
+})
+
+function animarPlaceholder() {
+  let fraseIndex = 0
+  let charIndex = 0
+  let apagando = false
+
+  const passo = () => {
+    if (searchQuery.value) {
+      animacaoTimer = setTimeout(passo, 400)
+      return
+    }
+    const pool = poolPlaceholder.value
+    if (!pool.length) {
+      animacaoTimer = setTimeout(passo, 600)
+      return
+    }
+    const frase = pool[fraseIndex % pool.length]
+
+    if (!apagando) {
+      charIndex++
+      placeholderText.value = frase.slice(0, charIndex)
+      if (charIndex === frase.length) {
+        apagando = true
+        animacaoTimer = setTimeout(passo, 1400)
+        return
+      }
+    } else {
+      charIndex--
+      placeholderText.value = frase.slice(0, charIndex) || " "
+      if (charIndex === 0) {
+        apagando = false
+        fraseIndex++
+      }
+    }
+    animacaoTimer = setTimeout(passo, apagando ? 35 : 70)
+  }
+  animacaoTimer = setTimeout(passo, 600)
+}
 
 onMounted(async () => {
   await fetchOpportunities()
+  animarPlaceholder()
 })
 
-const stats = computed(() => {
-  const oppCount = opportunities.value?.length || 0
-  return [
-    { n: `+${oppCount}`, label: "oportunidades educacionais" },
-    { n: "9", label: "categorias atualizadas" },
-    { n: "100%", label: "gratuito, para sempre" },
-  ]
-})
+onBeforeUnmount(() => { if (animacaoTimer) clearTimeout(animacaoTimer) })
+
+const stats = [
+  { n: "+290", label: "oportunidades educacionais" },
+  { n: "100%", label: "gratuito, para sempre" },
+]
 
 const searchExamples = computed(() => {
   if (!opportunities.value?.length) {
@@ -36,7 +96,7 @@ const mediaMentions = ["TV Globo", "G1", "TV Cultura", "Festival LED"]
 
 const heroImage = {
   url: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
-  label: "Estudantes brasileiros em intercâmbio internacional",
+  label: "João Pedro Santos, de Alcobaça - Bahia, estudante da MBZUAI em IA com tudo pago, estudante de escolas públicas",
 }
 </script>
 
@@ -61,13 +121,20 @@ const heroImage = {
 
           <div class="search-stack">
             <div class="search-box">
-              <input type="text" placeholder="Buscar oportunidades..." />
-              <Search class="search-icon" />
+              <input
+                type="text"
+                v-model="searchQuery"
+                :placeholder="placeholderText"
+                @keyup.enter="buscar()"
+              />
+              <button type="button" class="search-icon-btn" aria-label="Buscar oportunidades" @click="buscar()">
+                <Search class="search-icon" />
+              </button>
             </div>
 
             <div class="tag-row">
               <span>Exemplos:</span>
-              <button v-for="example in searchExamples" :key="example" type="button">
+              <button v-for="example in searchExamples" :key="example" type="button" @click="buscar(example)">
                 {{ example }}
               </button>
             </div>
@@ -111,8 +178,6 @@ const heroImage = {
         <div class="hero-visual">
           <div class="visual-card">
             <div class="visual-photo" :style="{ backgroundImage: `url('${heroImage.url}')` }" />
-            <div class="visual-badge badge-one">+270 oportunidades</div>
-            <div class="visual-badge badge-two">100% grátis</div>
             <span class="visual-caption">{{ heroImage.label }}</span>
           </div>
 
@@ -136,7 +201,7 @@ const heroImage = {
   display: grid;
   grid-template-columns: 1.08fr 0.92fr;
   gap: 56px;
-  align-items: center;
+  align-items: start;
 }
 
 .hero-copy {
@@ -199,14 +264,31 @@ const heroImage = {
   box-shadow: 0 0 0 4px rgba(75, 63, 228, 0.08);
 }
 
-.search-icon {
+.search-icon-btn {
   position: absolute;
-  right: 18px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  color: rgba(21, 17, 31, 0.45);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.search-icon-btn:hover {
+  background: rgba(75, 63, 228, 0.1);
+  color: var(--color-primary);
+}
+
+.search-icon {
   width: 20px;
   height: 20px;
-  color: rgba(21, 17, 31, 0.45);
 }
 
 .tag-row {
@@ -365,35 +447,6 @@ const heroImage = {
   color: #fff;
 }
 
-.visual-badge {
-  position: absolute;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 40px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid rgba(21, 17, 31, 0.08);
-  color: var(--color-ink);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  box-shadow: 0 12px 28px rgba(21, 17, 31, 0.08);
-}
-
-.badge-one {
-  top: 20px;
-  left: 20px;
-}
-
-.badge-two {
-  right: 20px;
-  bottom: 20px;
-}
-
 .accessia-slot {
   position: relative;
   z-index: 20;
@@ -444,10 +497,6 @@ const heroImage = {
 
   .stats-row {
     gap: 18px 28px;
-  }
-
-  .visual-caption {
-    right: 120px;
   }
 }
 </style>

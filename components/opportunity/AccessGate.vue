@@ -23,7 +23,23 @@ const faixasRenda = [
   { key: "acima_5", label: "Acima de 5 salários mínimos" },
 ]
 
-const form = ref({ name: "", phone: "", school: "", educationLevel: "", income: "" })
+const tiposEscola = [
+  { key: "publica_estadual", label: "Pública Estadual" },
+  { key: "publica_municipal", label: "Pública Municipal" },
+  { key: "publica_federal", label: "Pública Federal" },
+  { key: "privada", label: "Privada" },
+  { key: "privada_bolsa", label: "Privada com bolsa" },
+]
+
+const estados = [
+  "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
+  "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO",
+]
+
+const form = ref({
+  name: "", age: "", phone: "", school: "", schoolType: "", educationLevel: "",
+  city: "", state: "", income: "", lgpdConsent: false,
+})
 const enviando = ref(false)
 const erroForm = ref(null)
 
@@ -98,6 +114,10 @@ async function enviar() {
           <input v-model="form.name" class="field" type="text" placeholder="Seu nome" />
         </label>
         <label class="field-label">
+          Idade
+          <input v-model="form.age" class="field" type="number" min="5" max="100" placeholder="Sua idade" />
+        </label>
+        <label class="field-label">
           Telefone (com DDD)
           <input v-model="form.phone" class="field" type="tel" placeholder="(11) 91234-5678" />
         </label>
@@ -106,10 +126,28 @@ async function enviar() {
           <input v-model="form.school" class="field" type="text" placeholder="Nome da sua escola" />
         </label>
         <label class="field-label">
+          Tipo de escola
+          <select v-model="form.schoolType" class="field">
+            <option value="" disabled>Selecione...</option>
+            <option v-for="t in tiposEscola" :key="t.key" :value="t.key">{{ t.label }}</option>
+          </select>
+        </label>
+        <label class="field-label">
           Escolaridade
           <select v-model="form.educationLevel" class="field">
             <option value="" disabled>Selecione...</option>
             <option v-for="n in niveis" :key="n.key" :value="n.key">{{ n.label }}</option>
+          </select>
+        </label>
+        <label class="field-label">
+          Cidade
+          <input v-model="form.city" class="field" type="text" placeholder="Sua cidade" />
+        </label>
+        <label class="field-label">
+          Estado
+          <select v-model="form.state" class="field">
+            <option value="" disabled>Selecione...</option>
+            <option v-for="uf in estados" :key="uf" :value="uf">{{ uf }}</option>
           </select>
         </label>
         <label class="field-label field-label--full">
@@ -121,9 +159,18 @@ async function enviar() {
         </label>
       </div>
 
+      <label class="lgpd-check mt-6">
+        <input v-model="form.lgpdConsent" type="checkbox" />
+        <span>
+          Li e concordo com o uso dos meus dados (nome, idade, telefone, escola, escolaridade,
+          cidade e estado) pela Access+ para fins de contato e recomendação de oportunidades
+          educacionais, conforme a Lei Geral de Proteção de Dados (LGPD).
+        </span>
+      </label>
+
       <p v-if="erroForm" class="mt-4" style="color: #E24444; font-size: 13.5px">{{ erroForm }}</p>
 
-      <button class="btn btn-ink mt-6" :disabled="enviando" @click="enviar">
+      <button class="btn btn-ink mt-6" :disabled="enviando || !form.lgpdConsent" @click="enviar">
         <template v-if="enviando">Enviando...</template>
         <template v-else>Concluir cadastro <ArrowRight class="w-[18px] h-[18px]" /></template>
       </button>
@@ -200,6 +247,25 @@ async function enviar() {
   transition: border-color .2s ease;
 }
 .field:focus { outline: none; border-color: var(--color-ink); }
+
+.lgpd-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+.lgpd-check input {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  accent-color: var(--color-primary);
+}
+.lgpd-check span {
+  font-size: 13px;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-ink) 65%, transparent);
+}
 
 @media (max-width: 640px) {
   .form-grid { grid-template-columns: 1fr; }

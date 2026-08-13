@@ -193,6 +193,11 @@ onMounted(async () => {
     if (typeParam && typeFilters.value.includes(typeParam)) {
       selectedTypeFilters.value.add(typeParam);
     }
+
+    // Pre-fill the search box when arriving from the homepage search bar
+    if (route.query.q) {
+      searchTerm.value = String(route.query.q);
+    }
   } catch (error) {
     console.error('Error loading opportunities:', error);
   }

@@ -57,13 +57,16 @@ const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.valu
       </nav>
 
       <!-- Desktop CTA -->
-      <NuxtLink
-        to="/oportunidades"
-        class="hidden md:inline-flex btn btn-lime"
-        style="padding: 11px 20px; font-size: 15px"
-      >
-        Explorar
-      </NuxtLink>
+      <div class="hidden md:flex items-center gap-4">
+        <NuxtLink
+          to="/oportunidades"
+          class="btn btn-lime"
+          style="padding: 11px 20px; font-size: 15px"
+        >
+          Explorar
+        </NuxtLink>
+        <UserMenu />
+      </div>
 
       <!-- Mobile hamburger -->
       <button
@@ -119,6 +122,7 @@ const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.valu
         >
           Explorar
         </NuxtLink>
+        <UserMenu class="mt-6" />
         <Socials class="mt-auto" theme="light" />
       </div>
     </div>
