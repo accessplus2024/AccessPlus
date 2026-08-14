@@ -172,7 +172,8 @@ async function enviar() {
         <span>
           Li e concordo com o uso dos meus dados (nome, idade, telefone, escola, escolaridade,
           cidade e estado) pela Access+ para fins de contato e recomendação de oportunidades
-          educacionais, conforme a Lei Geral de Proteção de Dados (LGPD).
+          educacionais, conforme a Lei Geral de Proteção de Dados (LGPD), e autorizo o envio de
+          e-mails da Access+ sobre oportunidades, novidades e conteúdos educacionais.
         </span>
       </label>
 
