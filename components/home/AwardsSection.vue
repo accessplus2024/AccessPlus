@@ -2,34 +2,36 @@
 const destaques = [
   {
     key: "ashoka",
-    logo: "/images/ashoka.png",
+    logo: "https://www.ashoka.org/themes/custom/blanco_ashoka_org/logo.svg",
     eyebrow: "Parte do",
     title: "Jovens Transformadores 2025",
     org: "da Ashoka",
   },
   {
     key: "top15",
-    logo: "/images/top15-finalist.jpg",
+    logo: "/images/BeChangemaker_logo.svg",
     eyebrow: "Parte do",
     title: "Top 15 Finalist",
     org: "do BeChangemaker — Representante do Brasil",
   },
 ]
 
-const parceiros = [
-  { key: "bechangemaker", name: "BeChangemaker", logo: "/images/BeChangemaker_logo.svg" },
-  { key: "worldskills", name: "WorldSkills", logo: "/images/Worldskills_logo.png" },
+const outrasOrganizacoes = [
   { key: "hp", name: "HP Foundation", logo: "/images/HP_Foundation.svg" },
   { key: "unesco", name: "UNESCO-UNEVOC", logo: "/images/UNESCO_UNEVOC.svg" },
-  { key: "brasa", name: "BRASA", logo: "/images/brasa.png" },
-  { key: "geg", name: "Instituto G&G", logo: "/images/instituto-geg.png" },
+  { key: "worldskills", name: "WorldSkills", logo: "/images/Worldskills_logo.png" },
+]
+
+const confiam = [
+  { key: "brasa", name: "BRASA", logo: "https://framerusercontent.com/images/quncBN4Zd8Lcb2mpMW0cWwF5EE.png?scale-down-to=512&width=1080&height=1080" },
+  { key: "geg", name: "Instituto G&G", logo: "https://static.wixstatic.com/media/2dee5e_8222e6990afd4f2aadfa291bb9f5cc2a~mv2.png/v1/crop/x_50,y_445,w_1030,h_464/fill/w_366,h_156,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Logo_Instituto%20G%26G.png" },
 ]
 
 const midia = [
   { key: "g1", name: "G1", logo: "https://upload.wikimedia.org/wikipedia/commons/3/34/Logotipo_g1.svg" },
   { key: "tvglobo", name: "TV Globo", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c9/TV_Globo_2025.svg" },
-  { key: "festivaled", name: "Festival LED", logo: "/images/festival-led.png" },
   { key: "tvcultura", name: "TV Cultura", logo: "https://upload.wikimedia.org/wikipedia/commons/8/82/Cultura_logo_2013.svg" },
+  { key: "festivaled", name: "Festival LED", logo: "https://www.cidademarketing.com.br/marketing/wp-content/uploads/2026/08/festival_led_educacao_globo.webp" },
 ]
 
 // Enquanto as imagens não existirem em public/images, mostra o nome em
@@ -67,16 +69,31 @@ function marcarQuebrada(key) {
         </div>
       </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-8 mt-14">
-        <template v-for="p in parceiros" :key="p.key">
+      <p class="kicker mt-14" style="justify-content: center; display: flex">Outras organizações que também nos reconhecem</p>
+      <div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-8 mt-6">
+        <template v-for="o in outrasOrganizacoes" :key="o.key">
           <img
-            v-if="!quebradas.has(p.key)"
-            :src="p.logo"
-            :alt="p.name"
+            v-if="!quebradas.has(o.key)"
+            :src="o.logo"
+            :alt="o.name"
             class="h-14 md:h-16 w-auto opacity-80"
-            @error="marcarQuebrada(p.key)"
+            @error="marcarQuebrada(o.key)"
           />
-          <span v-else class="award-fallback">{{ p.name }}</span>
+          <span v-else class="award-fallback">{{ o.name }}</span>
+        </template>
+      </div>
+
+      <p class="kicker mt-14" style="justify-content: center; display: flex">Quem confia em nós</p>
+      <div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-8 mt-6">
+        <template v-for="c in confiam" :key="c.key">
+          <img
+            v-if="!quebradas.has(c.key)"
+            :src="c.logo"
+            :alt="c.name"
+            class="h-14 md:h-16 w-auto opacity-80"
+            @error="marcarQuebrada(c.key)"
+          />
+          <span v-else class="award-fallback">{{ c.name }}</span>
         </template>
       </div>
 
