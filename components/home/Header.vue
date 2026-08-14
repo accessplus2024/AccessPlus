@@ -85,15 +85,6 @@ const searchExamples = computed(() => {
   return shuffled.slice(0, 3).map((opp) => opp.title || opp.Nome)
 })
 
-const partnerLogos = [
-  { name: "BeChangemaker", logo: "/images/BeChangemaker_logo.svg" },
-  { name: "WorldSkills", logo: "/images/Worldskills_logo.png" },
-  { name: "Fundação HP", logo: "/images/HP_Foundation.svg" },
-  { name: "UNESCO-UNEVOC", logo: "/images/UNESCO_UNEVOC.svg" },
-]
-
-const mediaMentions = ["TV Globo", "G1", "TV Cultura", "Festival LED"]
-
 const heroImage = {
   url: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
   label: "João Pedro Santos, de Alcobaça - Bahia, estudante da MBZUAI em IA com tudo pago, estudante de escolas públicas",
@@ -144,33 +135,12 @@ const heroImage = {
             <NuxtLink to="/oportunidades" class="btn btn-ink">
               Ver tudo <ArrowRight class="w-[18px] h-[18px]" />
             </NuxtLink>
-            <NuxtLink to="/sobre" class="btn btn-out">Sobre nós</NuxtLink>
           </div>
 
           <div class="stats-row">
             <div v-for="s in stats" :key="s.label">
               <div class="stat-number">{{ s.n }}</div>
               <div class="stat-label">{{ s.label }}</div>
-            </div>
-          </div>
-
-          <div class="brand-band">
-            <div class="brand-band__inner">
-              <div class="brand-row">
-                <span v-for="(brand, i) in [...partnerLogos, ...partnerLogos]" :key="`${brand.name}-${i}`" class="brand-pill">
-                  <img :src="brand.logo" :alt="brand.name" loading="lazy" />
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="media-band">
-            <div class="media-band__inner">
-              <div class="media-row">
-                <span v-for="item in [...mediaMentions, ...mediaMentions]" :key="item" class="media-pill">
-                  {{ item }}
-                </span>
-              </div>
             </div>
           </div>
         </div>
@@ -343,65 +313,6 @@ const heroImage = {
   font-size: 13px;
 }
 
-.brand-band,
-.media-band {
-  overflow: hidden;
-  margin-top: 26px;
-  width: min(100%, 620px);
-}
-
-.brand-band__inner,
-.media-band__inner {
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.brand-row,
-.media-row {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-  min-width: max-content;
-  padding-right: 20px;
-  animation: marquee 26s linear infinite;
-}
-
-.brand-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 54px;
-  padding: 0 26px;
-  border-radius: 999px;
-  background: #fff;
-  border: 1px solid rgba(21, 17, 31, 0.08);
-  box-shadow: 0 8px 24px rgba(21, 17, 31, 0.06);
-}
-
-.brand-pill img {
-  height: 22px;
-  width: auto;
-  max-width: 120px;
-  object-fit: contain;
-}
-
-.media-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 11px 18px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  box-shadow: 0 8px 24px rgba(21, 17, 31, 0.08);
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid rgba(21, 17, 31, 0.06);
-  color: rgba(21, 17, 31, 0.8);
-}
-
 .hero-visual {
   display: flex;
   flex-direction: column;
@@ -411,7 +322,7 @@ const heroImage = {
 
 .visual-card {
   position: relative;
-  min-height: 540px;
+  min-height: 700px;
   border-radius: 32px;
   background-color: rgba(75, 63, 228, 0.1);
   border: 1px solid rgba(21, 17, 31, 0.06);
@@ -452,11 +363,6 @@ const heroImage = {
   z-index: 20;
 }
 
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
 @keyframes drift {
   0% { transform: translate3d(0, 0, 0) scale(1); }
   100% { transform: translate3d(10px, -8px, 0) scale(1.03); }
@@ -474,11 +380,6 @@ const heroImage = {
 
   .visual-card {
     min-height: 420px;
-  }
-
-  .brand-band,
-  .media-band {
-    width: 100%;
   }
 }
 
