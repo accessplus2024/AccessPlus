@@ -1,11 +1,19 @@
 <script setup>
-import { ref, watch, onMounted } from "vue"
+import { ref, computed, watch, onMounted } from "vue"
 import { Lock, ArrowRight } from "@iconoir/vue"
 import { useAuth } from "~/composables/useAuth"
 import { useProfile } from "~/composables/useProfile"
 
 const { user, carregandoSessao, init, signInWithGoogle } = useAuth()
 const { profile, carregandoPerfil, erroPerfil, fetchProfile, saveProfile, resetProfile } = useProfile()
+
+// A tabela `profiles` já existia antes (com id/full_name/avatar_url, criada
+// automaticamente ao logar). Por isso não basta checar "existe um perfil" —
+// precisa checar se os campos do NOSSO cadastro foram preenchidos.
+const cadastroCompleto = computed(() => {
+  const p = profile.value
+  return !!(p && p.name && p.age && p.phone && p.school && p.school_type && p.education_level && p.city && p.state && p.lgpd_consent_at)
+})
 
 const niveis = [
   { key: "fundamental", label: "Ensino Fundamental" },
@@ -101,8 +109,8 @@ async function enviar() {
       </button>
     </div>
 
-    <!-- Logado sem cadastro: formulário -->
-    <div v-else-if="!profile" class="gate-card gate-card--form">
+    <!-- Logado sem cadastro completo: formulário -->
+    <div v-else-if="!cadastroCompleto" class="gate-card gate-card--form">
       <h3 class="font-display" style="font-size: 24px">Só mais um passo</h3>
       <p class="text-ink/60 mt-2" style="font-size: 15px">
         Complete seu cadastro para liberar os detalhes desta oportunidade.
