@@ -23,7 +23,7 @@ const outrasOrganizacoes = [
 ]
 
 const confiam = [
-  { key: "brasa", name: "BRASA", logo: "https://framerusercontent.com/images/quncBN4Zd8Lcb2mpMW0cWwF5EE.png?scale-down-to=512&width=1080&height=1080" },
+  { key: "brasa", name: "BRASA", logo: "/images/brasa.png" },
   { key: "geg", name: "Instituto G&G", logo: "https://static.wixstatic.com/media/2dee5e_8222e6990afd4f2aadfa291bb9f5cc2a~mv2.png/v1/crop/x_50,y_445,w_1030,h_464/fill/w_366,h_156,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Logo_Instituto%20G%26G.png" },
 ]
 
