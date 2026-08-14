@@ -10,7 +10,7 @@ const parceiros = [
 
 const midia = [
   { key: "g1", name: "G1", logo: "/images/g1.png" },
-  { key: "tvglobo", name: "TV Globo", logo: "/images/tv-globo.png" },
+  { key: "tvglobo", name: "TV Globo", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c9/TV_Globo_2025.svg" },
   { key: "festivaled", name: "Festival LED", logo: "/images/festival-led.png" },
   { key: "tvcultura", name: "TV Cultura", logo: "/images/tv-cultura.png" },
 ]
