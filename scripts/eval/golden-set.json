@@ -1,0 +1,266 @@
+{
+  "_leiame": [
+    "Golden set da Accessia (Parte 8 do plano técnico). Cada entrada é um",
+    "perfil de aluno de teste onde VOCÊ decide de antemão qual é a resposta",
+    "certa — depois o script verifica se a busca encontra.",
+    ""
+  ],
+  "perfis": [
+    {
+      "id": "perfil-03",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "PE",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Humanas", "Linguagens"],
+        "bio": "Estudo em escola pública em Recife, gosto muito de escrever e de discutir política. Já participei do grêmio da escola. Nunca saí do Brasil e meu inglês é básico."
+      },
+      "deve_aparecer_no_top10": [
+        "Parlamento Jovem Brasileiro",
+        "Institute for Youth in Policy Fellowship",
+        "Civics Unplugged",
+        "Olimpíada Nacional em História do Brasil (ONHB)",
+        "Escola Comum",
+        "Latin American Leadership Academy (LALA)",
+        "Harvard University International Relations Scholars Program (HUIRSP)",
+        "AMP Global Youth Scholar",
+        "Female Leaders Of The Americas",
+        "ESummer",
+        "EESP Ensina",
+        "Jornada do Lider",
+        "Theirworld Global Youth Ambassador (GYA)",
+        "Encampment for Citizenship",
+        "Torneio Brasileiro de Debates do Ensino Médio (TBDEM)",
+        "Campeonato Nacional de Debates Escolares (CNDE)",
+        "Campeonato Brasileiro de Debates (CND)",
+        "Open Brasil",
+        "Roblox Teen Council for Civility and Well-Being",
+        "Youth Democracy Summit 2026",
+        "Youth Advocacy for Democracy and Human Rights Training Course"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "ProLíder",
+        "Global Peter Drucker",
+        "Prep Program",
+        "Oportunidades Acadêmicas", 
+        "BRASA Pré Americas",
+        "Bolsa Crimson"
+      ],
+      "observacao": "Lista de relevantes expandida em 2026-08-19 pela mantenedora (21 títulos reais, não os 4 originais do template) — recall@10/precision@5 vão parecer mais 'baixos' que antes por construção, já que é matematicamente impossível caber 21 relevantes em 10 posições. Isso é esperado e correto: o número absoluto vai cair, mas ele agora mede cobertura real, não um alvo artificialmente fácil de bater. Programas em inglês (YYGS, HUIRSP) PODEM aparecer com badge de idioma — não é erro. Mas não devem ocupar as 3 primeiras posições dado o inglês básico declarado."
+    },
+    {
+      "id": "perfil-11-distorcao",
+      "perfil": {
+        "idade": 19,
+        "nivel": "Ensino Médio",
+        "uf": "MA",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["STEM"],
+        "bio": "Voltei a estudar depois de parar dois anos pra trabalhar. Tô no 3º ano e gosto muito de biologia e química."
+      },
+      "deve_aparecer_no_top10": [
+        "OBB",
+        "ONC",
+        "OBBiotec"
+      ],
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "ESTE É O CASO CRÍTICO (Parte 7.3 do plano). As olimpíadas não declaram idade, só série. Se qualquer uma sumir do resultado, algo no pipeline inferiu idade a partir de série — bug de viés, corrigir na hora. Programas 18+ PODEM aparecer aqui: aos 19 anos ele é elegível de verdade. Não é erro."
+    },
+    {
+      "id": "perfil-04-stem-interior",
+      "perfil": {
+        "idade": 15,
+        "nivel": "Ensino Fundamental",
+        "uf": "MG",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["STEM"],
+        "bio": "Moro numa cidade pequena do interior de Minas Gerais, tô no 9º ano. Gosto de robótica e de programar — monto robôs simples com sucata na escola. Nunca pensei em estudar fora do Brasil, quero é competir e aprender mais por aqui mesmo."
+      },
+      "deve_aparecer_no_top10": [
+        "Olimpíada Brasileira de Robótica (OBR)",
+        "Olimpíada Brasileira de Informática (OBI)",
+        "Olimpíada Brasileira de Matemática das Escolas Públicas (OBMEP)",
+        "Olimpíada Brasileira de Satélites da MCTI (OBSAT)",
+        "Real not Complex",
+        "Code in Place por Stanford University"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "AFS Global STEM Academies",
+        "TechGirls"
+      ],
+      "observacao": "Testa a regra de 2026-08-19: aluno NÃO declarou interesse em estudar fora, então mentorias/intercâmbios de estudo no exterior (AFS, TechGirls) não deveriam ocupar o top5, mesmo compartilhando a área STEM. Todos os itens esperados são gratuitos e nacionais."
+    },
+    {
+      "id": "perfil-05-artes-slam",
+      "perfil": {
+        "idade": 17,
+        "nivel": "Ensino Médio",
+        "uf": "BA",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Humanas", "Linguagens", "Artes"],
+        "bio": "Sou negra, estudo em escola pública em Salvador, 3º ano do médio. Escrevo poesia e faço slam nos saraus do bairro. Meu inglês é fraco, prefiro competições e programas em português."
+      },
+      "deve_aparecer_no_top10": [
+        "Parlamento Jovem Brasileiro",
+        "Young Voices Award",
+        "USP Schools",
+        "Open Brasil",
+        "Olimpíada Brasileira Online de Linguística (OBOL)",
+        "The Beyonds Challenge"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "BRASA Pré Americas",
+        "UWC"
+      ],
+      "observacao": "Testa duas coisas: (1) idioma — ela avisou que o inglês é fraco, então programas 100% em inglês não deveriam dominar o top5; (2) a regra de estudo no exterior (BRASA/UWC) não deveria aparecer, mesmo com sobreposição de área (Humanas)."
+    },
+    {
+      "id": "perfil-06-saude-amazonia",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "AM",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["STEM"],
+        "bio": "Moro em Manaus, tô no 2º ano do médio, escola pública. Quero fazer medicina e adoro biologia — participo do grêmio de saúde da escola. Não penso em sair do país, quero oportunidades aqui no Brasil mesmo."
+      },
+      "deve_aparecer_no_top10": [
+        "Vitalis — Olimpíada de Medicina",
+        "Olimpíada Brasileira de Biotecnologia (OBBiotec)",
+        "Olimpíada Brasileira de Saúde e Meio Ambiente da Fiocruz (OBSMA)",
+        "Olimpíada Brasileira Online de Biologia (OBOB)",
+        "Olimpíada Brasileira de Biologia Sintética"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "AFS Global STEM Academies",
+        "TechGirls"
+      ],
+      "observacao": "Mesma regra de estudo-no-exterior aplicada a um perfil de saúde/biologia — testa se a exclusão generaliza além de humanas/empreendedorismo."
+    },
+    {
+      "id": "perfil-07-fundamental-jovem",
+      "perfil": {
+        "idade": 13,
+        "nivel": "Ensino Fundamental",
+        "uf": "PE",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["STEM"],
+        "bio": "Tenho 13 anos, tô no 7º ano numa escola pública, minha família ganha até 2 salários mínimos. Curioso sobre ciência de um jeito geral — gosto de matemática, de bichos e de foguete. Ainda não sei o que quero ser."
+      },
+      "deve_aparecer_no_top10": [
+        "Olimpíada Brasileira de Astronomia (OBA)",
+        "Olimpíada Brasileira de Informática (OBI)",
+        "Olimpíada Brasileira de Matemática das Escolas Públicas (OBMEP)",
+        "Olimpíada Brasileira Online de Biologia (OBOB)",
+        "Ismart Online - Instituto ISMART",
+        "Canal USP"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "Research Science Institute (MIT RSI)",
+        "BRASA Pré Americas"
+      ],
+      "observacao": "Perfil de Ensino Fundamental (7º ano, 13 anos) — testa se o pipeline empurra pra baixo programas que EXIGEM ensino médio avançado/formado (MIT RSI, BRASA Pré Americas) em vez de esconder por engano os das olimpíadas nacionais que aceitam fundamental."
+    },
+    {
+      "id": "perfil-08-empreendedorismo-rural",
+      "perfil": {
+        "idade": 18,
+        "nivel": "Gap Year",
+        "uf": "GO",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Empreendedorismo"],
+        "bio": "Terminei o ensino médio esse ano numa cidade pequena do interior de Goiás. Tô ajudando na produção agrícola da família e pensando em empreender na área. Não tenho vontade nem condição de viajar pra fora do país agora — quero programas remotos e gratuitos."
+      },
+      "deve_aparecer_no_top10": [
+        "Non Trivial Fellowship",
+        "Jornada do Lider",
+        "BeChangemaker",
+        "Crimson 18u18"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "BRASA Pré Americas",
+        "Prep Program",
+        "Bolsa Crimson"
+      ],
+      "observacao": "CASO CRÍTICO da regra de 2026-08-19: ele bate demograficamente com o público-alvo do BRASA Pré Americas/Prep Program/Bolsa Crimson (recém-formado no médio, baixa renda, quer empreender) — mas disse explicitamente que NÃO quer viajar pra fora agora. Se qualquer um desses 3 aparecer no top5, é a regra sendo violada, não um acerto."
+    },
+    {
+      "id": "perfil-09-quer-intercambio",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "SP",
+        "linguas": ["Português", "Inglês"],
+        "condicao_financeira": "posso_pagar_taxa_pequena",
+        "areas": ["STEM"],
+        "bio": "Moro na periferia da zona leste de São Paulo, tô no 2º ano do médio. Meu sonho é conseguir uma bolsa integral pra estudar numa universidade nos Estados Unidos — já estudo inglês sozinha há 2 anos pra isso. Quero muito programas de intercâmbio e mentorias de admissão no exterior."
+      },
+      "deve_aparecer_no_top10": [
+        "Prep Program",
+        "Oportunidades Acadêmicas",
+        "BRASA Pré Fundamentos",
+        "Bolsa Crimson",
+        "UWC",
+        "TechGirls",
+        "AFS Global STEM Academies"
+      ],
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "CONTROLE POSITIVO da regra de 2026-08-19: ela declarou EXPLICITAMENTE que quer estudar fora — os mesmos programas escondidos no perfil-08 (BRASA, Prep, Bolsa Crimson) e outros de intercâmbio (UWC, TechGirls, AFS) DEVEM aparecer aqui. Se a regra virar um filtro rígido que nunca mostra esses programas, este perfil vai falhar — e isso confirmaria um bug (regra virou exclusão hard, não deveria)."
+    },
+    {
+      "id": "perfil-10-ativismo-ambiental-indigena",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "PA",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Meio Ambiente", "Humanas"],
+        "bio": "Sou indígena, moro em Belém do Pará, 2º ano do médio. Participo de um coletivo jovem de ativismo ambiental e de dados de gênero na minha comunidade. Quero entender mais sobre mudança climática e direitos indígenas. Prefiro não viajar pra fora do Brasil por enquanto."
+      },
+      "deve_aparecer_no_top10": [
+        "OHCHR Indigenous Fellowship 2027",
+        "Olimpíada Brasileira do Oceano (O2)",
+        "Olimpíada Brasileira de Saúde e Meio Ambiente da Fiocruz (OBSMA)",
+        "Global Youth Climate Training Programme 2026",
+        "YEDx 2026"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "AFS Global STEM Academies",
+        "UWC"
+      ],
+      "observacao": "Testa o campo 'audience' (indígena) puxando o OHCHR Indigenous Fellowship (é presencial em Genebra, mas é treinamento de direitos humanos, não mentoria pra 'ir estudar fora' — por isso não entra na lista de exclusão de intercâmbio, é uma distinção proposital). AFS/UWC continuam de fora pois ela não pediu intercâmbio de estudo."
+    },
+    {
+      "id": "perfil-12-linguas-classicas",
+      "perfil": {
+        "idade": 17,
+        "nivel": "Ensino Médio",
+        "uf": "CE",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Linguagens", "Humanas"],
+        "bio": "Moro em Fortaleza, 3º ano do médio, escola pública. Sou apaixonado por linguística — adoro entender como as línguas mudam e se parecem entre si. Meu inglês é mediano. Não tenho interesse em intercâmbio agora, quero focar em competições e cursos daqui."
+      },
+      "deve_aparecer_no_top10": [
+        "Olimpíada Brasileira de Linguística (OBL)",
+        "International Linguistics Olympiad (IOL)",
+        "Olimpíada Brasileira Online de Linguística (OBOL)",
+        "Olimpíada Brasileira de Língua Inglesa"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "UWC",
+        "Prep Program"
+      ],
+      "observacao": "Área de nicho (linguística) com poucos itens no catálogo — bom teste de precisão: qualquer coisa fora do tema de línguas/linguística no top5 é suspeita. IOL é remoto (seleção via OBL), não é 'estudar fora', por isso não entra na exclusão."
+    }
+  ]
+}

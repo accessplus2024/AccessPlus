@@ -1,4 +1,20 @@
+import { checkRateLimit, getClientIp } from "../../utils/rateLimit"
+
 export default defineEventHandler(async (event) => {
+  // No máximo 5 inscrições por IP a cada 10 minutos — evita que alguém
+  // martele o endpoint inscrevendo e-mails de terceiros sem consentimento.
+  const ip = getClientIp(event)
+  const podeSeguir = checkRateLimit(`newsletter-subscribe:${ip}`, {
+    limit: 5,
+    windowMs: 10 * 60 * 1000,
+  })
+  if (!podeSeguir) {
+    throw createError({
+      statusCode: 429,
+      statusMessage: "Muitas tentativas. Tente novamente em alguns minutos.",
+    })
+  }
+
   const { email } = await readBody(event)
   const config = useRuntimeConfig()
 

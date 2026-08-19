@@ -59,6 +59,20 @@ const tuitionFilters = ref(["Bolsa", "Gratuito", "Totalmente Financiado"]);
 
 const tempOpps = ref([]);
 
+// Embaralha o array (Fisher-Yates). As oportunidades vêm do banco agrupadas
+// por categoria (lote de cadastro), então sem isso a primeira página sempre
+// mostrava só um tipo (ex.: só "Programas Acadêmicos"). Embaralhamos uma vez
+// ao carregar os dados — os filtros continuam funcionando normalmente em
+// cima dessa ordem já randomizada.
+function embaralhar(array) {
+  const copia = [...array];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+  return copia;
+}
+
 // Replace the single toggle method with a new one that handles filter types
 const toggleFilter = (filter, filterType) => {
   let filterSet;
@@ -185,8 +199,9 @@ const route = useRoute();
 onMounted(async () => {
   try {
     await fetchOpportunities();
-    // Data is already processed by the server API, so we can use it directly
-    tempOpps.value = data.value || [];
+    // Data is already processed by the server API, so we can use it directly.
+    // Embaralhamos aqui para não mostrar sempre a mesma categoria primeiro.
+    tempOpps.value = embaralhar(data.value || []);
 
     // Pre-select the "Tipo" filter when arriving from a homepage category tile
     const typeParam = route.query.type;
@@ -221,75 +236,73 @@ onMounted(async () => {
       </button>
     </div>
 
+    <!-- Desktop Filters: dropdowns horizontais, acima da lista de oportunidades -->
+    <FiltersSidebar
+      class="mb-5"
+      :type-filters="typeFilters"
+      :level-filters="levelFilters"
+      :audience-filters="audienceFilters"
+      :tuition-filters="tuitionFilters"
+      :field-filters="fieldFilters"
+      :selected-type-filters="selectedTypeFilters"
+      :selected-level-filters="selectedLevelFilters"
+      :selected-audience-filters="selectedAudienceFilters"
+      :selected-tuition-filters="selectedTuitionFilters"
+      :selected-field-filters="selectedFieldFilters"
+      @toggle-filter="toggleFilter"
+    />
+
+    <!-- Mobile Filters -->
+    <MobileFilters
+      :show="showMobileFilters"
+      :type-filters="typeFilters"
+      :level-filters="levelFilters"
+      :audience-filters="audienceFilters"
+      :tuition-filters="tuitionFilters"
+      :field-filters="fieldFilters"
+      :selected-type-filters="selectedTypeFilters"
+      :selected-level-filters="selectedLevelFilters"
+      :selected-audience-filters="selectedAudienceFilters"
+      :selected-tuition-filters="selectedTuitionFilters"
+      :selected-field-filters="selectedFieldFilters"
+      @toggle-filter="toggleFilter"
+      @close="showMobileFilters = false"
+    />
+
     <!-- Result count -->
     <p class="text-ink/55 font-medium mb-6" style="font-size: 14px">
       {{ filteredOpportunities.length }}
       {{ filteredOpportunities.length === 1 ? "oportunidade encontrada" : "oportunidades encontradas" }}
     </p>
 
-    <!-- Content Section -->
-    <div class="flex flex-col md:flex-row gap-6">
-      <!-- Desktop Filters -->
-      <FiltersSidebar
-        :type-filters="typeFilters"
-        :level-filters="levelFilters"
-        :audience-filters="audienceFilters"
-        :tuition-filters="tuitionFilters"
-        :field-filters="fieldFilters"
-        :selected-type-filters="selectedTypeFilters"
-        :selected-level-filters="selectedLevelFilters"
-        :selected-audience-filters="selectedAudienceFilters"
-        :selected-tuition-filters="selectedTuitionFilters"
-        :selected-field-filters="selectedFieldFilters"
-        @toggle-filter="toggleFilter"
-      />
+    <!-- Opportunities Grid -->
+    <div class="w-full">
+      <Loading :watch="!data" />
 
-      <!-- Mobile Filters -->
-      <MobileFilters
-        :show="showMobileFilters"
-        :type-filters="typeFilters"
-        :level-filters="levelFilters"
-        :audience-filters="audienceFilters"
-        :tuition-filters="tuitionFilters"
-        :field-filters="fieldFilters"
-        :selected-type-filters="selectedTypeFilters"
-        :selected-level-filters="selectedLevelFilters"
-        :selected-audience-filters="selectedAudienceFilters"
-        :selected-tuition-filters="selectedTuitionFilters"
-        :selected-field-filters="selectedFieldFilters"
-        @toggle-filter="toggleFilter"
-        @close="showMobileFilters = false"
-      />
-
-      <!-- Opportunities Grid -->
-      <div class="w-full md:w-3/4">
-        <Loading :watch="!data" />
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-          <OpportunityCard
-            v-for="opportunity in paginatedOpportunities"
-            :key="opportunity.id"
-            :opportunity="opportunity"
-          />
-        </div>
-
-        <!-- Empty state -->
-        <div
-          v-if="data && filteredOpportunities.length === 0"
-          class="text-center text-ink/55"
-          style="padding: 60px 0"
-        >
-          <p style="font-size: 18px">Nenhuma oportunidade encontrada. Tente outros filtros.</p>
-        </div>
-
-        <!-- Pagination -->
-        <Pagination
-          :current-page="currentPage"
-          :total-pages="totalPages"
-          :displayed-pages="displayedPages"
-          @update-page="currentPage = $event"
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+        <OpportunityCard
+          v-for="opportunity in paginatedOpportunities"
+          :key="opportunity.id"
+          :opportunity="opportunity"
         />
       </div>
+
+      <!-- Empty state -->
+      <div
+        v-if="data && filteredOpportunities.length === 0"
+        class="text-center text-ink/55"
+        style="padding: 60px 0"
+      >
+        <p style="font-size: 18px">Nenhuma oportunidade encontrada. Tente outros filtros.</p>
+      </div>
+
+      <!-- Pagination -->
+      <Pagination
+        :current-page="currentPage"
+        :total-pages="totalPages"
+        :displayed-pages="displayedPages"
+        @update-page="currentPage = $event"
+      />
     </div>
   </main>
 </template>

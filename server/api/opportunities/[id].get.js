@@ -6,6 +6,11 @@ import { useSupabase } from "../../utils/supabaseClient";
 const DETAIL_COLUMNS =
   "id, title, description, link, deadline, areas, level, location, audience, cost, language, keywords, eligibility, process, applicants, additionals, resources, status, review, created_at, type";
 
+// "Aprovada" = aprovada e com inscrições abertas; "Encerrada" = aprovada mas
+// com inscrições já encerradas (ainda deve abrir normalmente, só não é mais
+// "aberta"). "Revisar" fica de fora — ainda não passou pela curadoria.
+const STATUS_VISIVEIS = ["Aprovada", "Encerrada"];
+
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, "id");
 
@@ -21,7 +26,7 @@ export default defineEventHandler(async (event) => {
     .from("opportunities")
     .select(DETAIL_COLUMNS)
     .eq("id", id)
-    .eq("status", "Aprovada")
+    .in("status", STATUS_VISIVEIS)
     .maybeSingle();
 
   if (error) {

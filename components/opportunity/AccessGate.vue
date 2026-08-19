@@ -88,13 +88,16 @@ async function enviar() {
 <template>
   <div>
     <div v-if="carregandoSessao || (user && carregandoPerfil)" class="gate-card">
+      <div class="gate-topbar" />
       <p class="text-ink/50" style="font-size: 14px">Carregando...</p>
     </div>
 
     <!-- Deslogado: convite para entrar -->
     <div v-else-if="!user" class="gate-card">
+      <div class="gate-topbar" />
       <span class="gate-icon"><Lock class="w-[22px] h-[22px]" /></span>
-      <h3 class="font-display mt-4" style="font-size: 24px">Crie sua conta gratuita para ver os detalhes</h3>
+      <span class="kicker mt-4" style="opacity: .65; justify-content: center">Acesso gratuito</span>
+      <h3 class="font-display mt-2" style="font-size: 24px">Crie sua conta gratuita para ver os detalhes</h3>
       <p class="text-ink/60 mt-2 mx-auto" style="font-size: 15px; max-width: 46ch">
         Guia de aplicação, elegibilidade, link de inscrição e comentários da comunidade ficam disponíveis depois de um cadastro rápido e 100% gratuito.
       </p>
@@ -111,12 +114,15 @@ async function enviar() {
 
     <!-- Logado sem cadastro completo: formulário -->
     <div v-else-if="!cadastroCompleto" class="gate-card gate-card--form">
-      <h3 class="font-display" style="font-size: 24px">Só mais um passo</h3>
+      <div class="gate-topbar" />
+      <span class="kicker" style="opacity: .65">Cadastro rápido</span>
+      <h3 class="font-display mt-2" style="font-size: 24px">Só mais um passo</h3>
       <p class="text-ink/60 mt-2" style="font-size: 15px">
         Complete seu cadastro para liberar os detalhes desta oportunidade.
       </p>
 
-      <div class="form-grid mt-6">
+      <p class="form-section-title mt-7">Dados pessoais</p>
+      <div class="form-grid mt-4">
         <label class="field-label">
           Nome completo
           <input v-model="form.name" class="field" type="text" placeholder="Seu nome" />
@@ -129,6 +135,17 @@ async function enviar() {
           Telefone (com DDD)
           <input v-model="form.phone" class="field" type="tel" placeholder="(11) 91234-5678" />
         </label>
+        <label class="field-label">
+          Renda familiar <span class="text-ink/45">(opcional)</span>
+          <select v-model="form.income" class="field">
+            <option value="">Prefiro não informar</option>
+            <option v-for="f in faixasRenda" :key="f.key" :value="f.key">{{ f.label }}</option>
+          </select>
+        </label>
+      </div>
+
+      <p class="form-section-title mt-7">Escola e localização</p>
+      <div class="form-grid mt-4">
         <label class="field-label">
           Escola
           <input v-model="form.school" class="field" type="text" placeholder="Nome da sua escola" />
@@ -151,23 +168,16 @@ async function enviar() {
           Cidade
           <input v-model="form.city" class="field" type="text" placeholder="Sua cidade" />
         </label>
-        <label class="field-label">
+        <label class="field-label field-label--full">
           Estado
           <select v-model="form.state" class="field">
             <option value="" disabled>Selecione...</option>
             <option v-for="uf in estados" :key="uf" :value="uf">{{ uf }}</option>
           </select>
         </label>
-        <label class="field-label field-label--full">
-          Renda familiar <span class="text-ink/45">(opcional)</span>
-          <select v-model="form.income" class="field">
-            <option value="">Prefiro não informar</option>
-            <option v-for="f in faixasRenda" :key="f.key" :value="f.key">{{ f.label }}</option>
-          </select>
-        </label>
       </div>
 
-      <label class="lgpd-check mt-6">
+      <label class="lgpd-check mt-7">
         <input v-model="form.lgpdConsent" type="checkbox" />
         <span>
           Li e concordo com o uso dos meus dados (nome, idade, telefone, escola, escolaridade,
@@ -192,6 +202,8 @@ async function enviar() {
 
 <style scoped>
 .gate-card {
+  position: relative;
+  overflow: hidden;
   text-align: center;
   padding: 56px 32px;
   border-radius: var(--r-card);
@@ -200,7 +212,16 @@ async function enviar() {
 }
 .gate-card--form {
   text-align: left;
-  padding: 36px 32px;
+  padding: 40px 32px 36px;
+}
+/* Mesma assinatura visual dos cards de oportunidade: barra colorida no topo */
+.gate-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--color-primary);
 }
 .gate-icon {
   display: inline-flex;
@@ -216,17 +237,33 @@ async function enviar() {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 13px 22px;
-  border-radius: 999px;
+  padding: 14px 26px;
+  border-radius: var(--r-pill);
   border: 2px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
   background: #fff;
+  font-family: var(--font-body, inherit);
   font-weight: 600;
   font-size: 15px;
   color: var(--color-ink);
-  transition: border-color .2s ease, box-shadow .2s ease;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .25s var(--ease, ease);
 }
-.btn-google:hover { border-color: var(--color-ink); box-shadow: 0 8px 20px color-mix(in srgb, var(--color-ink) 10%, transparent); }
-.btn-google:disabled { opacity: .6; }
+.btn-google:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--color-primary) 20%, transparent);
+  transform: translateY(-2px);
+}
+.btn-google:disabled { opacity: .6; transform: none; }
+
+.form-section-title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  padding-bottom: 10px;
+  border-bottom: 2px solid color-mix(in srgb, var(--color-primary) 16%, transparent);
+}
 
 .form-grid {
   display: grid;
@@ -253,14 +290,47 @@ async function enviar() {
   font-weight: 500;
   color: var(--color-ink);
   background: #fff;
-  transition: border-color .2s ease;
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
-.field:focus { outline: none; border-color: var(--color-ink); }
+.field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 14%, transparent);
+}
+
+/* Selects nativos vinham finos e com a setinha padrão do sistema — aqui a
+   gente esconde o "appearance" nativo e desenha uma seta própria, deixa
+   mais alto/arredondado e com um hover sutil, pra parecer parte do design
+   em vez de um <select> cru do navegador. */
+select.field {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 15px 44px 15px 18px;
+  border-radius: 18px;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2315111F' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+select.field:hover {
+  border-color: color-mix(in srgb, var(--color-primary) 40%, color-mix(in srgb, var(--color-ink) 12%, transparent));
+}
+select.field:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234B3FE4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+select.field:disabled { cursor: not-allowed; opacity: .6; }
 
 .lgpd-check {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--color-primary) 6%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--color-primary) 14%, transparent);
   cursor: pointer;
 }
 .lgpd-check input {

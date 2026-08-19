@@ -1,5 +1,6 @@
 <script setup>
-import FilterGroup from "./FilterGroup.vue";
+import { ref, onMounted, onBeforeUnmount } from "vue"
+import FilterDropdown from "./FilterDropdown.vue"
 
 const props = defineProps({
   typeFilters: Array,
@@ -19,58 +20,99 @@ const emit = defineEmits(["toggle-filter"]);
 const toggleFilter = (filter, filterType) => {
   emit("toggle-filter", filter, filterType);
 };
+
+// Só um dropdown aberto por vez — clicar em outro fecha o anterior, e clicar
+// fora de qualquer um fecha tudo.
+const openFilter = ref(null)
+const toggleOpen = (filterType) => {
+  openFilter.value = openFilter.value === filterType ? null : filterType
+}
+
+const rootEl = ref(null)
+function onClickOutside(e) {
+  if (rootEl.value && !rootEl.value.contains(e.target)) openFilter.value = null
+}
+onMounted(() => document.addEventListener("click", onClickOutside))
+onBeforeUnmount(() => document.removeEventListener("click", onClickOutside))
+
+const palette = {
+  type: "var(--color-primary)",
+  level: "var(--color-magenta)",
+  audience: "var(--color-teal)",
+  tuition: "var(--color-amber)",
+  field: "var(--color-purple)",
+}
 </script>
 
 <template>
-  <aside
-    class="hidden md:block w-1/4 bg-card text-ink p-6 border border-ink/8 h-fit sticky top-24"
-    style="min-width: 300px; border-radius: var(--r-card)"
-  >
-    <h2 class="font-body font-bold text-ink mb-5" style="font-size: 18px">Filtros</h2>
-
-    <FilterGroup
+  <div ref="rootEl" class="hidden md:flex filters-bar">
+    <FilterDropdown
       title="Tipo"
       :filters="typeFilters"
       :selected-filters="selectedTypeFilters"
       :display-names="{}"
       filter-type="type"
+      :is-open="openFilter === 'type'"
+      :color="palette.type"
+      @toggle-open="toggleOpen"
       @toggle-filter="toggleFilter"
     />
 
-    <FilterGroup
+    <FilterDropdown
       title="Nível"
       :filters="levelFilters"
       :selected-filters="selectedLevelFilters"
       :display-names="{}"
       filter-type="level"
+      :is-open="openFilter === 'level'"
+      :color="palette.level"
+      @toggle-open="toggleOpen"
       @toggle-filter="toggleFilter"
     />
 
-    <FilterGroup
+    <FilterDropdown
       title="Público Alvo"
       :filters="audienceFilters"
       :selected-filters="selectedAudienceFilters"
       :display-names="{}"
       filter-type="audience"
+      :is-open="openFilter === 'audience'"
+      :color="palette.audience"
+      @toggle-open="toggleOpen"
       @toggle-filter="toggleFilter"
     />
 
-    <FilterGroup
+    <FilterDropdown
       title="Custo"
       :filters="tuitionFilters"
       :selected-filters="selectedTuitionFilters"
       :display-names="{}"
       filter-type="tuition"
+      :is-open="openFilter === 'tuition'"
+      :color="palette.tuition"
+      @toggle-open="toggleOpen"
       @toggle-filter="toggleFilter"
     />
 
-    <FilterGroup
+    <FilterDropdown
       title="Interesse"
       :filters="fieldFilters"
       :selected-filters="selectedFieldFilters"
       :display-names="{}"
       filter-type="field"
+      :is-open="openFilter === 'field'"
+      :color="palette.field"
+      @toggle-open="toggleOpen"
       @toggle-filter="toggleFilter"
     />
-  </aside>
+  </div>
 </template>
+
+<style scoped>
+.filters-bar {
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+}
+</style>

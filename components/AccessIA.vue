@@ -1,8 +1,23 @@
 <script setup>
 import { ArrowRight, ArrowLeft, Check, Copy } from "@iconoir/vue"
-import { ref, computed, onMounted, onBeforeUnmount } from "vue"
+import { ref, computed, onBeforeUnmount } from "vue"
+import DOMPurify from "isomorphic-dompurify"
+import { useAuth } from "~/composables/useAuth"
 
 const emit = defineEmits(['resultado'])
+
+// Este componente só é montado dentro de <AccessGate> (ver Header.vue), que
+// já garante login + cadastro completo antes de revelar o slot — então
+// aqui a gente só CONSOME a sessão (useAuth já foi inicializada globalmente
+// em plugins/supabase-auth.client.js), não precisa checar de novo.
+const { user } = useAuth()
+
+// Um id por "sessão de uso" do widget (não por aluno) — agrupa as buscas
+// desta visita nos logs de ai_interactions (Parte 9 do plano). Gerado uma
+// vez por montagem do componente, não persistido.
+const sessionId = typeof crypto !== 'undefined' && crypto.randomUUID
+  ? crypto.randomUUID()
+  : `${Date.now()}-${Math.random().toString(36).slice(2)}`
 
 const aberto = ref(false)
 
@@ -35,70 +50,24 @@ function pararMensagens() {
 }
 onBeforeUnmount(pararMensagens)
 
-// Cota diária da IA esgotada?
-const cotaEsgotada = ref(false)
-const CHAVE_COTA = 'accessia_cota_esgotada' // localStorage: guarda a data "AAAA-MM-DD"
-
-function hojeBR() {
-  return new Date().toLocaleDateString("en-CA", { timeZone: "America/Sao_Paulo" })
-}
-
-function marcarCotaEsgotada() {
-  cotaEsgotada.value = true
-  try { localStorage.setItem(CHAVE_COTA, hojeBR()) } catch (_) {}
-}
-
-// Antes mesmo do estudante interagir, checamos se a cota já estourou hoje.
-onMounted(async () => {
-  try {
-    if (localStorage.getItem(CHAVE_COTA) === hojeBR()) {
-      cotaEsgotada.value = true
-      return
-    }
-  } catch (_) {}
-  try {
-    const status = await $fetch('/api/rag/status')
-    if (status?.quotaExceeded) cotaEsgotada.value = true
-  } catch (_) { /* silencioso: se falhar, seguimos normal */ }
-})
-
-// Converte o markdown da resposta em HTML seguro, no estilo do Access+.
-function renderMarkdown(texto = '') {
+// Texto curto (negrito/itálico apenas, sem parsing de link) → HTML seguro.
+// Usado nos cartões de oportunidade, que já são um <a> (NuxtLink) inteiro —
+// um link aninhado dentro de outro link seria HTML inválido, então aqui a
+// gente propositalmente NÃO interpreta [texto](url) como no markdown normal.
+function textoSeguro(texto = '') {
   const escapar = (s) => s
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-
-  const inline = (s) => escapar(s)
-    // links [texto](url)
-    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
-      '<a href="$2" target="_blank" rel="noopener" class="md-link">$1</a>')
-    // negrito **texto**
+  return escapar(texto)
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    // itálico *texto*
     .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>')
-
-  const linhas = texto.split('\n')
-  let html = ''
-  let emLista = false
-  const fecharLista = () => { if (emLista) { html += '</ul>'; emLista = false } }
-
-  for (const bruta of linhas) {
-    const l = bruta.trim()
-    if (!l) { fecharLista(); continue }
-    if (/^[-*]\s+/.test(l)) {
-      if (!emLista) { html += '<ul class="md-list">'; emLista = true }
-      html += `<li>${inline(l.replace(/^[-*]\s+/, ''))}</li>`
-    } else {
-      fecharLista()
-      html += `<p>${inline(l)}</p>`
-    }
-  }
-  fecharLista()
-  return html
 }
 
-const respostaHtml = computed(() =>
-  resposta.value?.resposta ? renderMarkdown(resposta.value.resposta) : ''
-)
+// Defesa em profundidade: mesmo escapando HTML antes de montar as tags,
+// passamos pelo DOMPurify — o texto vem do GLM-5.2 (generate.js no backend),
+// então tratamos como conteúdo não confiável até prova em contrário.
+function explicacaoHtml(texto) {
+  return texto ? DOMPurify.sanitize(textoSeguro(texto)) : ''
+}
 
 // Cores da marca — cada cartão recebe um acento diferente, ciclando.
 const acentos = ['#4B3FE4', '#FF2D8A', '#C8F135', '#7DECE9', '#FF7A45', '#8BC34A']
@@ -177,6 +146,8 @@ function voltar() {
   if (step.value > 0) step.value--
 }
 
+// Texto livre (freeText): a narrativa completa do aluno — é o único campo
+// embeddado pela busca vetorial (ver Parte 2.3 do plano).
 function construirPergunta() {
   const areasTexto = respostas.value.areas
     .map(key => areas.find(a => a.key === key)?.label)
@@ -195,43 +166,56 @@ ${respostas.value.experiencia ? `Já participei de: ${respostas.value.experienci
 Busco oportunidades ${localTexto}.`
 }
 
+// Palavras-chave (keywordText): alimenta o lado FTS da busca híbrida —
+// áreas marcadas + o que o aluno já fez, sem misturar com o texto livre
+// (ver Parte 7.4: sinais separados, fundidos por RRF, não um vetor médio).
+function construirPalavrasChave() {
+  const areasTexto = respostas.value.areas
+    .map(key => areas.find(a => a.key === key)?.label)
+    .join(' ')
+  return [areasTexto, respostas.value.experiencia].filter(Boolean).join(' ')
+}
+
 async function enviar() {
   carregando.value = true
   erro.value = null
   iniciarMensagens()
 
   try {
-    const data = await $fetch('/api/rag/search', {
+    const data = await $fetch('/api/rag/match', {
       method: 'POST',
-      body: { question: construirPergunta() }
+      body: {
+        freeText: construirPergunta(),
+        keywordText: construirPalavrasChave(),
+        userId: user.value?.id,
+        sessionId,
+      },
     })
 
-    // Cota diária esgotada → mostra a mensagem de cota (sem resposta).
-    if (data?.quotaExceeded) { marcarCotaEsgotada(); return }
-
-    // IA sobrecarregada: se as oportunidades foram encontradas, mostramos MESMO ASSIM.
-    if (data?.overloaded) {
-      if (data.oportunidades?.length) {
-        resposta.value = { resposta: '', oportunidades: data.oportunidades, sobrecarga: true }
-        emit('resultado', resposta.value)
-      } else {
-        erro.value = 'A Accessia está a mil por hora agora 🙂 tenta de novo em uns segundos.'
-      }
-      return
+    // generationDegraded: o retrieval funcionou (temos oportunidades reais e
+    // reranqueadas), mas o GLM-5.2 não conseguiu escrever a explicação a
+    // tempo. Mostramos as oportunidades mesmo assim — ver Parte 1 do plano:
+    // nunca esconder um resultado real por causa de uma etapa a mais falhar.
+    resposta.value = {
+      oportunidades: data.afterRerank || [],
+      sobrecarga: !!data.generationDegraded,
     }
-
-    resposta.value = data
-    emit('resultado', data)
+    emit('resultado', resposta.value)
   } catch (e) {
     const status = e?.response?.status || e?.status || e?.statusCode
     const payload = e?.data
-    if (status === 429 || payload?.quotaExceeded) { marcarCotaEsgotada(); return }
-    if (status === 503 || payload?.overloaded) {
-      if (payload?.oportunidades?.length) {
-        resposta.value = { resposta: '', oportunidades: payload.oportunidades, sobrecarga: true }
-      } else {
-        erro.value = 'A Accessia está a mil por hora agora 🙂 tenta de novo em uns segundos.'
-      }
+    // 401 = não logado (não deveria acontecer aqui, já que o AccessGate só
+    // revela este componente pra quem está logado — mas o backend confere
+    // de novo, por segurança).
+    if (status === 401) {
+      erro.value = 'Você precisa entrar com sua conta para usar a Accessia.'
+      return
+    }
+    // 429 = cota estourada — pode ser o limite básico por IP (abuso, ver
+    // server/utils/rateLimit.js) ou a cota mensal por aluno (Parte 5.5,
+    // server/utils/rag/quota.js). A mensagem do servidor já distingue os dois.
+    if (status === 429) {
+      erro.value = payload?.statusMessage || 'Muitas buscas em pouco tempo por aqui — espera um minutinho e tenta de novo 🙂'
       return
     }
     // 504 = a busca demorou demais (tempo limite do servidor).
@@ -240,7 +224,7 @@ async function enviar() {
       return
     }
     console.error('Erro completo:', e)
-    erro.value = payload?.error || e?.message || 'Algo deu errado ao buscar suas oportunidades. Tenta de novo?'
+    erro.value = payload?.statusMessage || payload?.error || e?.message || 'Algo deu errado ao buscar suas oportunidades. Tenta de novo?'
   } finally {
     carregando.value = false
     pararMensagens()
@@ -259,33 +243,18 @@ function recomecar() {
   <div class="accessia">
 
     <!-- ================= TOGGLE (fechado) ================= -->
-    <button
-      class="toggle-bar"
-      :class="{ muted: cotaEsgotada }"
-      @click="cotaEsgotada ? null : (aberto = !aberto)"
-    >
+    <button class="toggle-bar" @click="aberto = !aberto">
       <span class="flex items-center gap-2">
-        <span class="toggle-dot" :class="{ off: cotaEsgotada }" />
+        <span class="toggle-dot" />
         <span class="font-display" style="font-size: 18px">AccessIA</span>
         <span class="badge-beta">versão teste</span>
       </span>
-      <ArrowRight v-if="!cotaEsgotada" class="w-[18px] h-[18px] toggle-arrow" :class="{ open: aberto }" />
+      <ArrowRight class="w-[18px] h-[18px] toggle-arrow" :class="{ open: aberto }" />
     </button>
-
-    <!-- ============ COTA ESGOTADA (antes mesmo de abrir) ============ -->
-    <div v-if="cotaEsgotada" class="panel panel-quota mt-3">
-      <p class="quota-msg">
-        Sinto muito, a quota de hoje já foi atingida — volte amanhã para conversar com a Accessia.
-      </p>
-      <p class="quota-warn">
-        Somos um projeto gratuito, por isso nossos limites de IA são gratuitos também.
-        <NuxtLink to="/sobre" class="md-link">Contribua para o projeto 💚</NuxtLink>
-      </p>
-    </div>
 
     <!-- ================= PAINEL (aberto) ================= -->
     <Transition name="expand">
-      <div v-if="aberto && !cotaEsgotada" class="panel mt-3">
+      <div v-if="aberto" class="panel mt-3">
 
         <!-- Carregando: sparkles da marca + mensagens rotativas -->
         <div v-if="carregando" class="loading-wrap">
@@ -317,10 +286,12 @@ function recomecar() {
             </button>
           </div>
 
-          <div v-if="respostaHtml" class="md-prose mt-[18px]" v-html="respostaHtml" />
+          <p class="md-prose mt-[18px]">
+            Separamos estas oportunidades pra você — cada uma vem com uma explicação de por que pode combinar, e qualquer ressalva que vale confirmar antes de se inscrever.
+          </p>
 
           <p v-if="resposta.sobrecarga" class="sobrecarga-nota mt-[18px]">
-            A Accessia está a mil por hora agora, então já separei estas oportunidades pra você 💛
+            A Accessia está a mil por hora agora, então as explicações de cada oportunidade podem demorar um pouco mais — mas as oportunidades já são reais 💛
           </p>
 
           <div class="op-list mt-7">
@@ -340,6 +311,8 @@ function recomecar() {
                   </span>
                 </div>
                 <p class="op-desc">{{ o.description }}</p>
+                <p v-if="o.why_it_fits" class="op-why" v-html="explicacaoHtml(o.why_it_fits)" />
+                <p v-if="o.caveats" class="op-caveat">⚠️ {{ o.caveats }}</p>
                 <span class="op-link">Ver oportunidade</span>
               </div>
             </NuxtLink>
@@ -484,21 +457,11 @@ function recomecar() {
 .toggle-bar:hover {
   border-color: var(--color-ink);
 }
-.toggle-bar.muted {
-  cursor: default;
-  background: color-mix(in srgb, var(--color-ink) 4%, #fff);
-}
-.toggle-bar.muted:hover {
-  border-color: color-mix(in srgb, var(--color-ink) 12%, transparent);
-}
 .toggle-dot {
   width: 8px;
   height: 8px;
   border-radius: 999px;
   background: var(--color-lime);
-}
-.toggle-dot.off {
-  background: color-mix(in srgb, var(--color-ink) 25%, transparent);
 }
 .toggle-arrow {
   transition: transform .25s ease;
@@ -525,24 +488,6 @@ function recomecar() {
   border-radius: 20px;
   border: 2px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
   background: #fff;
-}
-
-/* Cartão de cota esgotada: fica visível de cara, no fluxo. */
-.panel-quota {
-  background: color-mix(in srgb, var(--color-lime) 16%, #fff);
-  border-color: color-mix(in srgb, var(--color-ink) 12%, transparent);
-}
-.quota-msg {
-  font-family: var(--font-display, inherit);
-  font-size: 17px;
-  line-height: 1.35;
-  color: var(--color-ink);
-}
-.quota-warn {
-  margin-top: 12px;
-  font-size: 13px;
-  line-height: 1.45;
-  color: color-mix(in srgb, var(--color-ink) 60%, transparent);
 }
 
 .expand-enter-active, .expand-leave-active {
@@ -595,7 +540,8 @@ function recomecar() {
 .fade-msg-enter-from { opacity: 0; transform: translateY(6px); }
 .fade-msg-leave-to   { opacity: 0; transform: translateY(-6px); }
 
-/* nota gentil quando a IA está sobrecarregada mas achamos oportunidades */
+/* nota gentil quando a geração da explicação não deu tempo, mas as
+   oportunidades (retrieval real) já estão prontas */
 .sobrecarga-nota {
   font-size: 14.5px;
   line-height: 1.5;
@@ -605,23 +551,11 @@ function recomecar() {
   padding: 12px 16px;
 }
 
-/* Resposta em markdown, no estilo Access+ */
+/* Texto introdutório acima da lista de cartões */
 .md-prose {
   color: color-mix(in srgb, var(--color-ink) 82%, transparent);
   line-height: 1.6;
   font-size: 15.5px;
-}
-.md-prose :deep(p) { margin: 0 0 12px; }
-.md-prose :deep(p:last-child) { margin-bottom: 0; }
-.md-prose :deep(strong) { color: var(--color-ink); font-weight: 700; }
-.md-prose :deep(.md-list) { margin: 8px 0 14px; padding-left: 20px; list-style: disc; }
-.md-prose :deep(.md-list li) { margin-bottom: 6px; }
-.md-prose :deep(.md-link),
-.md-link {
-  color: var(--color-primary);
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 2px;
 }
 
 .progress {
@@ -743,6 +677,22 @@ function recomecar() {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+.op-why {
+  margin-top: 8px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+.op-caveat {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--color-ink) 65%, transparent);
+  background: color-mix(in srgb, var(--color-lime) 16%, transparent);
+  border-radius: 10px;
+  padding: 6px 10px;
 }
 .op-link {
   display: inline-block;

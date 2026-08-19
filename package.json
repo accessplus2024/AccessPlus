@@ -3,14 +3,17 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "eval:golden-set": "node scripts/eval/run-golden-set.js",
+    "sync:opportunities": "node scripts/sync-opportunities-from-prod.js",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "embed": "node scripts/embed-opportunities.js",
+    "embed:test": "node scripts/tests/test-embedding-connection.js"
   },
   "dependencies": {
-    "@google/genai": "^2.11.0",
     "@iconoir/vue": "^7.10.0",
     "@nuxt/fonts": "^0.10.2",
     "@nuxtjs/color-mode": "^4.0.0",
@@ -19,12 +22,14 @@
     "@vercel/analytics": "^1.5.0",
     "aos": "^2.3.4",
     "gsap": "^3.12.7",
+    "isomorphic-dompurify": "^2.36.0",
     "nuxt": "^3.17.4",
     "vue": "latest",
     "vue-router": "latest"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
+    "dotenv": "^16.4.5",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13"
   }

@@ -1,21 +1,31 @@
 <template>
-  <div class="mx-auto max-w-6xl px-4 pb-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-black">
-      <TeamMemberCard
-        v-for="(member, idx) in members"
-        :key="member.name"
-        :name="member.name"
-        :role="member.role"
-        :location="member.location"
-        :image="member.image"
-        :data-aos-delay="member.aosDelay"
-      />
-    </div>
+  <!-- Grade responsiva: 4 colunas (uma linha só) em telas grandes, 2 colunas
+       (2 em cima, 2 embaixo) em telas menores. Sem scroll/carrossel — todo
+       mundo do time fica sempre visível, sem precisar arrastar nada. -->
+  <div class="team-grid">
+    <TeamMemberCard
+      v-for="(member, idx) in members"
+      :key="member.name"
+      :name="member.name"
+      :role="member.role"
+      :location="member.location"
+      :image="member.image"
+      :color="palette[idx % palette.length]"
+      :data-aos-delay="member.aosDelay"
+    />
   </div>
 </template>
 
 <script setup>
 import TeamMemberCard from './TeamMemberCard.vue';
+
+// Cores da paleta da marca, uma por pessoa, repetindo em loop se o time crescer.
+const palette = [
+  "var(--color-primary)", // indigo
+  "var(--color-magenta)",
+  "var(--color-teal)",
+  "var(--color-amber)",
+];
 
 const members = [
   {
@@ -34,31 +44,33 @@ const members = [
   },
   {
     name: 'Camily Guimarães Carvalho',
-    role: 'Diretora de Tecnologia',
+    role: 'Diretora de Informação',
     location: 'Camaçari, BA',
     image: '/images/camily_pic.png',
     aosDelay: 200,
   },
   {
-    name: 'Izabeli Santos',
-    role: 'Diretora de Marketing',
-    location: 'Camaçari, BA',
-    image: '/images/iza_pic.png',
-    aosDelay: 300,
-  },
-  {
     name: 'João Pedro Santos',
-    role: 'Analista de Tecnologia',
+    role: 'Diretor de Tecnologia',
     location: 'Alcobaça, BA',
     image: '/images/joao_pedro_pic.png',
-    aosDelay: 400,
+    aosDelay: 300,
   },
-  {
-    name: 'Julia Meireles',
-    role: 'Diretora de Engajamento',
-    location: "São Paulo, SP",
-    image: '/images/julia-meireles.jpg',
-    aosDelay: 1000,
-  }
 ];
 </script>
+
+<style scoped>
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+/* 2 em cima, 2 embaixo em telas menores — nunca corta ninguém, só reflui. */
+@media (max-width: 900px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+</style>

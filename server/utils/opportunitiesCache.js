@@ -10,14 +10,19 @@ const CACHE_DURATION = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
 // necessários na página de detalhe, que busca a linha individualmente
 // (ver server/api/opportunities/[id].get.js). Buscar tudo aqui multiplicava
 // o tráfego do Supabase por ~200x sem necessidade.
-const LIST_COLUMNS = "id, title, description, type, level, audience, cost, areas, keywords";
+const LIST_COLUMNS = "id, title, description, type, level, audience, cost, areas, keywords, status";
+
+// "Aprovada" = aprovada e com inscrições abertas; "Encerrada" = aprovada mas
+// com inscrições já encerradas (ainda deve aparecer na listagem, só não é
+// mais "aberta"). "Revisar" fica de fora — ainda não passou pela curadoria.
+const STATUS_VISIVEIS = ["Aprovada", "Encerrada"];
 
 async function fetchFromSupabase() {
   const supabase = useSupabase();
   const { data, error } = await supabase
     .from("opportunities")
     .select(LIST_COLUMNS)
-    .eq("status", "Aprovada")
+    .in("status", STATUS_VISIVEIS)
     .order("id");
 
   if (error) throw error;

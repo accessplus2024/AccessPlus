@@ -78,6 +78,32 @@ Raw sheet columns processed server-side:
 }
 ```
 
+## Accessia (RAG chatbot)
+
+Accessia recommends opportunities to students via retrieval-augmented generation. Full design history lives in `docs/PLAN.md` (technical plan) and `docs/decisions.md` (decision log); this is just the map for finding your way around the code.
+
+**Pipeline:** `server/api/rag/match.post.js` is the only live route. It rate-limits by IP, requires login, checks/increments a monthly quota, then runs: hybrid search → rerank → generate → log interaction.
+
+- `server/utils/rag/hybridSearch.js` — fuses `vectorSearch.js` (pgvector cosine) and `ftsSearch.js` (Postgres FTS, pt config) via Reciprocal Rank Fusion (k=60)
+- `server/utils/rag/rerank.js` — cross-encoder rerank via NVIDIA NIM
+- `server/utils/rag/generate.js` — final answer via NVIDIA NIM chat completions (GLM-5.2), holds the Accessia system prompt
+- `server/utils/rag/quota.js`, `logInteraction.js`, `corpusSize.js`, `devClient.js`, `titleMatch.js`, `embedText.js` — supporting utilities
+
+**Key rule (see `docs/PLAN.md` Part 1):** only `status='Aprovada'` and an explicit numeric age are hard filters. Cost, language, location, and audience are ranking boosts/caveats, never exclusion filters — the goal is "show it with a caveat" over "hide it because a weak signal didn't match." Age must never be inferred from school grade (`docs/PLAN.md` Part 7.3) — this would systematically exclude the older-than-expected students (public-school, low-income) the product serves.
+
+**Offline scripts** (not part of the request path — run manually or via `npm run`):
+
+| Script | Purpose |
+|---|---|
+| `npm run sync:opportunities` → `scripts/sync-opportunities-from-prod.js` | Pulls the approved catalog from prod Supabase into dev |
+| `npm run embed` → `scripts/embed-opportunities.js` | Chunks + embeds opportunities via NVIDIA NIM, writes `embedded_at` |
+| `npm run embed:test` → `scripts/tests/test-embedding-connection.js` | Sanity-checks the embedding endpoint/credentials |
+| `npm run eval:golden-set` → `scripts/eval/run-golden-set.js` | Runs the hand-written golden-set eval (recall@10, precision@5, NDCG@10, MRR) against `scripts/eval/golden-set.json` |
+| `scripts/chunk-opportunity.js`, `scripts/fetch-opportunities.js` | Helpers used by `embed-opportunities.js` |
+| `scripts/backfill-audience-language-location.js` | LLM-assisted backfill for null `audience`/`language`/`location` — see `docs/decisions.md` for status before relying on it |
+
+**Known gaps** (see `docs/decisions.md` for detail): `audience` is null on most approved rows in both prod and dev, despite an earlier decision-log entry claiming it was fully backfilled and verified — treat that entry as unconfirmed until re-verified. Even where `audience` is populated, it isn't visible to FTS/vector retrieval (only reaches the LLM narratively at generation time).
+
 <!-- code-review-graph MCP tools -->
 ## MCP Tools: code-review-graph
 

@@ -1,5 +1,6 @@
 <script setup>
 import { ArrowRight, Search } from "@iconoir/vue"
+import AccessGate from "~/components/opportunity/AccessGate.vue"
 
 const router = useRouter()
 const { data: opportunities, fetchOpportunities } = useCachedOpportunities()
@@ -152,7 +153,14 @@ const heroImage = {
           </div>
 
           <div class="accessia-slot">
-            <AccessIA />
+            <ClientOnly>
+              <AccessGate>
+                <AccessIA />
+              </AccessGate>
+              <template #fallback>
+                <p class="text-ink/50" style="font-size: 14px">Carregando...</p>
+              </template>
+            </ClientOnly>
           </div>
         </div>
       </div>

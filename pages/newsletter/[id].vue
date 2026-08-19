@@ -1,5 +1,6 @@
 <script setup>
 import { NavArrowLeft } from "@iconoir/vue"
+import DOMPurify from "isomorphic-dompurify"
 
 const route = useRoute()
 const postId = route.params.id
@@ -14,6 +15,14 @@ const publishDate = computed(() =>
   post.value?.publish_date ? formatDate(post.value.publish_date) : "")
 const datetimePublishDate = computed(() =>
   post.value?.publish_date ? formatDateForDatetime(post.value.publish_date) : "")
+
+// O HTML do post vem da API do Beehiiv (fonte externa) — sanitizamos antes de
+// injetar com v-html, como defesa em profundidade caso essa conta seja
+// comprometida ou algum conteúdo problemático seja publicado por engano.
+const sanitizedContent = computed(() => {
+  const html = post.value?.content?.free?.web
+  return html ? DOMPurify.sanitize(html) : ""
+})
 
 const loadPost = async () => {
   try {
@@ -113,8 +122,8 @@ onMounted(loadPost)
       <main class="wrap" style="padding-top: 48px; padding-bottom: 40px">
         <div class="mx-auto bg-card border border-ink/8" style="max-width: 760px; border-radius: var(--r-lg); padding: 40px">
           <div
-            v-if="post.content?.free?.web"
-            v-html="post.content.free.web"
+            v-if="sanitizedContent"
+            v-html="sanitizedContent"
             itemprop="articleBody"
             class="newsletter-content"
           ></div>

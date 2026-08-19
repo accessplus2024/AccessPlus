@@ -1,5 +1,6 @@
 import { ref } from "vue"
 import { useSupabaseBrowser } from "./useSupabaseBrowser"
+import { useRoute } from "vue-router"
 
 // Estado de autenticação compartilhado (login com Google via Supabase).
 // `user` é null quando deslogado, ou o objeto do usuário do Supabase quando logado.
@@ -9,6 +10,7 @@ let inicializado = false
 
 export function useAuth() {
   const supabase = process.client ? useSupabaseBrowser() : null
+  const route = useRoute()
 
   // Inicializa a sessão uma única vez (só no navegador).
   function init() {
@@ -42,7 +44,7 @@ export function useAuth() {
   }
 
   // Entra com o Google e volta para a MESMA página (URL limpa, sem #hash nem query).
-   async function signInWithGoogle() {
+  async function signInWithGoogle() {
     if (!supabase) return
     const destino = window.location.href
     await supabase.auth.signInWithOAuth({
