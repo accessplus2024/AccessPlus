@@ -308,6 +308,35 @@ async function sair() {
   background: #fff;
   box-shadow: 0 20px 40px rgba(21, 17, 31, 0.14);
   z-index: 60;
+  /* Coluna com teto de altura: as seis linhas de dados são a parte que estica,
+     e são justamente a parte descartável. Botões ficam fora da área que rola
+     (ver `.panel-data` e `flex: none` abaixo) para que "Sair" NUNCA saia da
+     vista — era o bug: no celular o painel crescia até empurrar o botão para
+     fora da tela e o aluno não conseguia deslogar. */
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 120px);
+  max-height: calc(100dvh - 120px);
+}
+.panel-head, .panel-pending, .edit-btn, .logout-btn { flex: none; }
+.panel-data { flex: 1 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: thin; }
+
+/* Celular: o painel sai de "pendurado no avatar" e vira uma folha ancorada na
+   base da janela. Dentro do drawer lateral (288px de largura) o painel de
+   280px ancorado no avatar já nascia perto do rodapé e caía para fora da tela;
+   ancorado embaixo, ele sempre cabe, e o botão "Sair" fica no lugar mais fácil
+   de alcançar com o polegar. */
+@media (max-width: 768px) {
+  .panel {
+    position: fixed;
+    top: auto;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-height: 70dvh;
+    z-index: 90;
+  }
 }
 .panel-head {
   display: flex;
