@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Orientação para o Claude Code (claude.ai/code) neste repositório.
+Orientação para o Claude neste repositório.
 
 **Arquitetura, dados e o pipeline da Accessia: `docs/accessia.md`.** Este
 arquivo é só o mapa rápido e as armadilhas.
