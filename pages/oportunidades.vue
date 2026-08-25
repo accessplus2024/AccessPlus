@@ -20,6 +20,8 @@ const selectedLevelFilters = ref(new Set());
 const selectedAudienceFilters = ref(new Set());
 const selectedTuitionFilters = ref(new Set());
 const selectedFieldFilters = ref(new Set()); // Filtro de Interesse (Areas)
+const selectedFormatFilters = ref(new Set()); // Remoto / Presencial / Híbrido
+const selectedInscricoesFilters = ref(new Set()); // Aberta / Encerrada
 const currentPage = ref(1);
 const itemsPerPage = 12;
 
@@ -37,24 +39,55 @@ const typeFilters = ref([
 ]);
 
 // Filtros de Interesse (Areas)
+// Vocabulário FECHADO do banco, alinhado com scripts/reanotar-catalogo.js.
+// O filtro compara por igualdade exata contra a coluna `areas`, então
+// qualquer rótulo que não exista lá vira um chip morto (retorna zero).
+// Antes desta correção o site oferecia 5 áreas e o banco tinha 9 — Tech (54
+// linhas), Empreendedorismo (65), Política (49) e Ativismo (47) eram
+// inalcançáveis pelo filtro.
 const fieldFilters = ref([
-  "Meio Ambiente",
-  "Humanas",
   "STEM",
+  "Tech",
+  "Humanas",
   "Linguagens",
   "Artes",
+  "Política",
+  "Ativismo",
+  "Meio Ambiente",
+  "Empreendedorismo",
 ]);
 
-const levelFilters = ref(["Fundamental", "Ensino Médio", "Gap Year", "Faculdade"]);
+// `level` no banco guarda "Gap", não "Gap Year" — o chip antigo dizia
+// "Gap Year" e não casava com nenhuma das 132 linhas que têm o valor.
+// O nome bonito vive em `displayNames`, o valor comparado é o do banco.
+const levelFilters = ref(["Fundamental", "Ensino Médio", "Gap", "Faculdade"]);
+const levelDisplayNames = { Gap: "Gap Year" };
+
+// `audience` é RECORTE AFIRMATIVO (o programa reserva ou prioriza vagas),
+// não "para quem o programa é". Vocabulário fechado de 5 valores; os chips
+// antigos ("Negros", "Indígenas", "LGBT", "Deficientes") não existiam no
+// banco e retornavam zero resultados.
 const audienceFilters = ref([
-  "Negros",
-  "LGBT",
   "Baixa Renda",
-  "Indígenas",
-  "Deficientes",
-  "Meninas",
   "Escola Pública",
+  "Meninas",
+  "Negro/Pardo",
+  "Indígena/Quilombola",
 ]);
+
+// Modalidade. Coluna `format`, hoje em 100% de cobertura — antes da
+// reanotação 89% das linhas guardavam a modalidade em `location` também.
+const formatFilters = ref(["Remoto", "Presencial", "Híbrido"]);
+
+// Estado da inscrição. Coluna `inscricoes` (schema novo); nos bancos ainda
+// não migrados o servidor deriva o valor do `status` antigo, então este
+// filtro funciona dos dois lados.
+const inscricoesFilters = ref(["Aberta", "Encerrada"]);
+const inscricoesDisplayNames = {
+  Aberta: "Inscrições abertas",
+  Encerrada: "Inscrições encerradas",
+};
+
 const tuitionFilters = ref(["Bolsa", "Gratuito", "Totalmente Financiado"]);
 
 const tempOpps = ref([]);
@@ -93,6 +126,12 @@ const toggleFilter = (filter, filterType) => {
       return;
     case "field":
       filterSet = selectedFieldFilters;
+      break;
+    case "format":
+      filterSet = selectedFormatFilters;
+      break;
+    case "inscricoes":
+      filterSet = selectedInscricoesFilters;
       break;
     default:
       return;
@@ -149,11 +188,30 @@ const filteredOpportunities = computed(() => {
     });
   }
 
+  // Apply format filters (accumulative logic)
+  if (selectedFormatFilters.value.size > 0) {
+    filtered = filtered.filter((opportunity) =>
+      selectedFormatFilters.value.has(opportunity.format)
+    );
+  }
+
+  // Apply inscricoes filters (accumulative logic)
+  // `aberta`/`inscricoes` vêm normalizados do servidor — ver
+  // server/utils/opportunitiesCache.js. Aqui só comparamos o rótulo.
+  if (selectedInscricoesFilters.value.size > 0) {
+    filtered = filtered.filter((opportunity) =>
+      selectedInscricoesFilters.value.has(
+        opportunity.inscricoes ??
+          (opportunity.status === "Encerrada" ? "Encerrada" : "Aberta")
+      )
+    );
+  }
+
   // Apply search term
   if (searchTerm.value) {
     const searchTermLower = searchTerm.value.toLowerCase();
     filtered = filtered.filter((o) =>
-      [o.title, o.description, ...(o.keywords || [])]
+      [o.title, o.description, o.location, ...(o.keywords || []), ...(o.areas || [])]
         .join(" ")
         .toLowerCase()
         .includes(searchTermLower)
@@ -244,11 +302,17 @@ onMounted(async () => {
       :audience-filters="audienceFilters"
       :tuition-filters="tuitionFilters"
       :field-filters="fieldFilters"
+      :format-filters="formatFilters"
+      :inscricoes-filters="inscricoesFilters"
+      :level-display-names="levelDisplayNames"
+      :inscricoes-display-names="inscricoesDisplayNames"
       :selected-type-filters="selectedTypeFilters"
       :selected-level-filters="selectedLevelFilters"
       :selected-audience-filters="selectedAudienceFilters"
       :selected-tuition-filters="selectedTuitionFilters"
       :selected-field-filters="selectedFieldFilters"
+      :selected-format-filters="selectedFormatFilters"
+      :selected-inscricoes-filters="selectedInscricoesFilters"
       @toggle-filter="toggleFilter"
     />
 
@@ -260,11 +324,17 @@ onMounted(async () => {
       :audience-filters="audienceFilters"
       :tuition-filters="tuitionFilters"
       :field-filters="fieldFilters"
+      :format-filters="formatFilters"
+      :inscricoes-filters="inscricoesFilters"
+      :level-display-names="levelDisplayNames"
+      :inscricoes-display-names="inscricoesDisplayNames"
       :selected-type-filters="selectedTypeFilters"
       :selected-level-filters="selectedLevelFilters"
       :selected-audience-filters="selectedAudienceFilters"
       :selected-tuition-filters="selectedTuitionFilters"
       :selected-field-filters="selectedFieldFilters"
+      :selected-format-filters="selectedFormatFilters"
+      :selected-inscricoes-filters="selectedInscricoesFilters"
       @toggle-filter="toggleFilter"
       @close="showMobileFilters = false"
     />

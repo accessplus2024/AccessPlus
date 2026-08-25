@@ -9,6 +9,14 @@ const props = defineProps({
 const cat = computed(() => categoryFor(props.opportunity.type))
 const tags = computed(() => (props.opportunity.areas || []).slice(0, 3))
 const labelColor = computed(() => (isLightColor(cat.value.color) ? "#15111F" : cat.value.color))
+
+// Schema novo (2026-08-24): `inscricoes` diz se dá pra se inscrever hoje;
+// `status` voltou a significar só "passou pela curadoria". O `??` cobre o
+// banco ainda não migrado, em que o estado morava no `status`.
+const aberta = computed(() => {
+  const v = props.opportunity.inscricoes ?? (props.opportunity.status === "Encerrada" ? "Encerrada" : "Aberta")
+  return v === "Aberta"
+})
 const hover = ref(false)
 </script>
 
@@ -19,6 +27,7 @@ const hover = ref(false)
     :style="{
       borderRadius: 'var(--r-card)', padding: '26px',
       transform: hover ? 'translateY(-6px)' : 'none',
+      opacity: aberta ? 1 : .72,
       boxShadow: hover ? `0 22px 40px ${cat.color}33` : '0 1px 2px rgba(21,17,31,.05)',
     }"
     @mouseenter="hover = true"
@@ -28,7 +37,16 @@ const hover = ref(false)
     <div class="absolute top-0 left-0 right-0" style="height: 6px" :style="{ background: cat.color }" />
 
     <div class="flex items-start justify-between mt-1.5">
-      <span class="kicker" style="opacity: 1" :style="{ color: labelColor }">{{ cat.label }}</span>
+      <div class="flex flex-col items-start gap-2">
+        <span class="kicker" style="opacity: 1" :style="{ color: labelColor }">{{ cat.label }}</span>
+        <!-- Só marcamos o que está fechado. Um selo "aberta" em 236 dos 295
+             cards seria ruído: o aluno precisa enxergar a exceção. -->
+        <span
+          v-if="!aberta"
+          class="inline-flex items-center rounded-full border border-ink/15 bg-ink/5 text-ink/60"
+          style="font-size: 11.5px; font-weight: 600; padding: 3px 10px; letter-spacing: .02em"
+        >Inscrições encerradas</span>
+      </div>
       <span
         class="inline-flex items-center justify-center rounded-full flex-none bg-white"
         style="width: 48px; height: 48px; box-shadow: 0 2px 8px rgba(21,17,31,.1)"

@@ -8,11 +8,17 @@ const props = defineProps({
   audienceFilters: Array,
   tuitionFilters: Array,
   fieldFilters: Array,
+  formatFilters: Array,
+  inscricoesFilters: Array,
+  levelDisplayNames: { type: Object, default: () => ({}) },
+  inscricoesDisplayNames: { type: Object, default: () => ({}) },
   selectedTypeFilters: Object,
   selectedLevelFilters: Object,
   selectedAudienceFilters: Object,
   selectedTuitionFilters: Object,
   selectedFieldFilters: Object,
+  selectedFormatFilters: Object,
+  selectedInscricoesFilters: Object,
 });
 
 const emit = defineEmits(["toggle-filter", "close"]);
@@ -73,7 +79,7 @@ const closeFilters = () => {
           title="Nível"
           :filters="levelFilters"
           :selected-filters="selectedLevelFilters"
-          :display-names="{}"
+          :display-names="levelDisplayNames"
           filter-type="level"
           @toggle-filter="toggleFilter"
         />
@@ -102,6 +108,24 @@ const closeFilters = () => {
           :selected-filters="selectedFieldFilters"
           :display-names="{}"
           filter-type="field"
+          @toggle-filter="toggleFilter"
+        />
+
+        <FilterGroup
+          title="Formato"
+          :filters="formatFilters"
+          :selected-filters="selectedFormatFilters"
+          :display-names="{}"
+          filter-type="format"
+          @toggle-filter="toggleFilter"
+        />
+
+        <FilterGroup
+          title="Inscrições"
+          :filters="inscricoesFilters"
+          :selected-filters="selectedInscricoesFilters"
+          :display-names="inscricoesDisplayNames"
+          filter-type="inscricoes"
           @toggle-filter="toggleFilter"
         />
 

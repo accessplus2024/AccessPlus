@@ -8,11 +8,20 @@ const props = defineProps({
   audienceFilters: Array,
   tuitionFilters: Array,
   fieldFilters: Array,
+  formatFilters: Array,
+  inscricoesFilters: Array,
+  // `level` e `inscricoes` guardam no banco valores que não são o rótulo que
+  // o aluno deve ler ("Gap", "Aberta"). O valor comparado continua sendo o do
+  // banco; só a etiqueta muda.
+  levelDisplayNames: { type: Object, default: () => ({}) },
+  inscricoesDisplayNames: { type: Object, default: () => ({}) },
   selectedTypeFilters: Object,
   selectedLevelFilters: Object,
   selectedAudienceFilters: Object,
   selectedTuitionFilters: Object,
   selectedFieldFilters: Object,
+  selectedFormatFilters: Object,
+  selectedInscricoesFilters: Object,
 });
 
 const emit = defineEmits(["toggle-filter"]);
@@ -41,6 +50,8 @@ const palette = {
   audience: "var(--color-teal)",
   tuition: "var(--color-amber)",
   field: "var(--color-purple)",
+  format: "var(--color-primary)",
+  inscricoes: "var(--color-lime, var(--color-teal))",
 }
 </script>
 
@@ -62,7 +73,7 @@ const palette = {
       title="Nível"
       :filters="levelFilters"
       :selected-filters="selectedLevelFilters"
-      :display-names="{}"
+      :display-names="levelDisplayNames"
       filter-type="level"
       :is-open="openFilter === 'level'"
       :color="palette.level"
@@ -102,6 +113,30 @@ const palette = {
       filter-type="field"
       :is-open="openFilter === 'field'"
       :color="palette.field"
+      @toggle-open="toggleOpen"
+      @toggle-filter="toggleFilter"
+    />
+
+    <FilterDropdown
+      title="Formato"
+      :filters="formatFilters"
+      :selected-filters="selectedFormatFilters"
+      :display-names="{}"
+      filter-type="format"
+      :is-open="openFilter === 'format'"
+      :color="palette.format"
+      @toggle-open="toggleOpen"
+      @toggle-filter="toggleFilter"
+    />
+
+    <FilterDropdown
+      title="Inscrições"
+      :filters="inscricoesFilters"
+      :selected-filters="selectedInscricoesFilters"
+      :display-names="inscricoesDisplayNames"
+      filter-type="inscricoes"
+      :is-open="openFilter === 'inscricoes'"
+      :color="palette.inscricoes"
       @toggle-open="toggleOpen"
       @toggle-filter="toggleFilter"
     />
