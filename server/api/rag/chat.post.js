@@ -20,7 +20,7 @@ import { answerAboutOpportunity, buildFactSheet } from "../../utils/rag/factShee
 import { nextStep, collectedToText, accumulate } from "../../utils/rag/conversation.js";
 // Regras de "o que de fato chega ao aluno". Moram num arquivo só porque esta
 // rota já nasceu sem elas uma vez — ver o cabeçalho de utilidade.js.
-import { generateWithIsolation, filterUseful, cutByRelevance, structuredReason } from "../../utils/rag/usefulness.js";
+import { generateWithIsolation, filterUseful, cutByRelevance, structuredReason, suggestEnglishLearning } from "../../utils/rag/usefulness.js";
 import { filterByAge } from "../../utils/rag/ageFilter.js";
 import { checkRateLimit, getClientIp } from "../../utils/rateLimit.js";
 
@@ -305,8 +305,14 @@ async function respondWithRecommendations({ ip, texto, perfil, userId, sessionId
     };
   }
 
+  // Se a lista traz algo em inglês, a ponte para aprender inglês entra no fim.
+  // Ver suggestEnglishLearning(). `getCatalog()` é cache de 12h em memória —
+  // `cat` do handler não alcança aqui, esta função é chamada de vários pontos.
+  const { corpus: catalogo } = await getCatalog();
+  const comPonte = suggestEnglishLearning(useful, catalogo);
+
   const byId = new Map(explanations.map((x) => [Number(x.id), x]));
-  const recommendations = useful.map((o) => ({
+  const recommendations = comPonte.map((o) => ({
     id: o.id,
     titulo: o.title,
     tipo: o.type ?? null,
@@ -319,7 +325,12 @@ async function respondWithRecommendations({ ip, texto, perfil, userId, sessionId
     inscricoes: o.inscricoes ?? null,
     prazo: o.deadline ?? null,
     link: o.link ?? null,
-    porQueCombina: byId.get(Number(o.id))?.why_it_fits ?? structuredReason(o),
+    // A ponte não passa pela geração (entra depois), e o motivo é escrito à
+    // mão de propósito: ela está na lista por um critério objetivo, não porque
+    // um modelo achou que combina com este aluno.
+    porQueCombina: o._pontePraIngles
+      ? "Pra você que não fala inglês ou quer melhorar: dá uma olhadinha nessa oportunidade."
+      : byId.get(Number(o.id))?.why_it_fits ?? structuredReason(o),
     // A dúvida do modelo (Regra 4.5) aparece como ressalva que o aluno lê e
     // julga, em vez de virar uma decisão silenciosa de esconder — ver a nota
     // em filterUseful(). Só acrescenta se o LLM não tiver escrito ressalva

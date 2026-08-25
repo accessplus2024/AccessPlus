@@ -26,6 +26,41 @@ export const DEGREE_ABROAD_PROGRAMS = [
 export const WANTS_DEGREE_ABROAD_REGEX =
   /cursar a gradua[çc][ãa]o inteira fora do brasil|gradua[çc][ãa]o (completa )?(no exterior|fora do brasil)|faculdade (inteira )?(no exterior|fora do brasil|nos eua|nos estados unidos)|quero (estudar|fazer faculdade) (nos eua|nos estados unidos|no exterior)/i;
 
+// Ponte para o inglês: quando a lista traz alguma oportunidade em inglês, o
+// GROW Ambassadors entra no fim como caminho para chegar lá.
+//
+// O gatilho é o RESULTADO, não o cadastro — se apareceu algo em inglês, apareceu
+// uma barreira, e faz sentido oferecer a ponte. Isso é deliberado: a alternativa
+// seria disparar por `analysis.inglesFraco`, que depende de `profiles.linguas`,
+// removido em 2026-08-25. Aquele sinal hoje identifica 2 de 30 perfis; este
+// dispara sempre que a barreira de fato existe na tela.
+//
+// Não é filtro nem reordenação: nada sai da lista e nada muda de posição. É um
+// item extra no fim, dito como o que é.
+export const ENGLISH_LEARNING_OPPORTUNITY = "grow ambassadors";
+
+const EM_INGLES = /ingl[êe]s/i;
+
+export function suggestEnglishLearning(recommendations, corpus) {
+  const temIngles = recommendations.some((o) => EM_INGLES.test(o.language || o.idioma || ""));
+  if (!temIngles) return recommendations;
+
+  const jaEsta = recommendations.some((o) =>
+    (o.title || o.titulo || "").toLowerCase().includes(ENGLISH_LEARNING_OPPORTUNITY)
+  );
+  if (jaEsta) return recommendations;
+
+  const ponte = (corpus ?? []).find((o) =>
+    (o.title || "").toLowerCase().includes(ENGLISH_LEARNING_OPPORTUNITY)
+  );
+  if (!ponte) {
+    console.warn(`[usefulness] "${ENGLISH_LEARNING_OPPORTUNITY}" não está no catálogo aprovado — ponte não oferecida`);
+    return recommendations;
+  }
+
+  return [...recommendations, { ...ponte, _pontePraIngles: true }];
+}
+
 // Motivo montado das colunas, só quando a geração por LLM falha. Específico
 // da oportunidade, nunca um texto genérico igual para todas.
 export function structuredReason(o) {
