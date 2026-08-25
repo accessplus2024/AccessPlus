@@ -25,7 +25,7 @@
 // derivados do título (`signals.js`) → cross-encoder com passagem rica
 // (`rerank.js`), misturado 0.6/0.4 com o score de fusão em vez de substituí-lo
 // (rerank puro media 0.599 de recall).
-import { getCatalog } from "./catalog.js";
+import { getCatalog, getVectors } from "./catalog.js";
 import { analyzeQuery, expandedTerms } from "./parseQuery.js";
 import { aspectsOf, searchByAspect, mergeRoundRobin } from "./multiAspect.js";
 import { bm25Search } from "./bm25.js";
@@ -252,8 +252,12 @@ async function poolConsultaUnica(cat, bio, analysis, nCandidatos) {
   const { termos, boost } = expandedTerms(bio, analysis);
   const [qv] = await embed([consultaVetorial(bio, analysis)], "query");
 
+  // 7,25 MB de egress por carga — buscados só aqui, onde de fato são usados.
+  // Ver a nota em catalog.js/loadVectors().
+  const vectors = await getVectors();
+
   const idsVetor = cat.corpus
-    .map((o, i) => ({ id: o.id, s: cosine(qv, cat.vectors[i]) }))
+    .map((o, i) => ({ id: o.id, s: cosine(qv, vectors[i]) }))
     .sort((a, b) => b.s - a.s)
     .map((x) => x.id);
   const idsLex = bm25Search(cat.index, termos, { boostPorTermo: boost, topK: cat.corpus.length })

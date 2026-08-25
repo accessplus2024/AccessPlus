@@ -3,18 +3,19 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
+    "build": "node scripts/dump-vectors.js && nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "embed": "node scripts/embed-opportunities.js",
+    "embed": "node scripts/embed-opportunities.js && node scripts/dump-vectors.js",
     "embed:test": "node scripts/tests/test-embedding-connection.js",
     "eval:ablacao": "node lab/run.mjs",
     "eval:diagnostico": "node lab/diagnose.mjs",
     "eval:gaps": "node lab/gaps.mjs",
     "chat:smoke": "node lab/chat-smoke.mjs",
-    "test:roteador": "node lab/title-match.test.mjs"
+    "test:roteador": "node lab/title-match.test.mjs",
+    "vectors:dump": "node scripts/dump-vectors.js"
   },
   "dependencies": {
     "@iconoir/vue": "^7.10.0",

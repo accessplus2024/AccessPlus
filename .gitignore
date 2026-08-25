@@ -42,3 +42,6 @@ lab/cache/
 
 # Saída das rodadas de avaliação
 lab/out/
+
+# Vetores materializados no build (fonte de verdade: Supabase)
+server/assets/vectors/

@@ -12,6 +12,7 @@
 // aluno ocupe posicao no topo, em vez do interesse mais "forte" no embedding
 // levar as 10 vagas.
 import { bm25Search } from "./bm25.js";
+import { getVectors } from "./catalog.js";
 import { embed, cosine } from "./embedText.js";
 import { expandedTerms } from "./parseQuery.js";
 import { tokenize } from "./text.js";
@@ -54,8 +55,11 @@ export async function searchByAspect(cat, bio, analysis, aspecto, { porLado = 40
   const texto = textoDaConsulta(bio, analysis, aspecto);
 
   const [qv] = await embed([texto], "query");
+  // `cat.vectors` deixou de existir em 2026-08-25: os vetores viraram carga
+  // preguiçosa por causa de egress (7,25 MB). Ver catalog.js/loadVectors().
+  const vectors = await getVectors();
   const vet = cat.corpus
-    .map((o, i) => ({ id: o.id, s: cosine(qv, cat.vectors[i]) }))
+    .map((o, i) => ({ id: o.id, s: cosine(qv, vectors[i]) }))
     .sort((a, b) => b.s - a.s)
     .slice(0, porLado)
     .map((x) => x.id);

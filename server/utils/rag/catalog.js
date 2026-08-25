@@ -34,18 +34,165 @@ let estado = null;      // { corpus, index, vectors, byId, loadedAt }
 let carregando = null;  // promise em voo, para não recarregar em paralelo
 
 async function load() {
-  // As duas queries em paralelo: não dependem uma da outra, e serializá-las
-  // somava as latências sem motivo.
-  const [resOpp, resChunks] = await Promise.all([
-    devSupabase.from("opportunities").select(COLUNAS).eq("status", "Aprovada"),
-    devSupabase.from("opportunity_chunks").select("opportunity_id, embedding").eq("field_name", "core"),
-  ]);
+  const resOpp = await devSupabase.from("opportunities").select(COLUNAS).eq("status", "Aprovada");
   if (resOpp.error) throw new Error(`Erro ao carregar catálogo: ${resOpp.error.message}`);
-  if (resChunks.error) throw new Error(`Erro ao carregar embeddings: ${resChunks.error.message}`);
 
   const corpus = resOpp.data;
   const index = buildIndex(corpus, buildFields);
   const byId = new Map(corpus.map((o, i) => [o.id, i]));
+  return { corpus, index, byId, loadedAt: Date.now() };
+}
+
+// ── Vetores, carregados SÓ quando a perna vetorial roda ────────────────────
+//
+// Medido em 2026-08-25: os vetores são 7,25 MB por carga; o texto do catálogo
+// é 0,47 MB. E `chat.post.js` chamava `getCatalog()` no topo de TODA
+// requisição — um aluno dizendo "oi" ou perguntando "o que é um MUN" baixava
+// os 7,25 MB sem usar um único vetor.
+//
+// Na Vercel cada invocação é um processo novo, então o cache de 12h quase nunca
+// é reaproveitado: na prática era ~7,7 MB por requisição. 663 cargas esgotam os
+// 5 GB de egress do plano — e o projeto chegou a 7,27 GB.
+//
+// O roteador precisa do TEXTO (para casar título); só `search.js` e
+// `multiAspect.js` tocam os vetores. Separar as duas cargas é o que faz um
+// "oi" custar 0,47 MB em vez de 7,72 MB.
+let vetores = null;
+let carregandoVetores = null;
+
+// Lê os vetores do arquivo embarcado no bundle (server/assets/vectors/core.bin,
+// gerado por scripts/dump-vectors.js no build). Egress ZERO — é a diferença
+// entre 7,25 MB por invocação e nada.
+//
+// Devolve null em qualquer problema: arquivo ausente (dev, ou build sem
+// credenciais), modelo diferente do configurado, formato inesperado. Quem chama
+// cai no Supabase, que continua sendo a fonte de verdade.
+async function lerVetoresDoBundle() {
+  try {
+    if (typeof useStorage !== "function") return null;
+
+    // O nome da chave difere entre `nuxt dev` e o bundle da Vercel, e entre
+    // versões do Nitro. Em vez de adivinhar, tenta as grafias conhecidas e, se
+    // nenhuma servir, LISTA o que existe — descobrir isso por log é mais rápido
+    // que por tentativa e erro em deploy.
+    // `assets:server` é o mount que o Nuxt cria sozinho para server/assets/ —
+    // verificado funcionando em 2026-08-25, e é o único que existe na Vercel.
+    // As outras grafias ficam como rede para versões diferentes do Nitro; não
+    // há `serverAssets` no nuxt.config de propósito: declarar um segundo mount
+    // do mesmo diretório embarcaria os 2,3 MB duas vezes no bundle da função.
+    const tentativas = [
+      ["assets:server", "vectors/core.bin"],
+      ["assets:vectors", "core.bin"],
+      ["assets:server", "vectors:core.bin"],
+      ["assets:vectors", "vectors/core.bin"],
+    ];
+    let bruto = null;
+    let origem = null;
+    for (const [mount, chave] of tentativas) {
+      try { bruto = await useStorage(mount).getItemRaw(chave); } catch { /* mount/chave inexistente */ }
+      if (bruto) { origem = `${mount}/${chave}`; break; }
+    }
+
+    // Último recurso: ler do disco. Cobre `nuxt dev`, onde o mount de
+    // serverAssets às vezes não expõe o arquivo.
+    if (!bruto) {
+      try {
+        const { readFileSync, existsSync } = await import("node:fs");
+        const caminho = new URL("../../assets/vectors/core.bin", import.meta.url).pathname;
+        if (existsSync(caminho)) { bruto = readFileSync(caminho); origem = "disco (dev)"; }
+      } catch { /* em produção o caminho não existe; segue para o aviso */ }
+    }
+
+    if (!bruto) {
+      for (const mount of ["assets:server", "assets:vectors"]) {
+        try {
+          console.warn(`[catalogo] chaves em ${mount} = ${JSON.stringify(await useStorage(mount).getKeys())}`);
+        } catch (e) {
+          console.warn(`[catalogo] ${mount} indisponível: ${e.message}`);
+        }
+      }
+      return null;
+    }
+
+    const buf = Buffer.isBuffer(bruto) ? bruto : Buffer.from(bruto);
+    if (buf.length < 8 || buf.toString("ascii", 0, 4) !== "ACV1") {
+      console.warn("[catalogo] core.bin com formato inesperado — ignorado");
+      return null;
+    }
+    const tamCabecalho = buf.readUInt32LE(4);
+    const cab = JSON.parse(buf.toString("utf8", 8, 8 + tamCabecalho));
+
+    const dimsEsperadas = Number(process.env.EMBEDDING_DIMENSIONS) || null;
+    if (dimsEsperadas && cab.dims !== dimsEsperadas) {
+      console.warn(`[catalogo] core.bin tem ${cab.dims} dims, config diz ${dimsEsperadas} — ignorado`);
+      return null;
+    }
+    if (process.env.EMBEDDING_MODEL && cab.model !== process.env.EMBEDDING_MODEL) {
+      console.warn(`[catalogo] core.bin foi gerado com "${cab.model}", config diz "${process.env.EMBEDDING_MODEL}" — ignorado`);
+      return null;
+    }
+
+    // Cópia para um buffer alinhado: Float32Array exige offset múltiplo de 4, e
+    // o cabeçalho tem tamanho variável.
+    const inicio = 8 + tamCabecalho;
+    const floats = new Float32Array(buf.buffer.slice(buf.byteOffset + inicio, buf.byteOffset + buf.length));
+    if (floats.length !== cab.count * cab.dims) {
+      console.warn("[catalogo] core.bin truncado — ignorado");
+      return null;
+    }
+
+    const porId = new Map();
+    cab.ids.forEach((id, i) => porId.set(id, Array.from(floats.subarray(i * cab.dims, (i + 1) * cab.dims))));
+
+    // A ORIGEM importa: o mount do Nitro é o que existe na Vercel; "disco" só
+    // funciona em `nuxt dev`. Sem distinguir as duas, um teste local passando
+    // não diz nada sobre o egress em produção.
+    porId._origem = origem;
+    return porId;
+  } catch (e) {
+    console.warn(`[catalogo] falha ao ler core.bin (${e.message}) — caindo no Supabase`);
+    return null;
+  }
+}
+
+async function loadVectors(cat) {
+  const { corpus, byId } = cat;
+
+  // 1. arquivo do bundle: egress zero.
+  const doBundle = await lerVetoresDoBundle();
+
+  // 2. o que faltou (oportunidade aprovada depois do último build) vem do
+  //    banco — e SÓ ela, não o catálogo inteiro.
+  const faltando = doBundle ? corpus.filter((o) => !doBundle.has(o.id)).map((o) => o.id) : null;
+
+  let data = [];
+  if (!doBundle) {
+    const r = await devSupabase
+      .from("opportunity_chunks")
+      .select("opportunity_id, embedding")
+      .eq("field_name", "core");
+    if (r.error) throw new Error(`Erro ao carregar embeddings: ${r.error.message}`);
+    data = r.data;
+    console.log(`[catalogo] vetores lidos do Supabase (${data.length}) — sem core.bin no bundle`);
+  } else if (faltando.length) {
+    const r = await devSupabase
+      .from("opportunity_chunks")
+      .select("opportunity_id, embedding")
+      .eq("field_name", "core")
+      .in("opportunity_id", faltando);
+    if (r.error) throw new Error(`Erro ao carregar embeddings faltantes: ${r.error.message}`);
+    data = r.data;
+    console.log(`[catalogo] core.bin cobriu ${doBundle.size}; ${faltando.length} buscada(s) no banco`);
+  } else {
+    const via = doBundle._origem ?? "?";
+    console.log(`[catalogo] ${doBundle.size} vetores de ${via} — zero egress`);
+    if (via === "disco (dev)") {
+      console.warn(
+        "[catalogo] ATENÇÃO: veio do DISCO, não do mount do Nitro. Em produção o caminho " +
+          "não existe e a busca cairá no Supabase (7,25 MB por invocação). Confira o log do deploy."
+      );
+    }
+  }
 
   // Os vectors vêm de `opportunity_chunks` (chunk "core", gravado por
   // `npm run embed`), NÃO calculados aqui.
@@ -71,9 +218,15 @@ async function load() {
   // função de propósito (antes eram dois e divergiram), mas o vetor fica
   // materializado no banco. Sem re-embeddar, o índice vetorial descreve uma
   // versão antiga do catálogo, silenciosamente.
-  const chunks = resChunks.data;
+  const chunks = data;
 
   const vectors = new Array(corpus.length).fill(null);
+  if (doBundle) {
+    for (const [id, v] of doBundle) {
+      const i = byId.get(id);
+      if (i !== undefined) vectors[i] = v;
+    }
+  }
   for (const c of chunks) {
     const i = byId.get(c.opportunity_id);
     if (i === undefined) continue;
@@ -129,7 +282,19 @@ async function load() {
     }
   }
 
-  return { corpus, index, vectors, byId, loadedAt: Date.now() };
+  return { vectors, loadedAt: Date.now() };
+}
+
+export async function getVectors() {
+  if (vetores && Date.now() - vetores.loadedAt < TTL_MS) return vetores.vectors;
+  const cat = await getCatalog();
+  if (!carregandoVetores) {
+    carregandoVetores = loadVectors(cat)
+      .then((v) => { vetores = v; return v; })
+      .finally(() => { carregandoVetores = null; });
+  }
+  const v = await carregandoVetores;
+  return v.vectors;
 }
 
 export async function getCatalog() {
