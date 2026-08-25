@@ -65,3 +65,30 @@ Os pisos de `docs/accessia.md` §6 não podem cair. O pipeline é determinístic
 então qualquer variação é efeito real da mudança, nunca ruído amostral. Rode
 `npm run eval:diagnostico` antes de teorizar: ele separa "não foi encontrado"
 de "foi encontrado e mal ordenado", que têm causas opostas.
+
+## Afazeres
+
+**A tela de login do Google mostra `ddszyvdedfqvhwlxesuz.supabase.co` em vez
+de "Access+".** O login funciona; o que falta é a marca. O nome do app e os
+domínios autorizados já estão preenchidos no Google Cloud e o app está em
+produção — mas sem passar pela **verificação de marca** o Google exibe só o
+domínio do redirect, e a verificação não pode nem ser *enviada* enquanto
+faltarem três links no consent screen:
+
+- Application home page
+- Application privacy policy link
+- Application terms of service link
+
+Os dois últimos apontariam para páginas que **não existem** — não há
+`/privacidade` nem `/termos` em `pages/`. Criá-las é o trabalho real; o resto
+é preencher campo. Como os escopos são só `email`, `profile` e `openid`
+(não-sensíveis), a revisão é automática e sai em minutos.
+
+Dois atalhos que não funcionam: remover o logo não dispensa a verificação (a
+regra vale para "nome e/ou logo"), e voltar para *Testing* mostra a marca
+apenas para os e-mails de teste cadastrados.
+
+As páginas também são exigência da LGPD por conta própria — o cadastro coleta
+nome, idade, telefone, escola, escolaridade e localização de estudantes, boa
+parte deles menores, o que cai no art. 14. Vale revisão jurídica antes de
+publicar.
