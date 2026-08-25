@@ -1,6 +1,5 @@
 <script setup>
 import { ArrowRight, Search } from "@iconoir/vue"
-import AccessGate from "~/components/opportunity/AccessGate.vue"
 
 const router = useRouter()
 const { data: opportunities, fetchOpportunities } = useCachedOpportunities()
@@ -150,17 +149,6 @@ const heroImage = {
           <div class="visual-card">
             <div class="visual-photo" :style="{ backgroundImage: `url('${heroImage.url}')` }" />
             <span class="visual-caption">{{ heroImage.label }}</span>
-          </div>
-
-          <div class="accessia-slot">
-            <ClientOnly>
-              <AccessGate>
-                <AccessIA />
-              </AccessGate>
-              <template #fallback>
-                <p class="text-ink/50" style="font-size: 14px">Carregando...</p>
-              </template>
-            </ClientOnly>
           </div>
         </div>
       </div>
@@ -364,11 +352,6 @@ const heroImage = {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #fff;
-}
-
-.accessia-slot {
-  position: relative;
-  z-index: 20;
 }
 
 @keyframes drift {

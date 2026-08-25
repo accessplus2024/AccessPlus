@@ -1,5 +1,5 @@
 const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
-// Exportado (não só local) pra poder registrar em ai_interactions.models_used
+// Exportado (não só local) pra poder aparecer em mensagens de erro e logs
 // sem duplicar a string em outro arquivo — ver Semana 11 do plano.
 export const RERANK_MODEL = "llama-nemotron-rerank-vl-1b-v2";
 const RERANK_URL = `https://ai.api.nvidia.com/v1/retrieval/nvidia/${RERANK_MODEL}/reranking`;
@@ -8,7 +8,7 @@ const RERANK_URL = `https://ai.api.nvidia.com/v1/retrieval/nvidia/${RERANK_MODEL
 // à query, usando um cross-encoder (considera query+passagem juntas, ao
 // contrário da busca vetorial, que embedda cada uma separadamente antes de
 // comparar). Mais caro por item, mas muito mais preciso — por isso só roda
-// sobre os ~20 candidatos que já sobreviveram à fusão RRF, não o corpus todo.
+// sobre os ~20 candidates que já sobreviveram à fusão RRF, não o corpus todo.
 export async function rerank(query, passages) {
   const response = await fetch(RERANK_URL, {
     method: "POST",

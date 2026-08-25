@@ -1,4 +1,4 @@
-import { devSupabase } from "./devClient.js";
+import { devSupabase } from "./ragClient.js";
 
 export async function ftsSearch(queryText, matchCount = 20) {
   const { data, error } = await devSupabase.rpc("match_opportunities_fts", {

@@ -2,15 +2,12 @@ const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
 const EMBEDDING_MODEL = process.env.EMBEDDING_MODEL;
 const EMBEDDING_DIMENSIONS = Number(process.env.EMBEDDING_DIMENSIONS);
 
-  console.log("[debug] NVIDIA_API_KEY:", NVIDIA_API_KEY ? `${NVIDIA_API_KEY.slice(0, 8)}...(len=${NVIDIA_API_KEY.length})` : "UNDEFINED");
-console.log("[debug] EMBEDDING_MODEL:", JSON.stringify(EMBEDDING_MODEL));
-console.log("[debug] EMBEDDING_DIMENSIONS:", EMBEDDING_DIMENSIONS);
-
 export async function embedTexts(texts, inputType) {
+  if (!texts.length) return [];
   const response = await fetch("https://integrate.api.nvidia.com/v1/embeddings", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${NVIDIA_API_KEY}`,
+      Authorization: `Bearer ${NVIDIA_API_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -26,4 +23,21 @@ export async function embedTexts(texts, inputType) {
   }
   const data = await response.json();
   return data.data.map((item) => item.embedding);
+}
+
+/**
+ * Alias curto usado pelo pipeline novo. Faz UMA chamada para o lote inteiro —
+ * a busca multi-aspecto embedda 5 a 7 consultas por requisição, e mandá-las
+ * juntas é a diferença entre uma ida à rede e sete.
+ */
+export const embed = (texts, inputType) => embedTexts(texts, inputType);
+
+export function cosine(a, b) {
+  let dot = 0, na = 0, nb = 0;
+  for (let i = 0; i < a.length; i++) {
+    dot += a[i] * b[i];
+    na += a[i] * a[i];
+    nb += b[i] * b[i];
+  }
+  return dot / (Math.sqrt(na) * Math.sqrt(nb) + 1e-12);
 }
