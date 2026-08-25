@@ -3,15 +3,18 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "eval:golden-set": "node scripts/eval/run-golden-set.js",
-    "sync:opportunities": "node scripts/sync-opportunities-from-prod.js",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "embed": "node scripts/embed-opportunities.js",
-    "embed:test": "node scripts/tests/test-embedding-connection.js"
+    "embed:test": "node scripts/tests/test-embedding-connection.js",
+    "eval:ablacao": "node lab/run.mjs",
+    "eval:diagnostico": "node lab/diagnose.mjs",
+    "eval:gaps": "node lab/gaps.mjs",
+    "chat:smoke": "node lab/chat-smoke.mjs",
+    "test:roteador": "node lab/title-match.test.mjs"
   },
   "dependencies": {
     "@iconoir/vue": "^7.10.0",
@@ -24,6 +27,7 @@
     "gsap": "^3.12.7",
     "isomorphic-dompurify": "^2.36.0",
     "nuxt": "^3.17.4",
+    "snowball-stemmers": "^0.6.0",
     "vue": "latest",
     "vue-router": "latest"
   },

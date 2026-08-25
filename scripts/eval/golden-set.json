@@ -177,7 +177,8 @@
         "linguas": ["Português"],
         "condicao_financeira": "precisa_gratuito",
         "areas": ["Empreendedorismo"],
-        "bio": "Terminei o ensino médio esse ano numa cidade pequena do interior de Goiás. Tô ajudando na produção agrícola da família e pensando em empreender na área. Não tenho vontade nem condição de viajar pra fora do país agora — quero programas remotos e gratuitos."
+        "bio": "Terminei o ensino médio esse ano numa cidade pequena do interior de Goiás. Tô ajudando na produção agrícola da família e pensando em empreender na área. Não tenho vontade nem condição de viajar pra fora do país agora — quero programas remotos e gratuitos.",
+        "local": "brasil"
       },
       "deve_aparecer_no_top10": [
         "Non Trivial Fellowship",
@@ -201,7 +202,8 @@
         "linguas": ["Português", "Inglês"],
         "condicao_financeira": "posso_pagar_taxa_pequena",
         "areas": ["STEM"],
-        "bio": "Moro na periferia da zona leste de São Paulo, tô no 2º ano do médio. Meu sonho é conseguir uma bolsa integral pra estudar numa universidade nos Estados Unidos — já estudo inglês sozinha há 2 anos pra isso. Quero muito programas de intercâmbio e mentorias de admissão no exterior."
+        "bio": "Moro na periferia da zona leste de São Paulo, tô no 2º ano do médio. Meu sonho é conseguir uma bolsa integral pra estudar numa universidade nos Estados Unidos — já estudo inglês sozinha há 2 anos pra isso. Quero muito programas de intercâmbio e mentorias de admissão no exterior.",
+        "local": "fora"
       },
       "deve_aparecer_no_top10": [
         "Prep Program",
@@ -224,7 +226,8 @@
         "linguas": ["Português"],
         "condicao_financeira": "precisa_gratuito",
         "areas": ["Meio Ambiente", "Humanas"],
-        "bio": "Sou indígena, moro em Belém do Pará, 2º ano do médio. Participo de um coletivo jovem de ativismo ambiental e de dados de gênero na minha comunidade. Quero entender mais sobre mudança climática e direitos indígenas. Prefiro não viajar pra fora do Brasil por enquanto."
+        "bio": "Sou indígena, moro em Belém do Pará, 2º ano do médio. Participo de um coletivo jovem de ativismo ambiental e de dados de gênero na minha comunidade. Quero entender mais sobre mudança climática e direitos indígenas. Prefiro não viajar pra fora do Brasil por enquanto.",
+        "local": "brasil"
       },
       "deve_aparecer_no_top10": [
         "OHCHR Indigenous Fellowship 2027",
@@ -237,7 +240,7 @@
         "AFS Global STEM Academies",
         "UWC"
       ],
-      "observacao": "Testa o campo 'audience' (indígena) puxando o OHCHR Indigenous Fellowship (é presencial em Genebra, mas é treinamento de direitos humanos, não mentoria pra 'ir estudar fora' — por isso não entra na lista de exclusão de intercâmbio, é uma distinção proposital). AFS/UWC continuam de fora pois ela não pediu intercâmbio de estudo."
+      "observacao": "Testa o campo 'audience' (indígena) puxando o OHCHR Indigenous Fellowship (é presencial em Genebra, mas é treinamento de direitos humanos, não mentoria pra 'ir estudar fora' — por isso não entra na lista de exclusão de intercâmbio, é uma distinção proposital). AFS/UWC continuam de fora pois ela não pediu intercâmbio de estudo. ATENÇÃO (2026-08-23): com o novo reweight.js baseado em requer_viagem_internacional (presença física, não 'é intercâmbio de estudo'), o OHCHR pode ser classificado 'Sim' por ser presencial fora do Brasil, e ser demovido pra ela por causa de local='brasil' — isso NÃO é o mesmo bug que este perfil testava originalmente (a distinção proposital continua correta na geração/explicação), mas pode fazer o OHCHR cair de posição ou sumir do top10 por reordenação. Se isso acontecer, é uma decisão de produto pendente (o reweight deveria distinguir 'viagem de estudo/intercâmbio' de 'treinamento presencial pontual'?), não necessariamente um bug de implementação — revisar com a mantenedora antes de tentar 'consertar'."
     },
     {
       "id": "perfil-12-linguas-classicas",
@@ -248,7 +251,8 @@
         "linguas": ["Português"],
         "condicao_financeira": "precisa_gratuito",
         "areas": ["Linguagens", "Humanas"],
-        "bio": "Moro em Fortaleza, 3º ano do médio, escola pública. Sou apaixonado por linguística — adoro entender como as línguas mudam e se parecem entre si. Meu inglês é mediano. Não tenho interesse em intercâmbio agora, quero focar em competições e cursos daqui."
+        "bio": "Moro em Fortaleza, 3º ano do médio, escola pública. Sou apaixonado por linguística — adoro entender como as línguas mudam e se parecem entre si. Meu inglês é mediano. Não tenho interesse em intercâmbio agora, quero focar em competições e cursos daqui.",
+        "local": "brasil"
       },
       "deve_aparecer_no_top10": [
         "Olimpíada Brasileira de Linguística (OBL)",
@@ -261,6 +265,394 @@
         "Prep Program"
       ],
       "observacao": "Área de nicho (linguística) com poucos itens no catálogo — bom teste de precisão: qualquer coisa fora do tema de línguas/linguística no top5 é suspeita. IOL é remoto (seleção via OBL), não é 'estudar fora', por isso não entra na exclusão."
+    },
+    {
+      "id": "perfil-13-financeiro",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "CE",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["STEM", "Economia"],
+        "bio": "Moro em Fortaleza, 2º ano do médio, escola pública. Adoro matemática financeira e economia — quero entender como funciona investimento e participar de olimpíadas da área.",
+        "local": "brasil"
+      },
+      "deve_aparecer_no_top10": [
+        "Olimpíada Brasileira de Matemática Financeira",
+        "Olimpíada do Tesouro Direto",
+        "Olimpíada Brasileira de Economia (OBECON)"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "Bolsa Crimson",
+        "Bolsa Daqui para Fora"
+      ],
+      "observacao": "Verificado em 2026-08-24 direto contra o catálogo (295 aprovadas): sinal forte e bem discriminado — OBMF/OLITEF/OBECON ficaram bem na frente de qualquer outro item na busca real (logit de rerank entre -3.5 e -5.3, o resto do catálogo abaixo de -6). Bom caso de controle: se esses 3 não aparecerem no top10, algo quebrou na busca, não é ambiguidade de tema."
+    },
+    {
+      "id": "perfil-14-jornalismo",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "MG",
+        "linguas": ["Português", "Inglês"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Jornalismo", "Linguagens", "Humanas"],
+        "bio": "Moro em Belo Horizonte, escrevo pro jornal da escola. Quero ser jornalista — busco concursos de reportagem/redação e programas de jornalismo.",
+        "local": "ambos"
+      },
+      "deve_aparecer_no_top10": [
+        "New York Times Contests",
+        "Columbia Scholastic Press Association (CSPA)",
+        "Medill-Northwestern Journalism Institute (Cherubs)"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "Programa Jovem Senador"
+      ],
+      "observacao": "Verificado contra o catálogo real: os 3 itens são especificamente sobre jornalismo/redação estudantil, com sinal claro na busca. 'Programa Jovem Senador' é sobre formação parlamentar/civica, não jornalismo — pode aparecer em algum lugar por proximidade temática (política/escrita), mas não deveria brigar por posição no top5."
+    },
+    {
+      "id": "perfil-15-quimica",
+      "perfil": {
+        "idade": 17,
+        "nivel": "Ensino Médio",
+        "uf": "PR",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["STEM", "Química"],
+        "bio": "Moro em Curitiba, 3º ano do médio, sou apaixonado por química — adoro fazer experiências em casa e na escola e quero competir em olimpíadas de química.",
+        "local": "brasil"
+      },
+      "deve_aparecer_no_top10": [
+        "Olimpíada Brasileira Online de Química (OBOQ)",
+        "Chemico STEM Competition",
+        "Olimpíada Internacional de Química (IChO)",
+        "Campeonato Nacional de Química (CNQ)"
+      ],
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "Verificado contra o catálogo: sinal excelente e bem separado (logit entre -2.9 e -4.9, muito acima do resto). Sem casos claros de 'não deveria aparecer' — biotecnologia/física são vizinhas legítimas de química, não vazamento."
+    },
+    {
+      "id": "perfil-16-fisica-espaco",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "DF",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["STEM", "Física", "Astronomia"],
+        "bio": "Moro em Brasília, 2º ano do médio, adoro física e astronomia, sonho em trabalhar com foguetes e satélites um dia.",
+        "local": "brasil"
+      },
+      "deve_aparecer_no_top10": [
+        "Olimpíada Brasileira de Satélites da MCTI (OBSAT)",
+        "Olimpíada Brasileira de Astronomia (OBA)",
+        "Olimpíada Brasileira de Física (OBF)",
+        "The Yale Summer Program in Astrophysics (YSPA)"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "UWC"
+      ],
+      "observacao": "Verificado contra o catálogo. Área com muitas olimpíadas concorrentes (física, astronomia, satélites, IPhO, OBOF, OBFEP) competindo por posição de forma legítima — o teste real aqui não é 'só estes 4 aparecem', é 'nenhum item genuinamente fora do tema (como UWC, bolsa genérica) rouba lugar deles'."
+    },
+    {
+      "id": "perfil-17-ia",
+      "perfil": {
+        "idade": 17,
+        "nivel": "Ensino Médio",
+        "uf": "PE",
+        "linguas": ["Português", "Inglês"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Inteligência Artificial", "Programação", "STEM"],
+        "bio": "Moro em Recife, 3º ano do médio, aprendi Python sozinho pela internet e quero estudar inteligência artificial e machine learning de verdade.",
+        "local": "fora"
+      },
+      "deve_aparecer_no_top10": [
+        "PAIR: Program on AI and Reasoning"
+      ],
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "Catálogo tem pouquíssima coisa de IA/ML nomeada como tal — PAIR (16-21 anos, sem inferência de idade envolvida, aluno tem 17) é o único item verificadamente específico de IA. Girls Who Code e afins aparecem por proximidade de programação, o que é razoável, mas não são 'IA' propriamente — não exigidos aqui pra não inflar o golden set com match aproximado."
+    },
+    {
+      "id": "perfil-18-empreendedorismo-favela",
+      "perfil": {
+        "idade": 17,
+        "nivel": "Ensino Médio",
+        "uf": "RJ",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Empreendedorismo"],
+        "bio": "Moro numa favela do Rio de Janeiro, ajudo minha mãe com um pequeno negócio de salgados. Quero aprender a empreender de verdade e fazer o negócio da família crescer.",
+        "local": "brasil"
+      },
+      "deve_aparecer_no_top10": [
+        "Shell Iniciativa JOVEM",
+        "Jornada do Lider",
+        "Blue Ocean Competition"
+      ],
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "Variante urbana do perfil-08 (empreendedorismo rural) — verifica que o mesmo tipo de programa de empreendedorismo popular/gratuito aparece independente do contexto geográfico (favela x interior), sem depender de palavra-chave regional específica."
+    },
+    {
+      "id": "perfil-19-direitos-humanos",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "BA",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Direitos Humanos", "Relações Internacionais", "Humanas"],
+        "bio": "Moro em Salvador, participo de um coletivo de direitos humanos na escola. Quero entender mais sobre relações internacionais e direitos humanos.",
+        "local": "ambos"
+      },
+      "deve_aparecer_no_top10": [
+        "Youth Advocacy for Democracy and Human Rights Training Course",
+        "Tilting Futures at Capetown",
+        "Debates Públicos Ashoka",
+        "Escola Comum"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "X-Culture"
+      ],
+      "observacao": "Verificado contra o catálogo. 'X-Culture' é sobre negócios/colaboração intercultural, não direitos humanos — pode compartilhar vocabulário de 'internacional' sem ser relevante de fato."
+    },
+    {
+      "id": "perfil-20-meioambiente-sul",
+      "perfil": {
+        "idade": 15,
+        "nivel": "Ensino Médio",
+        "uf": "RS",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Meio Ambiente", "Sustentabilidade"],
+        "bio": "Moro em Porto Alegre, 1º ano do médio, participo de um projeto de reciclagem na escola. Quero entender mais sobre sustentabilidade e mudança climática.",
+        "local": "brasil"
+      },
+      "deve_aparecer_no_top10": [
+        "Global Youth Climate Training Programme 2026",
+        "Bow Seat Ocean Awareness Contest",
+        "Genius Olympiad",
+        "Shell Eco-marathon"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "Pitch For The Future"
+      ],
+      "observacao": "Variante regional (Sul) do perfil-10 (ativismo ambiental na Amazônia) — bom teste de que o sinal de meio ambiente não depende de contexto amazônico/indígena específico. 'Pitch For The Future' é uma competição de pitch genérica, não ambiental."
+    },
+    {
+      "id": "perfil-21-lgbt-lideranca",
+      "perfil": {
+        "idade": 17,
+        "nivel": "Ensino Médio",
+        "uf": "SP",
+        "linguas": ["Português", "Inglês"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Ativismo", "Liderança"],
+        "bio": "Sou uma adolescente trans, moro em São Paulo, participo de um coletivo LGBT+ na escola. Quero bolsas e programas de liderança jovem inclusivos.",
+        "local": "ambos"
+      },
+      "deve_aparecer_no_top10": [
+        "One Young World Leading Scholarship"
+      ],
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "Catálogo não tem programa específico voltado à comunidade LGBT+ (lacuna real, ver observação do perfil-24-surdos sobre o mesmo padrão para acessibilidade) — o que existe são programas de liderança jovem genéricos que se declaram inclusivos. Só 1 item exigido de propósito, pra não inflar artificialmente o que é, na prática, um match fraco-mas-real."
+    },
+    {
+      "id": "perfil-22-retorno-lideranca-global",
+      "perfil": {
+        "idade": 22,
+        "nivel": "Gap Year",
+        "uf": "PB",
+        "linguas": ["Português", "Inglês"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Liderança", "Relações Internacionais"],
+        "bio": "Tenho 22 anos, parei de estudar uns anos pra trabalhar e ajudar em casa. Agora voltei a focar nos estudos e quero bolsas de liderança jovem global.",
+        "local": "fora"
+      },
+      "deve_aparecer_no_top10": [
+        "AMP Global Youth Scholar",
+        "Youth International Exchange Fellowship (YIEF)",
+        "Vital Voices Global Fellowship"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "UWC"
+      ],
+      "observacao": "Caso de aluno mais velho fora do fluxo tradicional (Gap Year, 22 anos) buscando programas de liderança global sem faixa de idade explícita declarada — nenhum desses 3 tem número de idade no texto, então nada aqui é cortado pelo filtro de idade (correto: sem declaração explícita, não filtra). 'UWC' pede explicitamente aluno no 1º/2º ano do Ensino Médio — não é um corte de IDADE (não teria número), é um mismatch de nível que o rerank/reweight deveria captar por conta própria; listado aqui como sinal de ranking, não como bug de filtro."
+    },
+    {
+      "id": "perfil-23-distorcao-techgirls-elegivel",
+      "perfil": {
+        "idade": 17,
+        "nivel": "Ensino Médio",
+        "uf": "SE",
+        "linguas": ["Português", "Inglês"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["STEM", "Tecnologia", "Biologia"],
+        "bio": "Tenho 17 anos, voltei a estudar depois de um tempo fora da escola e tô meio atrasada pra minha idade. Sou apaixonada por biologia e tecnologia, quero um programa internacional de verão em inglês pra mulheres jovens em STEM, e também gosto de olimpíadas de biotecnologia.",
+        "local": "fora"
+      },
+      "deve_aparecer_no_top10": [
+        "TechGirls",
+        "Olimpíada Brasileira de Biotecnologia (OBBiotec)"
+      ],
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "CASO DE DISTORÇÃO IDADE-SÉRIE (Parte 3 do plano) — par com perfil-24. TechGirls declara faixa explícita 15-17 anos; esta aluna tem 17, dentro da faixa, mesmo estando 'atrasada' pra idade/série. Verificado em 2026-08-24: com o filtro de idade aplicado, TechGirls fica em 1º lugar (logit -4.10, muito acima do resto). Se TechGirls desaparecer aqui, o filtro está inferindo idade de série/atraso escolar em vez de usar o número real — bug crítico de viés."
+    },
+    {
+      "id": "perfil-24-distorcao-techgirls-inelegivel",
+      "perfil": {
+        "idade": 19,
+        "nivel": "Ensino Médio",
+        "uf": "SE",
+        "linguas": ["Português", "Inglês"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["STEM", "Tecnologia", "Biologia"],
+        "bio": "Tenho 19 anos, voltei a estudar depois de um tempo fora da escola e tô no 3º ano do médio, mais velha que o esperado pra minha turma. Sou apaixonada por biologia e tecnologia, quero um programa internacional de verão em inglês pra mulheres jovens em STEM, e também gosto de olimpíadas de biotecnologia.",
+        "local": "fora"
+      },
+      "deve_aparecer_no_top10": [
+        "Olimpíada Brasileira de Biotecnologia (OBBiotec)"
+      ],
+      "nao_deve_aparecer_no_top5": [
+        "TechGirls"
+      ],
+      "observacao": "CASO DE DISTORÇÃO IDADE-SÉRIE (Parte 3 do plano) — par com perfil-23, mesmo texto livre, só a idade real muda (17 -> 19). TechGirls declara faixa explícita 15-17: aos 19, esta aluna está REALMENTE fora da faixa (não é inferência de série, é o número declarado no texto da própria oportunidade) — TechGirls precisa desaparecer aqui, e SÓ aqui. OBBiotec (sem idade declarada) continua elegível nas duas versões do perfil — prova que o corte é específico do item com número, não um corte geral por 'aluno mais velho'. Verificado em 2026-08-24: com idade=19, TechGirls é excluída e OBBiotec permanece em 1º lugar."
+    },
+    {
+      "id": "perfil-25-xadrez",
+      "perfil": {
+        "idade": 15,
+        "nivel": "Ensino Médio",
+        "uf": "MG",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Xadrez", "Jogos"],
+        "bio": "Jogo xadrez desde os 10 anos, sou campeão da minha escola em Belo Horizonte. Quero competir em torneios e talvez conseguir bolsa por causa disso.",
+        "local": "ambos"
+      },
+      "deve_aparecer_no_top10": [],
+      "sem_oportunidade_esperada": true,
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "LACUNA REAL DE CATÁLOGO, verificada em 2026-08-24 (busca por 'xadrez' no título/descrição das 295 oportunidades aprovadas: zero resultados). Não existe hoje nenhuma oportunidade de xadrez no catálogo — o retrieval vai forçosamente trazer bolsas/olimpíadas genéricas de matemática por proximidade semântica fraca (logit abaixo de -6.1 no teste real, faixa de 'nada realmente relevante'). O comportamento correto do produto (match.post.js) é dizer que não achou nada elegível, não forçar esses 10 itens fracos como se fossem uma resposta boa. `sem_oportunidade_esperada: true` avisa o script pra não contar precision/recall aqui (senão penalizaria o sistema por um problema de catálogo, não de busca)."
+    },
+    {
+      "id": "perfil-26-gastronomia",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "SP",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Gastronomia", "Culinária", "Empreendedorismo"],
+        "bio": "Adoro cozinhar, faço doces e salgados pra vender no meu bairro em São Paulo. Quero uma bolsa ou curso de gastronomia profissional.",
+        "local": "brasil"
+      },
+      "deve_aparecer_no_top10": [],
+      "sem_oportunidade_esperada": true,
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "LACUNA REAL DE CATÁLOGO — busca por 'gastronomia'/'culinária' nas 295 aprovadas: zero resultados. Mesmo padrão do perfil-25: retrieval traz consultorias de bolsa genéricas (Insper, ISMART, Crimson) sem relação real com gastronomia, todas com logit fraco (-6.3 a -7.5). Correto seria informar ausência de oportunidade, não forçar esses itens."
+    },
+    {
+      "id": "perfil-27-moda",
+      "perfil": {
+        "idade": 17,
+        "nivel": "Ensino Médio",
+        "uf": "RJ",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Moda", "Design", "Artes"],
+        "bio": "Sonho em ser estilista, desenho roupas e faço reformas de roupa usada pra vender no Rio de Janeiro. Quero cursos ou bolsas de moda e design.",
+        "local": "ambos"
+      },
+      "deve_aparecer_no_top10": [],
+      "sem_oportunidade_esperada": true,
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "LACUNA REAL DE CATÁLOGO — sem programa de moda/design de vestuário nas 295 aprovadas (busca literal por 'moda' pega falsos positivos como 'acomoda'/'modalidade', nenhum é sobre moda de verdade). Mesmo padrão dos perfis 25/26."
+    },
+    {
+      "id": "perfil-28-musica",
+      "perfil": {
+        "idade": 15,
+        "nivel": "Ensino Médio",
+        "uf": "AM",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Música", "Artes"],
+        "bio": "Toco violão e canto, faço parte do coral da escola em Manaus. Quero bolsas ou cursos de música.",
+        "local": "brasil"
+      },
+      "deve_aparecer_no_top10": [],
+      "sem_oportunidade_esperada": true,
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "LACUNA REAL DE CATÁLOGO — nenhuma oportunidade de música/canto/instrumento nas 295 aprovadas. Mesmo padrão: retrieval força bolsas de consultoria genérica (Insper, ISMART) sem relação com música."
+    },
+    {
+      "id": "perfil-29-surdos-libras",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "RS",
+        "linguas": ["Português", "Libras"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["STEM", "Humanas"],
+        "bio": "Sou surda, estudo em escola pública em Porto Alegre, uso Libras como minha língua principal. Quero oportunidades acadêmicas que sejam realmente acessíveis pra mim.",
+        "local": "brasil"
+      },
+      "deve_aparecer_no_top10": [],
+      "sem_oportunidade_esperada": true,
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "LACUNA REAL E IMPORTANTE, não é só um nicho qualquer: nenhuma das 295 oportunidades aprovadas menciona acessibilidade, Libras, ou adaptação pra estudantes surdos/com deficiência (campo `audience` está vazio em toda a base — ver docs/decisions.md sobre esse gap conhecido). Isso não é uma falha do ranking pra corrigir hoje — é um sinal pra mantenedora sobre o que falta CURAR no catálogo. Mantido no golden set de propósito pra não deixar esse tipo de lacuna invisível."
+    },
+    {
+      "id": "perfil-30-agrotech",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "MT",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Agricultura", "Tecnologia", "STEM"],
+        "bio": "Moro no interior do Mato Grosso, minha família trabalha com agricultura. Quero aprender tecnologia aplicada ao campo — agrotech, sensores, automação rural.",
+        "local": "brasil"
+      },
+      "deve_aparecer_no_top10": [],
+      "sem_oportunidade_esperada": true,
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "LACUNA REAL DE CATÁLOGO — sem programa de agrotecnologia/agricultura de precisão nas 295 aprovadas. Retrieval traz programas de tecnologia genéricos (Girls Who Code, TechGirls, FGV CDMC) sem relação real com o contexto agrícola do aluno. Sinal útil pra mantenedora: aluno rural com interesse técnico real, sem nada específico pra oferecer hoje."
+    },
+    {
+      "id": "perfil-31-esports",
+      "perfil": {
+        "idade": 16,
+        "nivel": "Ensino Médio",
+        "uf": "GO",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Games", "E-sports", "Tecnologia"],
+        "bio": "Jogo competitivo de games online há anos, moro em Goiânia. Quero uma bolsa ou equipe de e-sports pra competir de verdade.",
+        "local": "ambos"
+      },
+      "deve_aparecer_no_top10": [],
+      "sem_oportunidade_esperada": true,
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "LACUNA REAL DE CATÁLOGO — sem programa de e-sports/games competitivos nas 295 aprovadas. Retrieval traz itens de robótica/programação/liderança sem relação real com e-sports, todos com logit muito fraco (abaixo de -7.1 no teste real, o pior sinal entre todos os perfis testados)."
+    },
+    {
+      "id": "perfil-32-teatro",
+      "perfil": {
+        "idade": 15,
+        "nivel": "Ensino Médio",
+        "uf": "PR",
+        "linguas": ["Português"],
+        "condicao_financeira": "precisa_gratuito",
+        "areas": ["Teatro", "Artes"],
+        "bio": "Faço teatro amador na minha escola em Curitiba, quero cursos ou bolsas de teatro e artes cênicas.",
+        "local": "ambos"
+      },
+      "deve_aparecer_no_top10": [],
+      "sem_oportunidade_esperada": true,
+      "nao_deve_aparecer_no_top5": [],
+      "observacao": "LACUNA REAL DE CATÁLOGO — sem programa de teatro/artes cênicas nas 295 aprovadas. Mesmo padrão dos perfis 25-28/30-31: retrieval força bolsas de consultoria genérica sem relação com artes cênicas."
     }
   ]
 }
