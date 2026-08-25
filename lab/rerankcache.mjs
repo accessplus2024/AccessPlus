@@ -1,6 +1,7 @@
 import { createHash } from "crypto";
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import dotenv from "dotenv";
+import "./cache-dir.mjs";
 dotenv.config({ path: new URL("../.env", import.meta.url).pathname, quiet: true });
 
 const KEY = process.env.NVIDIA_API_KEY;

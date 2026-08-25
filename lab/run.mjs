@@ -9,6 +9,7 @@ import { rodar, prepararEstado } from "./pipeline.mjs";
 import { recallAtK, precisionAtK, ndcgAtK, reciprocalRank, recallAtingivelAtK, average } from "./metrics.mjs";
 import { derivedSignals } from "./signals.mjs";
 import { writeFileSync, mkdirSync } from "fs";
+import "./cache-dir.mjs";
 
 const argv = process.argv.slice(2);
 const arg = (nome, def) => {

@@ -1,7 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config({ path: "/home/claude/accessia/.env" });
-import { createClient } from "@supabase/supabase-js";
-const db = createClient(process.env.DEV_SUPABASE_URL, process.env.DEV_SUPABASE_SERVICE_ROLE_KEY);
+import { db } from "./db.mjs";
 
 const { data } = await db.from("opportunities").select("id,title,searchable_text,fts,metadata,type,format,inscricoes,level,areas,cost,language,location").eq("status","Aprovada").limit(3);
 for (const r of data) {

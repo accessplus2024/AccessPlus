@@ -1,5 +1,6 @@
 import { db, loadCorpus } from "./corpus.mjs";
 import { writeFileSync } from "fs";
+import "./cache-dir.mjs";
 const corpus = await loadCorpus();
 const ids = new Set(corpus.map((o) => o.id));
 let todos = [];

@@ -5,7 +5,7 @@ import { embed, cosine } from "./embed.mjs";
 import { analyzeQuery, expandedTerms } from "./expand.mjs";
 import { tokenize } from "./text.mjs";
 import { rerank } from "./rerankcache.mjs";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import { derivedSignals } from "./signals.mjs";
 import { aspectsOf, searchByAspect, mergeRoundRobin } from "./multi.mjs";
 import { julgar2 } from "./judge2.mjs";
@@ -32,7 +32,12 @@ export async function prepararEstado() {
   const index = buildIndex(corpus, buildFields);
   const passagens = corpus.map(buildPassage);
   const vetoresNovos = await embed(passagens, "passage");
-  const chunksDb = JSON.parse(readFileSync(new URL("./cache/chunks-db.json", import.meta.url).pathname, "utf8"));
+  // `chunksDb` serve SÓ ao caminho `vetor: "db"` (busca vetorial pelo Postgres),
+  // que foi rejeitado por medição. A variante PROD usa `vetor: "novo"` e não
+  // toca nisso — então carregar o arquivo aqui, sem condição, fazia a medição
+  // de produção depender de um artefato de uma abordagem descartada.
+  const arquivoChunks = new URL("./cache/chunks-db.json", import.meta.url).pathname;
+  const chunksDb = existsSync(arquivoChunks) ? JSON.parse(readFileSync(arquivoChunks, "utf8")) : null;
   const byId = new Map(corpus.map((o, i) => [o.id, i]));
   estado = { corpus, index, vetoresNovos, chunksDb, byId };
   return estado;
@@ -48,6 +53,12 @@ async function ladoVetorial(st, queryText, modo) {
       .map((o, i) => ({ id: o.id, s: cosine(qv, st.vetoresNovos[i]) }))
       .sort((a, b) => b.s - a.s)
       .map((x) => x.id);
+  }
+  if (!st.chunksDb) {
+    throw new Error(
+      'variante com `vetor: "db"` exige lab/cache/chunks-db.json — rode `node lab/dumpchunks.mjs` primeiro. ' +
+        "As variantes de produção (PROD) usam `vetor: \"novo\"` e não precisam dele."
+    );
   }
   const best = new Map();
   for (const c of st.chunksDb) {

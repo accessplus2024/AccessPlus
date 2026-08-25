@@ -39,3 +39,6 @@ _to_delete/
 
 # Cache local da bancada de medição
 lab/cache/
+
+# Saída das rodadas de avaliação
+lab/out/

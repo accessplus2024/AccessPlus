@@ -1,11 +1,11 @@
-import dotenv from "dotenv";
-import { createClient } from "@supabase/supabase-js";
 import { readFileSync, writeFileSync, existsSync } from "fs";
-dotenv.config({ path: new URL("../.env", import.meta.url).pathname, quiet: true });
+import { db } from "./db.mjs";
+import "./cache-dir.mjs";
 
 const CACHE = new URL("./cache/corpus.json", import.meta.url).pathname;
 
-export const db = createClient(process.env.DEV_SUPABASE_URL, process.env.DEV_SUPABASE_SERVICE_ROLE_KEY);
+// `db` vem de db.mjs; reexportado para quem já importava daqui.
+export { db };
 
 export async function loadCorpus({ refresh = false } = {}) {
   if (!refresh && existsSync(CACHE)) return JSON.parse(readFileSync(CACHE, "utf8"));

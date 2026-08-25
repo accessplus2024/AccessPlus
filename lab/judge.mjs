@@ -13,6 +13,7 @@ import dotenv from "dotenv";
 import { createHash } from "crypto";
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import { derivedSignals } from "./signals.mjs";
+import "./cache-dir.mjs";
 dotenv.config({ path: new URL("../.env", import.meta.url).pathname, quiet: true });
 
 const CACHE = new URL("./cache/judge.json", import.meta.url).pathname;
