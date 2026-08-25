@@ -14,6 +14,8 @@ dotenv.config({ path: path.join(__dirname, "..", ".env"), quiet: true });
 // LÊ têm que apontar para o mesmo banco.
 const SUPABASE_URL =
   process.env.RAG_SUPABASE_URL ?? process.env.PROD_SUPABASE_URL ?? process.env.SUPABASE_URL;
+// A chave TEM que ser service_role: o embed escreve em opportunity_chunks, que
+// tem RLS. A chave publicável do site falharia sem dizer por quê.
 const SUPABASE_SERVICE_ROLE_KEY =
   process.env.RAG_SUPABASE_SERVICE_ROLE_KEY ??
   process.env.PROD_SUPABASE_SERVICE_ROLE_KEY ??

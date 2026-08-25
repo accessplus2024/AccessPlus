@@ -80,20 +80,36 @@ async function load() {
     vectors[i] = typeof c.embedding === "string" ? JSON.parse(c.embedding) : c.embedding;
   }
 
-  // Oportunidade aprovada sem chunk gravado (entrou no catálogo depois do
-  // último `npm run embed`). Embedda só essas, na hora, em vez de deixá-las
-  // invisíveis para a busca vetorial — mas avisa no log, porque significa que
-  // o embed está atrasado.
+  // Oportunidade sem chunk gravado: entrou no catálogo depois do último
+  // `npm run embed`. Embedda só essas, na hora, para não ficarem invisíveis
+  // à busca vetorial.
   const withoutVector = corpus.map((o, i) => i).filter((i) => !vectors[i]);
+
+  // Mas ANTES: faltar quase tudo não é catálogo desatualizado, é problema de
+  // credencial. `opportunity_chunks` tem RLS ligada, então uma chave anon ou
+  // publicável lê ZERO chunks — e sem esta guarda o servidor tentaria embeddar
+  // as 295 oportunidades a CADA cold start da Vercel, queimando a cota da NIM
+  // e transformando uma requisição de 1s em uma de ~30s, em silêncio.
+  //
+  // Falhar aqui é melhor: o erro diz exatamente o que configurar.
+  if (corpus.length > 0 && withoutVector.length > corpus.length * 0.5) {
+    throw new Error(
+      `[catalogo] ${withoutVector.length} de ${corpus.length} oportunidades sem vetor. ` +
+        `Quase certamente a chave do Supabase não tem permissão para ler opportunity_chunks ` +
+        `(RLS): configure uma chave service_role em PROD_SUPABASE_SERVICE_ROLE_KEY. ` +
+        `Se as credenciais estiverem certas, rode \`npm run embed\`.`
+    );
+  }
+
   if (withoutVector.length) {
     console.warn(
-      `[catalogo] ${withoutVector.length} oportunidade(s) sem embedding gravado — embeddando agora. ` +
+      `[catalogo] ${withoutVector.length} oportunidade(s) sem embedding — embeddando agora. ` +
         `Rode \`npm run embed\` para materializar: ${withoutVector.map((i) => corpus[i].id).join(", ")}`
     );
     for (let k = 0; k < withoutVector.length; k += 32) {
-      const lote = withoutVector.slice(k, k + 32);
-      const vs = await embed(lote.map((i) => buildPassage(corpus[i])), "passage");
-      lote.forEach((i, j) => { vectors[i] = vs[j]; });
+      const batch = withoutVector.slice(k, k + 32);
+      const vs = await embed(batch.map((i) => buildPassage(corpus[i])), "passage");
+      batch.forEach((i, j) => { vectors[i] = vs[j]; });
     }
   }
 

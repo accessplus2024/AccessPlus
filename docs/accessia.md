@@ -99,6 +99,13 @@ projeto Supabase desde 2026-08-25. O cliente resolve nesta ordem:
 `RAG_SUPABASE_*` → `PROD_SUPABASE_*` → `DEV_SUPABASE_*`, e **grita no log** se
 cair no último — Accessia lendo o banco errado em silêncio já aconteceu.
 
+**A busca exige chave `service_role`; o site não.** `opportunities` é legível
+por chave publicável, mas `opportunity_chunks` tem RLS e devolve zero linhas
+para qualquer outra chave. `catalog.js` falha na carga quando mais da metade do
+catálogo está sem vetor: sem essa guarda, o servidor embeddaria as 295
+oportunidades a cada cold start da Vercel, queimando cota e latência em
+silêncio.
+
 **`opportunities`** — o catálogo. Duas colunas de estado, separadas de
 propósito: `status` (curadoria: `Aprovada` / `Revisar`) e `inscricoes`
 (`Aberta` / `Encerrada`). Enquanto os dois sentidos dividiam `status`, toda

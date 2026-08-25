@@ -44,15 +44,25 @@ npm run eval:gaps        # lacunas do catálogo
 
 | variável | para quê |
 |---|---|
-| `PROD_SUPABASE_URL` / `PROD_SUPABASE_SERVICE_ROLE_KEY` | catálogo, vetores e perfis |
-| `SUPABASE_URL` / `SUPABASE_KEY` | leitura do catálogo pelo site |
+| `SUPABASE_URL` | projeto de produção |
+| `SUPABASE_KEY` | leitura do catálogo pelo site (chave publicável basta) |
+| `SUPABASE_ANON_KEY` | auth no cliente |
+| `PROD_SUPABASE_SERVICE_ROLE_KEY` | **a Accessia** — leitura de `opportunity_chunks` (RLS) |
 | `NVIDIA_API_KEY`, `EMBEDDING_MODEL`, `EMBEDDING_DIMENSIONS` | embedding e rerank |
 | `BEEHIV_PUBLICATION_ID` / `BEEHIV_API_KEY` | newsletter |
 | `CRON_SECRET` | autoriza `POST /api/opportunities/refresh` |
-| `RAG_SUPABASE_URL` / `RAG_SUPABASE_SERVICE_ROLE_KEY` | opcional: aponta a busca para outro banco |
+| `RAG_SUPABASE_URL` / `RAG_SUPABASE_SERVICE_ROLE_KEY` | opcional: aponta só a busca para outro banco |
 
-**Na Vercel, `PROD_SUPABASE_*` precisa estar configurada.** Sem ela a busca cai
-num fallback e lê o banco errado — o log avisa, mas o site continua no ar.
+**A Accessia precisa de uma chave `service_role`, e o site não.** É o mesmo
+banco e a mesma URL — muda só a permissão: `opportunities` é legível por chave
+publicável, mas `opportunity_chunks` tem RLS e devolve zero linhas para
+qualquer chave que não seja `service_role`.
+
+Por isso só a CHAVE precisa ser configurada à parte; a URL cai em
+`SUPABASE_URL` sozinha. Sem ela, `catalog.js` falha na carga com a mensagem
+dizendo o que configurar, em vez de degradar em silêncio.
+
+Nunca coloque a `service_role` em `runtimeConfig.public`: ela ignora RLS.
 
 ## Documentação
 
