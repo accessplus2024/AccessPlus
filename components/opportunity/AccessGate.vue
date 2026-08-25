@@ -420,16 +420,37 @@ select.field:disabled { cursor: not-allowed; opacity: .6; }
    para o formulário. */
 /* Só o portão rola. Quando o conteúdo é liberado, a raiz vira uma coluna flex
    que passa a altura adiante, e quem rola é o `.chat-mensagens` do chat. */
+/* `flex: 1 1 auto`, e NÃO `height: 100%`.
+   O pai (`.accessia-mode-panel`) vive num popover que tem só `max-height`,
+   nunca `height`. Altura percentual não resolve contra `max-height`: vira
+   `auto`. Com `height: 100%` o portão crescia até o tamanho do conteúdo, o
+   `overflow-y` de `--rolavel` não tinha o que rolar, e o `overflow: hidden`
+   do popover cortava o formulário sem barra de rolagem nenhuma.
+   Como item flex que pode encolher, ele recebe a altura que sobra de verdade. */
 .gate-root--compacto {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   min-height: 0;
-  height: 100%;
 }
 .gate-root--rolavel {
   overflow-y: auto;
   overscroll-behavior: contain;
+  /* Firefox */
   scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-ink) 25%, transparent) transparent;
+}
+/* WebKit esconde a barra até o scroll começar; num formulário que já foi
+   cortado uma vez, mostrar que dá pra rolar importa mais que a estética. */
+.gate-root--rolavel::-webkit-scrollbar {
+  width: 8px;
+}
+.gate-root--rolavel::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-ink) 22%, transparent);
+  border-radius: 999px;
+}
+.gate-root--rolavel::-webkit-scrollbar-track {
+  background: transparent;
 }
 .gate-root--compacto > * {
   min-height: 0;
