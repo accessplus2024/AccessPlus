@@ -33,3 +33,9 @@ package-lock.json
 .claude
 # Added by code-review-graph
 .code-review-graph/
+
+# Pasta de descarte — apague quando confirmar que nada dali é necessário
+_to_delete/
+
+# Cache local da bancada de medição
+lab/cache/

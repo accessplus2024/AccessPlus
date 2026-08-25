@@ -1,110 +1,61 @@
-# Access+ - Educational Opportunities Platform
+# Access+
 
-Access+ é a maior plataforma gratuita do país focada em trazer oportunidades extracurriculares atualizadas para jovens.
+Plataforma gratuita de oportunidades extracurriculares para estudantes
+brasileiros de ensino fundamental e médio. Nuxt 3 + Supabase, em produção na
+Vercel.
 
-## Setup
-
-Make sure to install the dependencies
+## Rodar
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
+cp .env.example .env     # preencha as chaves
+npm run dev              # http://localhost:3000
 ```
 
-## Environment Variables
+## Estrutura
 
-Copy `.env.example` to `.env` and configure the following variables:
+```
+pages/                 rotas do site
+components/            UI  (AccessIA*.vue = o chat)
+server/api/            rotas Nitro — catálogo e Accessia
+server/utils/rag/      o pipeline de busca da Accessia
+scripts/               offline: embedding, reanotação do catálogo
+lab/                   bancada de medição — NÃO faz parte do runtime
+docs/accessia.md       como a Accessia funciona
+```
+
+## Páginas
+
+`/` · `/oportunidades` · `/oportunidade/[id]` · `/newsletter` · `/sobre`
+
+## Comandos
 
 ```bash
-# Beehiiv Newsletter Configuration
-BEEHIV_PUBLICATION_ID=your_publication_id_here
-BEEHIV_API_KEY=your_api_key_here
+npm run build            # build de produção
+npm run embed            # regera os vetores da busca (obrigatório após mexer
+                         # no catálogo ou em campos.js — ver docs/accessia.md)
+npm run test:roteador    # regressão do casamento de título (segundos, sem API)
+npm run eval:ablacao     # compara configurações de retrieval
+npm run eval:diagnostico # por que o recall caiu
+npm run eval:gaps        # lacunas do catálogo
 ```
 
-### Getting Beehiiv Credentials
+## Variáveis de ambiente
 
-1. Go to your Beehiiv dashboard
-2. Navigate to Settings > API
-3. Generate an API key
-4. Get your publication ID from the URL or API
+| variável | para quê |
+|---|---|
+| `PROD_SUPABASE_URL` / `PROD_SUPABASE_SERVICE_ROLE_KEY` | catálogo, vetores e perfis |
+| `SUPABASE_URL` / `SUPABASE_KEY` | leitura do catálogo pelo site |
+| `NVIDIA_API_KEY`, `EMBEDDING_MODEL`, `EMBEDDING_DIMENSIONS` | embedding e rerank |
+| `BEEHIV_PUBLICATION_ID` / `BEEHIV_API_KEY` | newsletter |
+| `CRON_SECRET` | autoriza `POST /api/opportunities/refresh` |
+| `RAG_SUPABASE_URL` / `RAG_SUPABASE_SERVICE_ROLE_KEY` | opcional: aponta a busca para outro banco |
 
-## Development Server
+**Na Vercel, `PROD_SUPABASE_*` precisa estar configurada.** Sem ela a busca cai
+num fallback e lê o banco errado — o log avisa, mas o site continua no ar.
 
-Start the development server on `http://localhost:3000`:
+## Documentação
 
-```bash
-# npm
-npm run dev
-nuxt dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Productionn
-
-Build the application for productionm:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-Don't forget npx nuxi dev!
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
-## Features
-
-- 🎯 Educational opportunities platform
-- 📰 Newsletter integration with Beehiiv
-- 📱 Responsive design
-- 🤖 Accesia
-- 🎨 Modern UI with Tailwind CSS
-- ⚡ Fast performance with Nuxt 3
-- 🔍 SEO optimized
-
-## Pages
-
-- **Home** (`/`) - Landing page with featured opportunities
-- **About** (`/sobre`) - About the platform and team
-- **Newsletter** (`/newsletter`) - Latest newsletter posts from Beehiiv
-- **Opportunities** (`/oportunidades`) - Browse all educational opportunities
-- **Opportunity Details** (`/oportunidade/[id]`) - Individual opportunity pages
-
+`docs/accessia.md` — arquitetura da busca, regras de produto, os pisos de
+qualidade e o que já foi rejeitado com medição. É o único documento; o resto do
+histórico está no git.
