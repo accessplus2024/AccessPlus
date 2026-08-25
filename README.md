@@ -67,5 +67,4 @@ Nunca coloque a `service_role` em `runtimeConfig.public`: ela ignora RLS.
 ## Documentação
 
 `docs/accessia.md` — arquitetura da busca, regras de produto, os pisos de
-qualidade e o que já foi rejeitado com medição. É o único documento; o resto do
-histórico está no git.
+qualidade e o que já foi rejeitado com medição. 
