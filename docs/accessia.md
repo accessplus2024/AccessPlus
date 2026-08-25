@@ -155,37 +155,68 @@ API de verdade.
 
 ## 6. Os pisos, e o que já foi rejeitado com medição
 
-Medido nos 30 perfis reais do golden set, 3 rodadas, variância zero. O pipeline
-é determinístico: qualquer variação é efeito real da mudança, nunca ruído.
+Medido nos 30 perfis do golden set, 3 rodadas, variância zero. O pipeline é
+determinístico: qualquer variação é efeito real da mudança, nunca ruído.
 
-| métrica | piso |
-|---|---|
-| recall@10 | ≥ 0,679 |
-| precision@5 | ≥ 0,355 |
-| NDCG@10 | ≥ 0,618 |
-| MRR | ≥ 0,767 |
-| vazamentos no top-5 | ≤ 2 |
-| inglês no top-3 de quem não fala inglês | ≤ 0,043 |
+**Todo piso vale para um artefato específico.** Em 2026-08-25 a NVIDIA desligou
+`llama-nemotron-embed-1b-v2` e os pisos anteriores passaram a descrever um
+modelo que não existe mais — impossíveis de reproduzir ou de comparar. Por isso
+a tabela agora carrega o modelo e a data:
+
+**Medido em 2026-08-25 · `nvidia/nemotron-3-embed-1b` (2048 dims) · rerank
+`llama-nemotron-rerank-vl-1b-v2` · geração `meta/llama-3.1-8b-instruct`:**
+
+| métrica | piso | anterior (modelo extinto) |
+|---|---|---|
+| recall@10 | **≥ 0,687** | 0,679 |
+| precision@5 | **≥ 0,382** | 0,355 |
+| NDCG@10 | **≥ 0,630** | 0,618 |
+| MRR | **≥ 0,721** | 0,767 |
+| vazamentos no top-5 | **≤ 1** | ≤ 2 |
+| inglês no top-3 de quem não fala inglês | **≤ 0,130** | 0,043 |
+
+A troca de modelo melhorou recall, precisão, NDCG e vazamento; custou MRR
+(−0,046) e triplicou o inglês no top-3. As duas quedas têm a mesma causa
+provável e não foram investigadas ainda: `bIdiomaPenal` é a constante 0,8,
+calibrada contra a escala de score do modelo antigo. Escala nova, mesma
+subtração, peso relativo diferente. `lab/sweep.mjs` varre essa penalidade desde
+2026-08-25 — recalibrar é a próxima medição, não um palpite.
+
+**⚠️ O `inglesTop3` medido é o caso OTIMISTA, não o de produção.** A métrica
+depende de `perfil.linguas`, que o golden set fornece nos 30 perfis mas que foi
+removido de `profiles` em 2026-08-25. Sem o campo, `parseQuery.js` cai na regex
+sobre a bio, que identifica **2 dos 30 perfis contra 23 do campo** — e foi
+justamente usar o campo que levou essa métrica de **1,00 para 0,00** quando ela
+foi introduzida. Em produção, hoje, o número real está perto de 1,00: um aluno
+que declarou não falar inglês vê programa em inglês no topo. Nenhuma
+recalibragem de peso conserta isso; conserta-se voltando a perguntar idioma no
+cadastro.
 
 **Rejeitado por medição, não por preguiça:**
 
-- **Juiz LLM listwise** (`juiz.js`): piorou recall de 0,668 para 0,602. Ele
+- **Juiz LLM listwise** (`judge.js`): piorou recall de 0,668 para 0,602. Ele
   empata 14,5 dos 30 candidatos na mesma nota e rebaixou 16 itens marcados como
   "deve aparecer" — inclusive um programa brasileiro de empreendedorismo jovem
   com nota 0 para um perfil de empreendedorismo na favela. Não é ideia ruim: é
   ideia que não passou no teste com as peças de hoje.
-- **Busca multi-aspecto** (`multiAspecto.js`): melhor MRR de todos (0,738), mas
+- **Busca multi-aspecto** (`multiAspect.js`): melhor MRR de todos (0,738), mas
   custa recall.
+- **Busca vetorial pelo Postgres** (`match_opportunity_chunks`): ~1067ms por
+  consulta contra ~1685ms uma vez na carga e zero depois, e mistura os chunks
+  de `process`/`additionals` no ranking.
 - **Busca por FTS do banco** (`match_opportunities_fts`): indexava só
   `searchable_text` — `type`, `level`, `cost`, `format`, `language`, `location`
   e `process` eram invisíveis. `type` é a coluna onde moram "MUNs" e
   "Mentorias": quem escrevia "quero fazer um MUN" não achava MUN nenhum.
-- **Penalidade de idioma alta:** a 1,5 zera "inglês no top-3" mas derruba
-  recall. Ficou em 0,8.
 
 **Ligar qualquer um dos desligados sem medir de novo é regressão.**
 
----
+**Os três modelos externos têm data de validade e não avisam antes.** O
+embedding morreu no meio de um deploy, com 410 Gone. `catalog.js` e `cosine()`
+agora falham alto quando a dimensão gravada não bate com `EMBEDDING_DIMENSIONS`
+— antes disso, o sintoma era ranking aleatório em silêncio, porque comparar
+vetores de tamanhos diferentes devolve NaN. Um `npm run embed:test` semanal
+pegaria o próximo antes do aluno.
 
 ## 7. O que está aberto
 
