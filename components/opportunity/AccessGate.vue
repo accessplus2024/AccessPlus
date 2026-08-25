@@ -461,6 +461,18 @@ select.field:disabled { cursor: not-allowed; opacity: .6; }
   border: 0;
   border-radius: 0;
   background: transparent;
+  /* Duas linhas que valem o bug inteiro: sem elas o cadastro simplesmente
+     some no popover da Accessia, e sem barra de rolagem nenhuma.
+     - `flex: none`: como item de um flex-column, o card herdava
+       `flex-shrink: 1` e era ESPREMIDO até a altura do popover (640px para
+       um formulário de 1331px). Encolhido, ele não transborda — e quem rola
+       (`.gate-root--rolavel`) nunca tem o que rolar.
+     - `overflow: visible`: `.gate-card` traz `overflow: hidden` por causa da
+       barrinha colorida do topo, que no modo compacto nem existe. Espremido
+       E com overflow hidden, o card CORTAVA o resto do formulário em
+       silêncio. */
+  flex: none;
+  overflow: visible;
 }
 .gate-root--compacto .gate-card--form {
   padding: 0 0 4px;
