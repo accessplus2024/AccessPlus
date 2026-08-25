@@ -80,6 +80,22 @@ async function load() {
     vectors[i] = typeof c.embedding === "string" ? JSON.parse(c.embedding) : c.embedding;
   }
 
+  // Vetor com dimensão diferente da configurada = o modelo de embedding mudou
+  // e ninguém rodou `npm run embed`. Isto NÃO degrada com elegância: `cosine()`
+  // percorre o vetor da consulta e lê `undefined` além do fim do vetor guardado,
+  // devolvendo NaN — ranking aleatório, sem erro nenhum. Aconteceu de verdade
+  // quando `llama-nemotron-embed-1b-v2` morreu (410) e o substituto de 2048
+  // dimensões entrou no lugar de um índice de 1024.
+  const dimsEsperadas = Number(process.env.EMBEDDING_DIMENSIONS) || null;
+  const primeiro = vectors.find(Array.isArray);
+  if (dimsEsperadas && primeiro && primeiro.length !== dimsEsperadas) {
+    throw new Error(
+      `[catalogo] vetores gravados têm ${primeiro.length} dimensões, mas ` +
+        `EMBEDDING_DIMENSIONS=${dimsEsperadas}. O modelo de embedding mudou e o ` +
+        `índice não foi refeito: rode \`npm run embed\`.`
+    );
+  }
+
   // Oportunidade sem chunk gravado: entrou no catálogo depois do último
   // `npm run embed`. Embedda só essas, na hora, para não ficarem invisíveis
   // à busca vetorial.

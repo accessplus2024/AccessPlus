@@ -33,6 +33,11 @@ export async function embedTexts(texts, inputType) {
 export const embed = (texts, inputType) => embedTexts(texts, inputType);
 
 export function cosine(a, b) {
+  // Sem esta checagem, comparar vetores de dimensões diferentes devolve NaN em
+  // vez de erro — e NaN em ranking é ordem aleatória, silenciosa.
+  if (!a || !b || a.length !== b.length) {
+    throw new Error(`cosine: dimensões incompatíveis (${a?.length} vs ${b?.length}). Índice desatualizado — rode \`npm run embed\`.`);
+  }
   let dot = 0, na = 0, nb = 0;
   for (let i = 0; i < a.length; i++) {
     dot += a[i] * b[i];
