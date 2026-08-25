@@ -1,57 +1,47 @@
-// Campos que antes existiam só pra exibição (generate.js) e para o filtro de
-// palavra-chave (FTS), mas eram INVISÍVEIS pra busca vetorial — um aluno que
-// escreve "meu inglês é básico" ou "não quero viajar pra fora" nunca batia
-// contra o idioma/local real de uma oportunidade, porque esses dados nunca
-// entravam no texto embeddado. Adicionados aqui em 2026-08-19 (auditoria +
-// correção do pipeline de RAG) como frases curtas em português — o objetivo
-// não é ranquear alto por esses termos sozinhos, é dar ao embedding alguma
-// chance de captar "esse programa é em inglês" / "esse programa é remoto" /
-// "esse programa prioriza baixa renda" como parte do significado do texto.
-function buildContextFragment(opportunity) {
-  const partes = [];
-  if (opportunity.language) {
-    partes.push(`Idioma do programa: ${opportunity.language}.`);
-  }
-  if (opportunity.location) {
-    partes.push(`Local: ${opportunity.location}.`);
-  }
-  if (Array.isArray(opportunity.audience) && opportunity.audience.length > 0) {
-    partes.push(`Público prioritário: ${opportunity.audience.join(", ")}.`);
-  }
-  if (Array.isArray(opportunity.level) && opportunity.level.length > 0) {
-    partes.push(`Nível: ${opportunity.level.join(", ")}.`);
-  } else if (typeof opportunity.level === "string" && opportunity.level.trim().length > 0) {
-    partes.push(`Nível: ${opportunity.level}.`);
-  }
-  if (opportunity.cost) {
-    partes.push(`Custo: ${opportunity.cost}.`);
-  }
-  return partes.join(" ");
-}
+// Monta os chunks embeddados (`npm run embed`).
+//
+// O texto vem de `buildPassage()` (server/utils/rag/fields.js), a MESMA função
+// que monta o índice BM25 — antes havia duas representações da mesma
+// oportunidade e elas divergiram em silêncio.
+//
+// Consequência: mudar `buildPassage()` obriga rodar `npm run embed`, senão o
+// índice vetorial descreve uma versão antiga do catálogo.
+import { buildPassage } from "../server/utils/rag/fields.js";
+
+// `eligibility` tem chunk próprio E continua dentro do `core`: `catalog.js`
+// monta a matriz de vetores só com `core`, então tirá-lo de lá removeria o
+// sinal em vez de fortalecê-lo. As duas cópias respondem a perguntas
+// diferentes — "que oportunidade é esta?" e "eu consigo participar?".
+//
+// O chunk próprio fica INERTE até `catalog.js` passar a lê-lo; ligar isso é
+// mudança de retrieval e precisa passar pelos pisos (docs/accessia.md §6).
+const REQUIRED = ["eligibility"];
+const OPTIONAL = ["applicants", "process", "additionals"];
 
 export function buildChunks(opportunity) {
   const chunks = [];
 
-  const core = [
-    opportunity.title,
-    opportunity.description,
-    opportunity.eligibility,
-    Array.isArray(opportunity.keywords) ? opportunity.keywords.join(" ") : opportunity.keywords,
-    Array.isArray(opportunity.areas) ? opportunity.areas.join(" ") : opportunity.areas,
-    buildContextFragment(opportunity),
-  ]
-    .filter(Boolean)
-    .join("\n");
-
+  const core = buildPassage(opportunity);
   if (core.trim().length > 0) {
     chunks.push({ opportunity_id: opportunity.id, field_name: "core", chunk_text: core });
   }
 
-  const optionalFields = ["applicants", "process", "additionals"];
-  for (const field of optionalFields) {
+  for (const field of REQUIRED) {
     const text = opportunity[field];
     if (typeof text === "string" && text.trim().length > 0) {
-      chunks.push({ opportunity_id: opportunity.id, field_name: field, chunk_text: text });
+      chunks.push({ opportunity_id: opportunity.id, field_name: field, chunk_text: text.trim() });
+    } else {
+      // Ausência aqui é problema de catálogo, não caso normal: "quem pode
+      // participar" em branco é o dado cuja falta faz o aluno se inscrever no
+      // que não podia.
+      console.warn(`[chunks] ${opportunity.id} ("${opportunity.title}") sem \`${field}\``);
+    }
+  }
+
+  for (const field of OPTIONAL) {
+    const text = opportunity[field];
+    if (typeof text === "string" && text.trim().length > 0) {
+      chunks.push({ opportunity_id: opportunity.id, field_name: field, chunk_text: text.trim() });
     }
   }
 

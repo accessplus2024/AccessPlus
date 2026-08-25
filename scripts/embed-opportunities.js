@@ -14,6 +14,12 @@ const EMBEDDING_MODEL = process.env.EMBEDDING_MODEL;
 const BATCH_SIZE = 20;
 
 async function main() {
+  // Dizer em voz alta contra qual projeto isto vai rodar. O script apaga e
+  // reescreve TODOS os chunks das oportunidades aprovadas; rodar no banco
+  // errado é caro de descobrir depois.
+  const target = (process.env.SUPABASE_URL ?? "").replace(/^https:\/\//, "").split(".")[0];
+  console.log(`Banco alvo: ${target}\n`);
+
   const opportunities = await getOpportunitiesToEmbed();
   console.log(`${opportunities.length} oportunidades aprovadas encontradas.`);
 
@@ -53,20 +59,29 @@ async function main() {
     console.log(`Progresso: ${processed}/${allChunks.length} chunks embeddados.`);
   }
 
-  // BUG corrigido em 2026-08-19: nada neste script nunca escrevia de volta
-  // em opportunities.embedded_at — a coluna existe (e o design da Parte 6 do
-  // plano depende dela pra decidir o que precisa de re-embedding incremental
-  // no futuro), mas ficava sempre null porque só opportunity_chunks.embedded_at
-  // era gravado. Sem isto, qualquer lógica futura de "só reembedda o que
-  // mudou" (comparando embedded_at < updated_at) trataria o catálogo inteiro
-  // como desatualizado pra sempre — silenciosamente.
+  // `opportunities.embedded_at` existe só no projeto de dev. Desde 2026-08-25 o
+  // índice vive em produção, onde a coluna não existe — então esta escrita é
+  // OPCIONAL e falha silenciosamente com 42703 (undefined_column) ali.
+  //
+  // Histórico, pra não voltar: até 2026-08-19 este script nunca escrevia de
+  // volta nessa coluna. A carimbada existe porque a Parte 6 do plano previa
+  // re-embedding incremental (`embedded_at < updated_at`) — lógica que
+  // **nunca foi escrita**. Enquanto não for, a coluna não tem consumidor, e é
+  // por isso que a ausência dela em produção não é problema.
+  //
+  // A fonte de verdade de "quando isto foi embeddado" é
+  // `opportunity_chunks.embedded_at`, gravada acima em toda linha.
   const embeddedAt = new Date().toISOString();
   const { error: touchError } = await supabase
     .from("opportunities")
     .update({ embedded_at: embeddedAt })
     .in("id", opportunityIds);
   if (touchError) {
-    console.error(`Aviso: falhou ao gravar opportunities.embedded_at: ${touchError.message}`);
+    if (touchError.code === "42703" || /embedded_at/i.test(touchError.message ?? "")) {
+      console.log("opportunities.embedded_at não existe neste banco (esperado em produção) — ignorado.");
+    } else {
+      console.error(`Aviso: falhou ao gravar opportunities.embedded_at: ${touchError.message}`);
+    }
   } else {
     console.log(`opportunities.embedded_at atualizado para ${opportunityIds.length} oportunidade(s).`);
   }

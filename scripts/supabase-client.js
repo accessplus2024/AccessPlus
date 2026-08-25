@@ -4,14 +4,25 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: path.join(__dirname, ".env.embedding") });
 
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+// `.env.embedding` traz NVIDIA e o modelo; o `.env` da raiz traz PROD_SUPABASE_*.
+// dotenv não sobrescreve variável já definida, então a ordem importa.
+dotenv.config({ path: path.join(__dirname, ".env.embedding"), quiet: true });
+dotenv.config({ path: path.join(__dirname, "..", ".env"), quiet: true });
+
+// Mesma ordem de server/utils/rag/ragClient.js: quem GERA os chunks e quem os
+// LÊ têm que apontar para o mesmo banco.
+const SUPABASE_URL =
+  process.env.RAG_SUPABASE_URL ?? process.env.PROD_SUPABASE_URL ?? process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY =
+  process.env.RAG_SUPABASE_SERVICE_ROLE_KEY ??
+  process.env.PROD_SUPABASE_SERVICE_ROLE_KEY ??
+  process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-  console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+  console.error("Faltam PROD_SUPABASE_URL e PROD_SUPABASE_SERVICE_ROLE_KEY no .env da raiz.");
   process.exit(1);
 }
 
+process.env.SUPABASE_URL = SUPABASE_URL;
 export const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
