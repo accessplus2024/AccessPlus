@@ -23,7 +23,7 @@ const outrasOrganizacoes = [
 ]
 
 const confiam = [
-  { key: "brasa", name: "BRASA", logo: "/images/brasa.png" },
+  { key: "cohere", name: "Cohere Labs", logo: "https://cdn.sanity.io/images/rjtqmwfu/web3-prod/5e656c29ed95afda78d068164a0bea94efed44ed-263x30.svg", invert: true },
   { key: "geg", name: "Instituto G&G", logo: "https://static.wixstatic.com/media/2dee5e_8222e6990afd4f2aadfa291bb9f5cc2a~mv2.png/v1/crop/x_50,y_445,w_1030,h_464/fill/w_366,h_156,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Logo_Instituto%20G%26G.png" },
 ]
 
@@ -91,6 +91,7 @@ function marcarQuebrada(key) {
             :src="c.logo"
             :alt="c.name"
             class="h-14 md:h-16 w-auto opacity-80"
+            :class="{ 'invert-logo': c.invert }"
             @error="marcarQuebrada(c.key)"
           />
           <span v-else class="award-fallback">{{ c.name }}</span>
@@ -124,6 +125,12 @@ function marcarQuebrada(key) {
   color: color-mix(in srgb, var(--color-ink) 55%, transparent);
   font-weight: 600;
   font-size: 13.5px;
+}
+
+/* Logo original é branco (pensado pra fundo escuro) — inverte pra ficar
+   escuro e visível no nosso fundo claro. */
+.invert-logo {
+  filter: invert(1);
 }
 
 .destaques-row {
