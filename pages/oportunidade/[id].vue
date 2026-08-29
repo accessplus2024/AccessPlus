@@ -10,6 +10,7 @@ import TabNavigation from "~/components/opportunity/TabNavigation.vue";
 import ContentDisplay from "~/components/opportunity/ContentDisplay.vue";
 import Comments from "~/components/opportunity/Comments.vue";
 import AccessGate from "~/components/opportunity/AccessGate.vue";
+import ApplicationTracker from "~/components/opportunity/ApplicationTracker.vue";
 import { OpenNewWindow } from "@iconoir/vue";
 
 const { data, loading, error, fetchRow } = useOpportunity();
@@ -66,6 +67,8 @@ onMounted(async () => {
     <div class="wrap" style="padding-top: 64px; padding-bottom: 40px">
       <ClientOnly>
         <AccessGate>
+          <ApplicationTracker :opportunity="opp" />
+
           <a
             v-if="opp.link"
             :href="opp.link"

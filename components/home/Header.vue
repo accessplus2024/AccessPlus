@@ -352,10 +352,20 @@ const spotlightQuebrada = ref(false)
   overflow: hidden;
 }
 
+/* Altura fixa por breakpoint, não aspect-ratio + max-height: essa combinação
+   dentro de um item flex é onde o Safari do iPhone historicamente diverge do
+   Chrome — no celular da mantenedora o card renderizava bem mais alto que o
+   esperado, cortando a foto. Altura fixa + object-fit:cover não deixa
+   margem pra essa divergência entre navegadores. */
 .spotlight-frame {
-  aspect-ratio: 3 / 2;
-  max-height: 320px;
+  height: 260px;
   background: var(--color-paper-2);
+}
+@media (max-width: 980px) {
+  .spotlight-frame { height: 220px; }
+}
+@media (max-width: 480px) {
+  .spotlight-frame { height: 190px; }
 }
 
 .spotlight-photo {
@@ -423,10 +433,6 @@ const spotlightQuebrada = ref(false)
   .hero-grid {
     grid-template-columns: 1fr;
     gap: 38px;
-  }
-
-  .spotlight-frame {
-    max-height: 260px;
   }
 }
 

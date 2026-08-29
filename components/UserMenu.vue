@@ -166,7 +166,11 @@ async function sair() {
           Cadastro ainda não concluído — complete ao abrir uma oportunidade.
         </p>
 
-        <button v-if="profile" class="edit-btn mt-3" @click="abrirEdicaoPerfil">
+        <NuxtLink v-if="profile" to="/minhas-oportunidades" class="edit-btn mt-3" @click="aberto = false">
+          Minhas oportunidades
+        </NuxtLink>
+
+        <button v-if="profile" class="edit-btn mt-2" @click="abrirEdicaoPerfil">
           Editar cadastro
         </button>
 
