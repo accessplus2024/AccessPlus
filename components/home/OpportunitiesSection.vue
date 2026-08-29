@@ -7,7 +7,7 @@ import CategoryButton from "./CategoryButton.vue"
 <template>
   <section class="section">
     <div class="wrap">
-      <div class="flex flex-wrap items-end justify-between gap-4 mb-[42px]">
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-[42px]" data-aos="fade-up">
         <div>
           <span class="kicker">Oportunidades</span>
           <h2 class="mt-3.5" style="font-size: clamp(34px, 4.5vw, 56px); text-wrap: balance">
@@ -20,12 +20,14 @@ import CategoryButton from "./CategoryButton.vue"
       </div>
       <div class="cat-grid">
         <CategoryButton
-          v-for="c in CATEGORIES"
+          v-for="(c, i) in CATEGORIES"
           :key="c.key"
           :category="c.label"
           :icon="c.key"
           :color="c.color"
           :to="`/oportunidades?type=${encodeURIComponent(c.type)}`"
+          data-aos="fade-up"
+          :data-aos-delay="(i % 4) * 60"
         />
       </div>
     </div>

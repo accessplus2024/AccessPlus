@@ -85,10 +85,19 @@ const searchExamples = computed(() => {
   return shuffled.slice(0, 3).map((opp) => opp.title || opp.Nome)
 })
 
-const heroImage = {
-  url: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
-  label: "João Pedro Santos, de Alcobaça - Bahia, estudante da MBZUAI em IA com tudo pago, estudante de escolas públicas",
+// Números abstratos não convencem ninguém de que ELA pode conseguir.
+// Uma história real, concreta, convence. Por isso o espaço nobre da hero
+// mostra uma pessoa de verdade em vez de estatística — as outras histórias
+// completam a ideia mais abaixo, em HomeDidYouKnowSection.
+const spotlight = {
+  photo: "/images/founder-ester.jpg",
+  name: "Ester",
+  before: "é possível estudar em ",
+  highlight: "escolas públicas",
+  after: " e entrar nas melhores universidades do mundo, com tudo pago?",
+  detail: "Ester, de escola pública em Inhaúma, hoje na Northwestern com bolsa de quase R$3 milhões.",
 }
+const spotlightQuebrada = ref(false)
 </script>
 
 <template>
@@ -96,7 +105,7 @@ const heroImage = {
     <div class="wrap relative">
       <div class="hero-grid">
         <div class="hero-copy">
-          <h1 class="hero-title">
+          <h1 class="hero-title" data-aos="fade-up" data-aos-delay="0">
             Procurando<br />por
             <span class="relative inline-block text-primary">
               oportunidades?
@@ -106,11 +115,11 @@ const heroImage = {
             </span>
           </h1>
 
-          <p class="hero-subtitle">
+          <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="80">
             A maior plataforma do Brasil para descobrir bolsas, intercâmbios, olimpíadas e programas de estudo em universidades e organizações internacionais.
           </p>
 
-          <div class="search-stack">
+          <div class="search-stack" data-aos="fade-up" data-aos-delay="160">
             <div class="search-box">
               <input
                 type="text"
@@ -131,13 +140,13 @@ const heroImage = {
             </div>
           </div>
 
-          <div class="cta-row">
+          <div class="cta-row" data-aos="fade-up" data-aos-delay="220">
             <NuxtLink to="/oportunidades" class="btn btn-ink">
-              Ver tudo <ArrowRight class="w-[18px] h-[18px]" />
+              Encontrar minha oportunidade <ArrowRight class="w-[18px] h-[18px]" />
             </NuxtLink>
           </div>
 
-          <div class="stats-row">
+          <div class="stats-row" data-aos="fade-up" data-aos-delay="280">
             <div v-for="s in stats" :key="s.label">
               <div class="stat-number">{{ s.n }}</div>
               <div class="stat-label">{{ s.label }}</div>
@@ -145,11 +154,31 @@ const heroImage = {
           </div>
         </div>
 
-        <div class="hero-visual">
-          <div class="visual-card">
-            <div class="visual-photo" :style="{ backgroundImage: `url('${heroImage.url}')` }" />
-            <span class="visual-caption">{{ heroImage.label }}</span>
+        <div class="hero-visual" data-aos="fade-up" data-aos-delay="200">
+          <div class="spotlight-card">
+            <div class="spotlight-frame">
+              <img
+                v-if="!spotlightQuebrada"
+                :src="spotlight.photo"
+                :alt="spotlight.name"
+                class="spotlight-photo"
+                @error="spotlightQuebrada = true"
+              />
+              <div v-else class="spotlight-photo spotlight-photo--fallback">
+                {{ spotlight.name.charAt(0) }}
+              </div>
+            </div>
+            <div class="spotlight-caption">
+              <span class="spotlight-tag">Você sabia que...</span>
+              <p class="spotlight-text">
+                {{ spotlight.before }}<span class="text-primary">{{ spotlight.highlight }}</span>{{ spotlight.after }}
+              </p>
+              <p class="spotlight-detail">{{ spotlight.detail }}</p>
+            </div>
           </div>
+          <a href="#historias" class="spotlight-more">
+            Ver mais histórias reais <ArrowRight class="w-[15px] h-[15px]" />
+          </a>
         </div>
       </div>
     </div>
@@ -312,51 +341,82 @@ const heroImage = {
 .hero-visual {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
   min-width: 0;
 }
 
-.visual-card {
-  position: relative;
-  min-height: 700px;
-  border-radius: 32px;
-  background-color: rgba(75, 63, 228, 0.1);
-  border: 1px solid rgba(21, 17, 31, 0.06);
-  box-shadow: 0 24px 60px rgba(21, 17, 31, 0.08);
+.spotlight-card {
+  border-radius: var(--r-lg);
+  background: var(--color-card);
+  box-shadow: 0 20px 44px rgba(21, 17, 31, 0.1);
   overflow: hidden;
 }
 
-.visual-photo {
-  position: absolute;
-  inset: -12px;
-  background-size: cover;
-  background-position: center;
-  animation: drift 18s ease-in-out infinite alternate;
+.spotlight-frame {
+  aspect-ratio: 3 / 2;
+  max-height: 320px;
+  background: var(--color-paper-2);
 }
 
-.visual-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(21, 17, 31, 0.02) 45%, rgba(21, 17, 31, 0.5));
+.spotlight-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.visual-caption {
-  position: absolute;
-  left: 26px;
-  right: 26px;
-  bottom: 24px;
-  z-index: 1;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+.spotlight-photo--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 64px;
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.spotlight-caption {
+  padding: 30px 32px 34px;
+}
+
+.spotlight-tag {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #fff;
+  color: color-mix(in srgb, var(--color-ink) 45%, transparent);
+  margin-bottom: 12px;
 }
 
-@keyframes drift {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  100% { transform: translate3d(10px, -8px, 0) scale(1.03); }
+.spotlight-text {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2vw, 25px);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.spotlight-detail {
+  margin-top: 14px;
+  font-size: 14.5px;
+  color: color-mix(in srgb, var(--color-ink) 60%, transparent);
+}
+
+.spotlight-more {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-ink);
+  opacity: 0.65;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+.spotlight-more:hover {
+  opacity: 1;
 }
 
 @media (max-width: 980px) {
@@ -365,12 +425,8 @@ const heroImage = {
     gap: 38px;
   }
 
-  .hero-visual {
-    order: -1;
-  }
-
-  .visual-card {
-    min-height: 420px;
+  .spotlight-frame {
+    max-height: 260px;
   }
 }
 

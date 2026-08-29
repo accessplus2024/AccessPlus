@@ -51,7 +51,7 @@ function marcarQuebrada(key) {
         Prêmios e reconhecimento
       </h2>
 
-      <div class="destaques-row mt-12">
+      <div class="destaques-row mt-12" data-aos="fade-up">
         <div v-for="d in destaques" :key="d.key" class="destaque-card">
           <img
             v-if="!quebradas.has(d.key)"

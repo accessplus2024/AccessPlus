@@ -14,6 +14,7 @@ useHead({
 <template>
   <main>
     <HomeHeader />
+    <HomeDidYouKnowSection />
     <HomeOpportunitiesSection />
     <NewsletterCta />
     <HomeAboutSection />
