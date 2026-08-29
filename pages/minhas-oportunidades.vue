@@ -11,7 +11,7 @@ useHead({
 })
 
 const { user, init } = useAuth()
-const { minhas, carregando, fetchMinhas, setStatus, removerStatus } = useApplications()
+const { minhas, carregando, erro, fetchMinhas, setStatus, removerStatus } = useApplications()
 
 onMounted(() => {
   init()
@@ -54,6 +54,10 @@ async function remover(id) {
         </p>
 
         <p v-if="carregando" class="mt-10 text-ink/50" style="font-size: 14px">Carregando...</p>
+
+        <div v-else-if="erro" class="empty-state mt-10">
+          <p style="font-size: 16px; color: #E24444">{{ erro }}</p>
+        </div>
 
         <div v-else-if="!minhas.length" class="empty-state mt-10">
           <p style="font-size: 16px">

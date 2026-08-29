@@ -1,5 +1,8 @@
 <script setup>
 import { Menu, Xmark } from "@iconoir/vue"
+import { useAuth } from "~/composables/useAuth"
+
+const { user, init, signInWithGoogle } = useAuth()
 
 const links = [
   { text: "Início", href: "/" },
@@ -22,6 +25,7 @@ const solid = computed(() => scrolled.value || forceSolid.value)
 
 const onScroll = () => { scrolled.value = window.scrollY > 30 }
 onMounted(() => {
+  init()
   onScroll()
   window.addEventListener("scroll", onScroll, { passive: true })
 })
@@ -70,13 +74,29 @@ onBeforeUnmount(() => { if (typeof document !== "undefined") document.body.style
       <!-- Desktop CTA -->
       <div class="hidden md:flex items-center gap-4">
         <NuxtLink
+          to="/cadastrar-oportunidade"
+          class="btn btn-out"
+          style="padding: 11px 20px; font-size: 15px"
+        >
+          Cadastrar oportunidade
+        </NuxtLink>
+        <NuxtLink
           to="/oportunidades"
           class="btn btn-lime"
           style="padding: 11px 20px; font-size: 15px"
         >
           Explorar
         </NuxtLink>
-        <UserMenu />
+        <button
+          v-if="!user"
+          type="button"
+          class="btn btn-out"
+          style="padding: 11px 20px; font-size: 15px"
+          @click="signInWithGoogle"
+        >
+          Entrar
+        </button>
+        <UserMenu v-else />
       </div>
 
       <!-- Mobile hamburger -->
@@ -142,7 +162,22 @@ onBeforeUnmount(() => { if (typeof document !== "undefined") document.body.style
           >
             Explorar
           </NuxtLink>
-          <UserMenu class="mt-6" />
+          <NuxtLink
+            to="/cadastrar-oportunidade"
+            class="btn btn-out mt-3"
+            @click="toggleMobileMenu"
+          >
+            Cadastrar oportunidade
+          </NuxtLink>
+          <button
+            v-if="!user"
+            type="button"
+            class="btn btn-out mt-3"
+            @click="signInWithGoogle"
+          >
+            Entrar
+          </button>
+          <UserMenu v-else class="mt-6" />
           <Socials class="mt-auto" theme="light" />
         </div>
       </div>

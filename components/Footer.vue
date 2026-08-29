@@ -54,6 +54,17 @@ const year = new Date().getFullYear()
             </li>
           </ul>
         </div>
+
+        <div class="max-w-xs">
+          <h4 class="font-body font-semibold uppercase text-paper/50 mb-4"
+              style="font-size: 14px; letter-spacing: .14em">É uma organização?</h4>
+          <p class="text-paper/70 leading-relaxed mb-4" style="font-size: 15px">
+            Cadastre uma oportunidade e ajude jovens a encontrá-la.
+          </p>
+          <NuxtLink to="/cadastrar-oportunidade" class="btn btn-lime cadastro-cta" style="font-size: 14.5px; padding: 12px 20px">
+            Cadastrar oportunidade
+          </NuxtLink>
+        </div>
       </div>
 
       <div
@@ -68,3 +79,14 @@ const year = new Date().getFullYear()
     </div>
   </footer>
 </template>
+
+<style scoped>
+/* O padrão do .btn-lime é subir e brilhar no hover — aqui, ao CLICAR
+   (estado :active, o toque/pressão em si), inverte: desce em vez de subir
+   e fica cinza em vez de continuar lima, como feedback tátil de "pressionado". */
+.cadastro-cta:active {
+  transform: translateY(1px);
+  background: #9CA3AF;
+  box-shadow: none;
+}
+</style>
