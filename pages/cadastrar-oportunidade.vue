@@ -1,5 +1,8 @@
 <script setup>
+import { Lock } from "@iconoir/vue"
 import { CATEGORIES } from "~/utils/categories"
+import { useAuth } from "~/composables/useAuth"
+import { useOpportunitySubmissions } from "~/composables/useOpportunitySubmissions"
 
 useHead({
   title: "Cadastrar oportunidade",
@@ -17,11 +20,13 @@ const areasDisponiveis = ["Meio Ambiente", "Humanas", "STEM", "Linguagens", "Art
 const custos = ["Bolsa", "Gratuito", "Totalmente Financiado"]
 const formatos = ["Presencial", "Remoto", "Híbrido"]
 
+const { user, init, signInWithGoogle } = useAuth()
+const { submeter } = useOpportunitySubmissions()
+
 const form = ref({
   organizationName: "", title: "", link: "", description: "", type: "", deadline: "",
   level: [], areas: [], location: "", cost: "", format: "", eligibility: "",
   submitterName: "", submitterEmail: "", submitterNote: "",
-  website: "", // honeypot — campo escondido, ninguém deveria preencher
 })
 
 const enviando = ref(false)
@@ -34,17 +39,27 @@ function toggleLista(lista, valor) {
   else lista.splice(i, 1)
 }
 
+// Sugere nome/e-mail de quem está logado — a organização só corrige se
+// quiser, em vez de redigitar o que o Google já sabe.
+function preencherContato() {
+  if (!user.value) return
+  if (!form.value.submitterName) form.value.submitterName = user.value.user_metadata?.full_name || user.value.user_metadata?.name || ""
+  if (!form.value.submitterEmail) form.value.submitterEmail = user.value.email || ""
+}
+
+onMounted(() => {
+  init()
+  preencherContato()
+})
+watch(user, (novo) => { if (novo) preencherContato() })
+
 async function enviar() {
   erro.value = null
   enviando.value = true
-  try {
-    await $fetch("/api/opportunities/submit", { method: "POST", body: form.value })
-    enviado.value = true
-  } catch (e) {
-    erro.value = e?.data?.statusMessage || "Não foi possível enviar. Confira os campos e tente de novo."
-  } finally {
-    enviando.value = false
-  }
+  const r = await submeter(user.value, form.value)
+  enviando.value = false
+  if (!r.ok) { erro.value = r.error; return }
+  enviado.value = true
 }
 </script>
 
@@ -58,12 +73,32 @@ async function enviar() {
       Sua organização oferece bolsas, olimpíadas, intercâmbios ou outro programa educacional para jovens?
       Preencha o formulário abaixo — nossa equipe revisa e, se aprovado, publicamos no catálogo gratuitamente.
     </p>
+    <p class="text-ink/50 mt-2" style="font-size: 13.5px; font-weight: 600">⏱️ Leva cerca de 5 minutos</p>
 
-    <div v-if="enviado" class="sent-card mt-10">
+    <div v-if="!user" class="login-card mt-10">
+      <span class="gate-icon"><Lock class="w-[20px] h-[20px]" /></span>
+      <h3 class="font-display mt-3" style="font-size: 22px">Entre pra cadastrar sua oportunidade</h3>
+      <p class="text-ink/60 mt-2 mx-auto" style="font-size: 15px; max-width: 44ch">
+        Só pedimos login pra você conseguir acompanhar o status depois — ver se foi aprovada e editar
+        enquanto estiver em análise.
+      </p>
+      <button class="btn-google mt-6" @click="signInWithGoogle">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+          <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/>
+          <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.02-3.7H.96v2.33A9 9 0 0 0 9 18z"/>
+          <path fill="#FBBC05" d="M3.98 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.02-2.33z"/>
+          <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.47.89 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.02 2.33C4.68 5.16 6.66 3.58 9 3.58z"/>
+        </svg>
+        Entrar com Google
+      </button>
+    </div>
+
+    <div v-else-if="enviado" class="sent-card mt-10">
       <h2 class="font-display" style="font-size: 24px">Recebemos, obrigada!</h2>
       <p class="text-ink/65 mt-2" style="font-size: 15px">
         Nossa equipe vai revisar essa oportunidade. Se for aprovada, ela aparece no catálogo do Access+ em breve.
       </p>
+      <NuxtLink to="/minhas-oportunidades-enviadas" class="tracker-link mt-4">Ver minhas oportunidades enviadas</NuxtLink>
     </div>
 
     <form v-else class="form-grid mt-10" @submit.prevent="enviar">
@@ -168,9 +203,6 @@ async function enviar() {
         <textarea v-model="form.submitterNote" class="field" rows="2" placeholder="Contexto adicional sobre a oportunidade" />
       </label>
 
-      <!-- honeypot: invisível pra gente, bots preenchem tudo -->
-      <input v-model="form.website" type="text" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
-
       <p v-if="erro" class="field-label--full" style="color: #E24444; font-size: 13.5px">{{ erro }}</p>
 
       <button class="btn btn-ink field-label--full mt-2" style="justify-self: start" :disabled="enviando" type="submit">
@@ -181,6 +213,53 @@ async function enviar() {
 </template>
 
 <style scoped>
+.login-card {
+  position: relative;
+  text-align: center;
+  padding: 56px 32px;
+  border-radius: var(--r-card);
+  border: 2px solid color-mix(in srgb, var(--color-ink) 10%, transparent);
+  background: #fff;
+}
+.gate-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  color: var(--color-primary);
+}
+.btn-google {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: var(--r-pill);
+  border: 2px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+  background: #fff;
+  font-family: var(--font-body, inherit);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--color-ink);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .25s var(--ease, ease);
+}
+.btn-google:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--color-primary) 20%, transparent);
+  transform: translateY(-2px);
+}
+
+.tracker-link {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .sent-card {
   padding: 32px;
   border-radius: var(--r-card);
@@ -248,15 +327,6 @@ async function enviar() {
   font-size: 19px;
   font-weight: 700;
   color: var(--color-ink);
-}
-
-.honeypot {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
 }
 
 @media (max-width: 640px) {

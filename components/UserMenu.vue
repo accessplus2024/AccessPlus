@@ -170,6 +170,10 @@ async function sair() {
           Minhas oportunidades
         </NuxtLink>
 
+        <NuxtLink to="/minhas-oportunidades-enviadas" class="edit-btn mt-2" @click="aberto = false">
+          Oportunidades que enviei
+        </NuxtLink>
+
         <button v-if="profile" class="edit-btn mt-2" @click="abrirEdicaoPerfil">
           Editar cadastro
         </button>
