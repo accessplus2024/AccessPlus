@@ -68,14 +68,36 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 <template>
   <section id="historias" class="section dyk-section">
     <div class="wrap">
-      <div class="dyk-intro" data-aos="fade-up">
-        <span class="kicker">Histórias reais</span>
-        <h2 class="mt-3.5" style="font-size: clamp(38px, 5.5vw, 68px); line-height: 1.22; text-wrap: balance">
-          Não é falta de capacidade. <span class="text-primary">É falta de contato.</span>
-        </h2>
-        <p class="dyk-lead">
-          Três pessoas comuns, muitas portas fechadas até acharem a certa. Você também pode achar a sua.
-        </p>
+      <div class="dyk-top" data-aos="fade-up">
+        <div class="dyk-intro">
+          <span class="kicker">Histórias reais</span>
+          <h2 class="mt-3.5" style="font-size: clamp(38px, 5.5vw, 68px); line-height: 1.22; text-wrap: balance">
+            Não é falta de capacidade. <span class="text-primary">É falta de contato.</span>
+          </h2>
+          <p class="dyk-lead">
+            Três pessoas comuns, muitas portas fechadas até acharem a certa. Você também pode achar a sua.
+          </p>
+        </div>
+
+        <div class="dyk-thumbs">
+          <button
+            v-for="(h, i) in historias" :key="h.key" type="button"
+            class="dyk-thumb" :class="{ 'dyk-thumb--ativo': i === ativo }"
+            :style="{ borderColor: i === ativo ? h.accent : 'transparent' }"
+            :aria-label="`Ver história de ${h.name}`"
+            @click="ir(i)"
+          >
+            <img
+              v-if="!quebradas.has(h.key)"
+              :src="h.photo" :alt="h.name" class="dyk-thumb-photo"
+              @error="marcarQuebrada(h.key)"
+            />
+            <div v-else class="dyk-thumb-photo dyk-photo--fallback" :style="{ background: h.accent }">
+              {{ iniciais(h.name) }}
+            </div>
+            <span class="dyk-thumb-name">{{ h.name }}</span>
+          </button>
+        </div>
       </div>
 
       <div
@@ -108,26 +130,6 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
             </div>
           </article>
         </Transition>
-
-        <div class="dyk-thumbs">
-          <button
-            v-for="(h, i) in historias" :key="h.key" type="button"
-            class="dyk-thumb" :class="{ 'dyk-thumb--ativo': i === ativo }"
-            :style="{ borderColor: i === ativo ? h.accent : 'transparent' }"
-            :aria-label="`Ver história de ${h.name}`"
-            @click="ir(i)"
-          >
-            <img
-              v-if="!quebradas.has(h.key)"
-              :src="h.photo" :alt="h.name" class="dyk-thumb-photo"
-              @error="marcarQuebrada(h.key)"
-            />
-            <div v-else class="dyk-thumb-photo dyk-photo--fallback" :style="{ background: h.accent }">
-              {{ iniciais(h.name) }}
-            </div>
-            <span class="dyk-thumb-name">{{ h.name }}</span>
-          </button>
-        </div>
       </div>
 
       <div class="dyk-punchline" data-aos="zoom-in">
@@ -151,8 +153,18 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
   padding-top: 24px;
 }
 
+/* Título e as miniaturas das outras histórias lado a lado — antes o título
+   sozinho deixava a metade direita da seção vazia até o card do carrossel
+   começar, bem mais abaixo. */
+.dyk-top {
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr;
+  gap: 40px;
+  align-items: center;
+}
+
 .dyk-intro {
-  max-width: 820px;
+  min-width: 0;
 }
 
 .dyk-lead {
@@ -234,14 +246,13 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
   color: color-mix(in srgb, var(--color-ink) 62%, transparent);
 }
 
-/* Miniaturas das outras histórias em vez de bolinhas — dá pra ver quem
-   vem a seguir (preenche o vão embaixo do card) em vez de só um indicador
-   abstrato de posição. */
+/* Miniaturas das outras histórias em vez de bolinhas — ao lado do título
+   (não mais embaixo do card), preenchendo o espaço que sobrava vazio ali. */
 .dyk-thumbs {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 20px;
-  margin-top: 32px;
 }
 .dyk-thumb {
   display: flex;
@@ -302,6 +313,16 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
   .dyk-punchline {
     margin-top: 56px;
     padding: 48px 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  .dyk-top {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .dyk-thumbs {
+    justify-content: flex-start;
   }
 }
 </style>

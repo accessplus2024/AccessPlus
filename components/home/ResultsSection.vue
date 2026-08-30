@@ -32,26 +32,26 @@ function marcarQuebrada(key) { quebradas.value = new Set(quebradas.value).add(ke
 <template>
   <section class="section-sm">
     <div class="wrap">
-      <div style="max-width: 760px" data-aos="fade-up">
-        <span class="kicker">Quem constrói o Access+</span>
-        <h2 class="mt-3.5" style="font-size: clamp(32px, 4.4vw, 52px); text-wrap: balance">
-          Criado por estudantes de escola pública que já
-          <span class="relative inline-block text-primary">
-            passaram por essas portas
-            <svg viewBox="0 0 320 24" preserveAspectRatio="none" class="title-mark">
-              <path d="M3 16 C 80 6, 240 6, 317 14" stroke="var(--color-lime)" stroke-width="8" fill="none" stroke-linecap="round" />
-            </svg>
-          </span>.
-        </h2>
-        <p class="lead">
-          Nós somos um time de estudantes de escola pública, de baixa renda, e é a nossa própria
-          equipe que segue mantendo esta plataforma de pé. As aprovações abaixo são nossas e da
-          nossa comunidade: prova de que o caminho existe e de que ele passa por informação na
-          hora certa.
-        </p>
-      </div>
+      <div class="results-top" data-aos="fade-up">
+        <div class="results-intro">
+          <span class="kicker">Quem constrói o Access+</span>
+          <h2 class="mt-3.5" style="font-size: clamp(32px, 4.4vw, 52px); text-wrap: balance">
+            Criado por estudantes de escola pública que já
+            <span class="relative inline-block text-primary">
+              passaram por essas portas
+              <svg viewBox="0 0 320 24" preserveAspectRatio="none" class="title-mark">
+                <path d="M3 16 C 80 6, 240 6, 317 14" stroke="var(--color-lime)" stroke-width="8" fill="none" stroke-linecap="round" />
+              </svg>
+            </span>.
+          </h2>
+          <p class="lead">
+            Nós somos um time de estudantes de escola pública, de baixa renda, e é a nossa própria
+            equipe que segue mantendo esta plataforma de pé. As aprovações abaixo são nossas e da
+            nossa comunidade: prova de que o caminho existe e de que ele passa por informação na
+            hora certa.
+          </p>
+        </div>
 
-      <div class="results-grid" data-aos="fade-up" data-aos-delay="80">
         <div class="numero-card">
           <div>
             <span class="numero-eyebrow">Bolsas acumuladas</span>
@@ -75,7 +75,9 @@ function marcarQuebrada(key) { quebradas.value = new Set(quebradas.value).add(ke
             </div>
           </div>
         </div>
+      </div>
 
+      <div class="results-grid mt-8" data-aos="fade-up" data-aos-delay="80">
         <div class="logos-card">
           <div class="logos-head">
             <span class="kicker" style="letter-spacing: .14em">Aprovações e bolsas integrais em</span>
@@ -131,12 +133,24 @@ function marcarQuebrada(key) { quebradas.value = new Set(quebradas.value).add(ke
   color: color-mix(in srgb, var(--color-ink) 70%, transparent);
 }
 
+/* Título+texto e o card do número lado a lado — antes o título sozinho
+   deixava metade da seção vazia à direita até a grade de logos começar.
+   Junto do card, some o vão e o número de peso vira parte do "cabeçalho"
+   da seção em vez de só mais um bloco lá embaixo. */
+.results-top {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.results-intro {
+  min-width: 0;
+}
+
 .results-grid {
   display: grid;
-  grid-template-columns: 0.86fr 1.14fr;
   gap: 20px;
-  margin-top: 40px;
-  align-items: stretch;
 }
 
 /* Card do número: indigo cheio, o único bloco colorido da seção — o resto é
@@ -150,6 +164,7 @@ function marcarQuebrada(key) { quebradas.value = new Set(quebradas.value).add(ke
   border-radius: var(--r-lg);
   padding: 38px 36px;
   color: #fff;
+  min-width: 0;
 }
 
 .numero-eyebrow {
@@ -318,7 +333,7 @@ function marcarQuebrada(key) { quebradas.value = new Set(quebradas.value).add(ke
 .logos-foot a:hover { opacity: 1; }
 
 @media (max-width: 980px) {
-  .results-grid { grid-template-columns: 1fr; }
+  .results-top { grid-template-columns: 1fr; }
   .logos-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 560px) {

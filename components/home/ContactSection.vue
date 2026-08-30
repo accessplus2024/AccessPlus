@@ -10,7 +10,7 @@ const contacts = [
 </script>
 
 <template>
-  <section class="section" style="padding-top: 0">
+  <section class="section">
     <div class="wrap grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
       <!-- Contact info -->
       <div data-aos="fade-right">

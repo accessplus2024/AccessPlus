@@ -53,6 +53,28 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
+/* Barra de rolagem da página — o padrão do navegador vem cinza claro,
+   destacando como uma faixa por cima do fundo creme do site. Aqui a trilha
+   fica da mesma cor do fundo (some visualmente) e só a "bolinha" que você
+   arrasta aparece, discreta. */
+html {
+  scrollbar-color: color-mix(in srgb, var(--color-ink) 25%, transparent) var(--color-paper);
+}
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-ink) 25%, transparent);
+  border-radius: 999px;
+  border: 3px solid var(--color-paper);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-ink) 40%, transparent);
+}
+
 body {
   margin: 0;
   background: var(--color-paper);
