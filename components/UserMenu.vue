@@ -327,7 +327,7 @@ async function sair() {
   max-height: calc(100dvh - 120px);
 }
 .panel-head, .panel-pending, .edit-btn, .logout-btn { flex: none; }
-.panel-data { flex: 1 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: thin; }
+.panel-data { flex: 1 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #999999 var(--color-paper); }
 
 /* Celular: o painel sai de "pendurado no avatar" e vira uma folha ancorada na
    base da janela. Dentro do drawer lateral (288px de largura) o painel de

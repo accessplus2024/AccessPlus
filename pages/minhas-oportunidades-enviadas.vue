@@ -439,6 +439,7 @@ async function salvarEdicao() {
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   scrollbar-width: thin;
+  scrollbar-color: #999999 var(--color-paper);
 }
 .edicao-acoes {
   flex: none;

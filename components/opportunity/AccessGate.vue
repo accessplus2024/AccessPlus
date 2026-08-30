@@ -438,7 +438,7 @@ select.field:disabled { cursor: not-allowed; opacity: .6; }
   overscroll-behavior: contain;
   /* Firefox */
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--color-ink) 25%, transparent) transparent;
+  scrollbar-color: #999999 var(--color-paper);
 }
 /* WebKit esconde a barra até o scroll começar; num formulário que já foi
    cortado uma vez, mostrar que dá pra rolar importa mais que a estética. */
@@ -446,11 +446,11 @@ select.field:disabled { cursor: not-allowed; opacity: .6; }
   width: 8px;
 }
 .gate-root--rolavel::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--color-ink) 22%, transparent);
+  background: #999999;
   border-radius: 999px;
 }
 .gate-root--rolavel::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--color-paper);
 }
 .gate-root--compacto > * {
   min-height: 0;

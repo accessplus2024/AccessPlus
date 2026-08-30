@@ -839,17 +839,17 @@ function recomecar() {
   flex-direction: column;
   padding: 18px 4px 4px;
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--color-ink) 18%, transparent) transparent;
+  scrollbar-color: #999999 var(--color-paper);
 }
 .chat-mensagens::-webkit-scrollbar {
   width: 6px;
 }
 .chat-mensagens::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--color-ink) 16%, transparent);
+  background: #999999;
   border-radius: 999px;
 }
 .chat-mensagens::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--color-paper);
 }
 
 .chat-vazio {
