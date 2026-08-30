@@ -10,9 +10,9 @@ const destaques = [
   {
     key: "top15",
     logo: "/images/BeChangemaker_logo.svg",
-    eyebrow: "Parte do",
-    title: "Top 15 Finalist",
-    org: "do BeChangemaker — Representante do Brasil",
+    eyebrow: "Finalista do",
+    title: "Prêmio BeChangemaker 2024",
+    org: "Top 15 entre mais de 600 projetos de 30 países.",
   },
 ]
 

@@ -79,7 +79,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
       </div>
 
       <div
-        class="dyk-carousel mt-14"
+        class="dyk-carousel mt-11"
         data-aos="fade-up"
         @mouseenter="pausado = true"
         @mouseleave="pausado = false"
@@ -282,8 +282,8 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 }
 
 .dyk-punchline {
-  margin-top: 90px;
-  padding: 64px 32px;
+  margin-top: 56px;
+  padding: 48px 32px;
   border-radius: var(--r-lg);
   background: var(--color-primary);
   text-align: center;

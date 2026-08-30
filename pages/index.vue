@@ -14,10 +14,10 @@ useHead({
 <template>
   <main>
     <HomeHeader />
+    <HomeResultsSection />
     <HomeDidYouKnowSection />
     <HomeOpportunitiesSection />
     <NewsletterCta />
-    <HomeAboutSection />
     <HomeContactSection />
     <HomeAwardsSection />
   </main>
