@@ -74,13 +74,6 @@ onBeforeUnmount(() => { if (typeof document !== "undefined") document.body.style
       <!-- Desktop CTA -->
       <div class="hidden md:flex items-center gap-4">
         <NuxtLink
-          to="/cadastrar-oportunidade"
-          class="btn btn-out"
-          style="padding: 11px 20px; font-size: 15px"
-        >
-          Cadastrar oportunidade
-        </NuxtLink>
-        <NuxtLink
           to="/oportunidades"
           class="btn btn-lime"
           style="padding: 11px 20px; font-size: 15px"
@@ -161,13 +154,6 @@ onBeforeUnmount(() => { if (typeof document !== "undefined") document.body.style
             @click="toggleMobileMenu"
           >
             Explorar
-          </NuxtLink>
-          <NuxtLink
-            to="/cadastrar-oportunidade"
-            class="btn btn-out mt-3"
-            @click="toggleMobileMenu"
-          >
-            Cadastrar oportunidade
           </NuxtLink>
           <button
             v-if="!user"

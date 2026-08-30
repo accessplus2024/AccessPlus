@@ -88,9 +88,9 @@ const spotlight = {
   photo: "/images/founder-ester.jpg",
   name: "Ester",
   before: "é possível estudar em ",
-  highlight: "escolas públicas",
-  after: " e entrar nas melhores universidades do mundo, com tudo pago?",
-  detail: "Ester, de escola pública em Inhaúma, hoje na Northwestern com bolsa de quase R$3 milhões.",
+  highlight: "uma das melhores universidades do mundo",
+  after: " com tudo pago?",
+  detail: "Ester, nascida e criada na periferia carioca, hoje em Northwestern University em Chicago com bolsa de quase R$3 milhões.",
 }
 const spotlightQuebrada = ref(false)
 </script>
