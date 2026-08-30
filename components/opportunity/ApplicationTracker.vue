@@ -19,6 +19,7 @@ const opcoes = [
 
 const statusAtual = ref(null)
 const salvando = ref(false)
+const erro = ref(null)
 
 onMounted(async () => {
   if (!user.value) return
@@ -32,11 +33,12 @@ async function marcar(status) {
   // de propósito: o histórico de que ela quis aplicar continua valendo mesmo
   // que ela já tenha ido pro próximo passo.
   if (statusAtual.value === status) return
+  erro.value = null
   salvando.value = true
   const anterior = statusAtual.value
   statusAtual.value = status
   const r = await setStatus(user.value, props.opportunity, status)
-  if (!r.ok) statusAtual.value = anterior
+  if (!r.ok) { statusAtual.value = anterior; erro.value = r.error }
   salvando.value = false
 }
 </script>
@@ -58,6 +60,7 @@ async function marcar(status) {
         {{ o.label }}
       </button>
     </div>
+    <p v-if="erro" class="tracker-erro">{{ erro }}</p>
     <NuxtLink to="/minhas-oportunidades" class="tracker-link">Ver minhas oportunidades</NuxtLink>
   </div>
 </template>
@@ -111,6 +114,12 @@ async function marcar(status) {
   background: var(--color-primary);
   border-color: var(--color-primary);
   color: #fff;
+}
+
+.tracker-erro {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #E24444;
 }
 
 .tracker-link {
