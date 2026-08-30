@@ -133,6 +133,14 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 </template>
 
 <style scoped>
+/* .section (assets/css/main.css) dá 96px de padding-top — fazia sentido
+   quando o hero acima era mais alto (stats + botão empilhados). Com o hero
+   mais enxuto, esse respiro fixo virou vão vazio. Reduz só aqui, sem mexer
+   na classe global usada pelas outras seções da home. */
+.dyk-section {
+  padding-top: 24px;
+}
+
 .dyk-intro {
   max-width: 640px;
 }
