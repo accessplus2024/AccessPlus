@@ -37,11 +37,10 @@ const colunas = [
   { key: "conseguido", label: "Consegui!", accent: "var(--color-lime)" },
 ]
 
-function itensDe(status) {
-  return computed(() => minhas.value.filter((a) => a.status === status))
-}
-const porColuna = colunas.map((c) => ({ ...c, itens: itensDe(c.key) }))
-const naoSelecionados = itensDe("nao_selecionado")
+const porColuna = computed(() =>
+  colunas.map((c) => ({ ...c, itens: minhas.value.filter((a) => a.status === c.key) }))
+)
+const naoSelecionados = computed(() => minhas.value.filter((a) => a.status === "nao_selecionado"))
 
 async function avancar(item, novoStatus) {
   await setStatus(user.value, { id: item.opportunity_id, title: item.opportunity_title, link: item.opportunity_link, deadline: item.opportunity_deadline }, novoStatus)
@@ -86,12 +85,12 @@ async function remover(id) {
               <div class="board-col-head">
                 <span class="dot" :style="{ background: col.accent }" />
                 <h3>{{ col.label }}</h3>
-                <span class="count">{{ col.itens.value.length }}</span>
+                <span class="count">{{ col.itens.length }}</span>
               </div>
 
-              <p v-if="!col.itens.value.length" class="board-empty">Nada aqui ainda.</p>
+              <p v-if="!col.itens.length" class="board-empty">Nada aqui ainda.</p>
 
-              <article v-for="item in col.itens.value" :key="item.id" class="app-card">
+              <article v-for="item in col.itens" :key="item.id" class="app-card">
                 <button class="app-card-remove" type="button" aria-label="Remover" @click="remover(item.id)">
                   <Xmark class="w-[14px] h-[14px]" />
                 </button>
@@ -119,10 +118,10 @@ async function remover(id) {
             </div>
           </div>
 
-          <div v-if="naoSelecionados.value.length" class="mt-10">
+          <div v-if="naoSelecionados.length" class="mt-10">
             <p class="kicker" style="opacity: .5">Não selecionado(a) desta vez</p>
             <div class="nao-selecionado-row mt-4">
-              <article v-for="item in naoSelecionados.value" :key="item.id" class="app-card app-card--muted">
+              <article v-for="item in naoSelecionados" :key="item.id" class="app-card app-card--muted">
                 <button class="app-card-remove" type="button" aria-label="Remover" @click="remover(item.id)">
                   <Xmark class="w-[14px] h-[14px]" />
                 </button>
