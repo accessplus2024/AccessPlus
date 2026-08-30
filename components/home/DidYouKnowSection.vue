@@ -152,29 +152,29 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
   max-width: 46ch;
 }
 
-.dyk-carousel {
-  max-width: 780px;
-}
-
 .dyk-card {
   display: flex;
   align-items: center;
-  gap: 36px;
+  justify-content: center;
+  gap: 64px;
   min-width: 0;
 }
 
 .dyk-card-text {
   min-width: 0;
-  flex: 1 1 auto;
+  max-width: 620px;
 }
 
 /* Moldura de tamanho fixo: fotos reais vão chegar em proporções
    diferentes, e essa moldura garante que todas apareçam do mesmo jeito,
-   organizadas, em vez de cada card ter uma altura diferente. */
+   organizadas, em vez de cada card ter uma altura diferente. Maior que
+   antes (220px) — com o carrossel ocupando a largura toda da seção (em vez
+   de travado em 780px), um card pequeno lá na esquerda virava ilha num mar
+   de espaço vazio à direita. */
 .dyk-frame {
   position: relative;
   flex: none;
-  width: 220px;
+  width: 340px;
   aspect-ratio: 3 / 4;
   border-radius: var(--r-card);
   border: 4px solid;
@@ -201,23 +201,23 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 
 .dyk-headline {
   font-family: var(--font-display);
-  font-size: clamp(19px, 1.8vw, 23px);
+  font-size: clamp(22px, 2.4vw, 30px);
   line-height: 1.28;
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
 .dyk-name {
-  margin-top: 16px;
+  margin-top: 20px;
   font-weight: 700;
-  font-size: 14.5px;
+  font-size: 16px;
   color: var(--color-ink);
 }
 
 .dyk-role {
-  margin-top: 4px;
-  font-size: 14px;
-  line-height: 1.5;
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.6;
   color: color-mix(in srgb, var(--color-ink) 62%, transparent);
 }
 
