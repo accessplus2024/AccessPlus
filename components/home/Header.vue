@@ -71,11 +71,6 @@ onMounted(async () => {
 
 onBeforeUnmount(() => { if (animacaoTimer) clearTimeout(animacaoTimer) })
 
-const stats = [
-  { n: "+290", label: "oportunidades educacionais" },
-  { n: "100%", label: "gratuito, para sempre" },
-]
-
 const searchExamples = computed(() => {
   if (!opportunities.value?.length) {
     return ["Harvard", "Yale", "Google"]
@@ -139,19 +134,6 @@ const spotlightQuebrada = ref(false)
               </button>
             </div>
           </div>
-
-          <div class="cta-row" data-aos="fade-up" data-aos-delay="220">
-            <NuxtLink to="/oportunidades" class="btn btn-ink">
-              Encontrar minha oportunidade <ArrowRight class="w-[18px] h-[18px]" />
-            </NuxtLink>
-          </div>
-
-          <div class="stats-row" data-aos="fade-up" data-aos-delay="280">
-            <div v-for="s in stats" :key="s.label">
-              <div class="stat-number">{{ s.n }}</div>
-              <div class="stat-label">{{ s.label }}</div>
-            </div>
-          </div>
         </div>
 
         <div class="hero-visual" data-aos="fade-up" data-aos-delay="200">
@@ -176,6 +158,13 @@ const spotlightQuebrada = ref(false)
               <p class="spotlight-detail">{{ spotlight.detail }}</p>
             </div>
           </div>
+
+          <div class="cta-row" data-aos="fade-up" data-aos-delay="220">
+            <NuxtLink to="/oportunidades" class="btn btn-ink">
+              Encontrar minha oportunidade <ArrowRight class="w-[18px] h-[18px]" />
+            </NuxtLink>
+          </div>
+
           <a href="#historias" class="spotlight-more">
             Ver mais histórias reais <ArrowRight class="w-[15px] h-[15px]" />
           </a>
@@ -312,30 +301,9 @@ const spotlightQuebrada = ref(false)
 }
 
 .cta-row {
-  margin-top: 28px;
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-}
-
-.stats-row {
-  margin-top: 30px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
-}
-
-.stat-number {
-  font-size: clamp(28px, 4vw, 42px);
-  line-height: 1;
-  font-weight: 700;
-  letter-spacing: -0.06em;
-}
-
-.stat-label {
-  margin-top: 8px;
-  color: rgba(21, 17, 31, 0.6);
-  font-size: 13px;
 }
 
 .hero-visual {
@@ -447,10 +415,6 @@ const spotlightQuebrada = ref(false)
 
   .hero-subtitle {
     font-size: 17px;
-  }
-
-  .stats-row {
-    gap: 18px 28px;
   }
 }
 </style>

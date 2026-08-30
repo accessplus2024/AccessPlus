@@ -46,6 +46,23 @@ function marcarQuebrada(key) {
 function iniciais(nome) {
   return nome.trim().charAt(0).toUpperCase()
 }
+
+// Carrossel em vez de grade de 3 colunas: um card só, mais compacto,
+// evita a faixa de espaço vazio que sobrava com os três lado a lado.
+// Pausa ao passar o mouse — ninguém gosta de ler pela metade e o card trocar.
+const ativo = ref(0)
+const pausado = ref(false)
+const historiaAtual = computed(() => historias[ativo.value])
+let timer = null
+
+function ir(i) { ativo.value = i }
+
+onMounted(() => {
+  timer = setInterval(() => {
+    if (!pausado.value) ativo.value = (ativo.value + 1) % historias.length
+  }, 6000)
+})
+onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 </script>
 
 <template>
@@ -61,27 +78,46 @@ function iniciais(nome) {
         </p>
       </div>
 
-      <div class="dyk-scroll mt-14">
-        <article v-for="h in historias" :key="h.key" class="dyk-card" data-aos="fade-up">
-          <div class="dyk-frame" :style="{ borderColor: h.accent }">
-            <img
-              v-if="!quebradas.has(h.key)"
-              :src="h.photo"
-              :alt="h.name"
-              class="dyk-photo"
-              @error="marcarQuebrada(h.key)"
-            />
-            <div v-else class="dyk-photo dyk-photo--fallback" :style="{ background: h.accent }">
-              {{ iniciais(h.name) }}
+      <div
+        class="dyk-carousel mt-14"
+        data-aos="fade-up"
+        @mouseenter="pausado = true"
+        @mouseleave="pausado = false"
+      >
+        <Transition name="dyk-fade" mode="out-in">
+          <article :key="historiaAtual.key" class="dyk-card">
+            <div class="dyk-frame" :style="{ borderColor: historiaAtual.accent }">
+              <img
+                v-if="!quebradas.has(historiaAtual.key)"
+                :src="historiaAtual.photo"
+                :alt="historiaAtual.name"
+                class="dyk-photo"
+                @error="marcarQuebrada(historiaAtual.key)"
+              />
+              <div v-else class="dyk-photo dyk-photo--fallback" :style="{ background: historiaAtual.accent }">
+                {{ iniciais(historiaAtual.name) }}
+              </div>
             </div>
-          </div>
 
-          <p class="dyk-headline">
-            {{ h.before }}<span :style="{ color: h.accent }">{{ h.highlight }}</span>{{ h.after }}
-          </p>
-          <p class="dyk-name">{{ h.name }}</p>
-          <p class="dyk-role">{{ h.role }}</p>
-        </article>
+            <div class="dyk-card-text">
+              <p class="dyk-headline">
+                {{ historiaAtual.before }}<span :style="{ color: historiaAtual.accent }">{{ historiaAtual.highlight }}</span>{{ historiaAtual.after }}
+              </p>
+              <p class="dyk-name">{{ historiaAtual.name }}</p>
+              <p class="dyk-role">{{ historiaAtual.role }}</p>
+            </div>
+          </article>
+        </Transition>
+
+        <div class="dyk-dots">
+          <button
+            v-for="(h, i) in historias" :key="h.key" type="button"
+            class="dyk-dot" :class="{ 'dyk-dot--ativo': i === ativo }"
+            :style="i === ativo ? { background: h.accent } : {}"
+            :aria-label="`Ver história de ${h.name}`"
+            @click="ir(i)"
+          />
+        </div>
       </div>
 
       <div class="dyk-punchline" data-aos="zoom-in">
@@ -108,22 +144,30 @@ function iniciais(nome) {
   max-width: 46ch;
 }
 
-.dyk-scroll {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+.dyk-carousel {
+  max-width: 780px;
 }
 
 .dyk-card {
+  display: flex;
+  align-items: center;
+  gap: 36px;
   min-width: 0;
 }
 
-/* Moldura landscape de tamanho fixo: fotos reais vão chegar em proporções
+.dyk-card-text {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+/* Moldura de tamanho fixo: fotos reais vão chegar em proporções
    diferentes, e essa moldura garante que todas apareçam do mesmo jeito,
    organizadas, em vez de cada card ter uma altura diferente. */
 .dyk-frame {
   position: relative;
-  aspect-ratio: 3 / 2;
+  flex: none;
+  width: 220px;
+  aspect-ratio: 3 / 4;
   border-radius: var(--r-card);
   border: 4px solid;
   padding: 6px;
@@ -148,7 +192,6 @@ function iniciais(nome) {
 }
 
 .dyk-headline {
-  margin-top: 18px;
   font-family: var(--font-display);
   font-size: clamp(19px, 1.8vw, 23px);
   line-height: 1.28;
@@ -170,25 +213,43 @@ function iniciais(nome) {
   color: color-mix(in srgb, var(--color-ink) 62%, transparent);
 }
 
-@media (max-width: 900px) {
-  .dyk-scroll {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 12px;
-  }
-  .dyk-scroll::-webkit-scrollbar {
-    height: 6px;
-  }
-  .dyk-scroll::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--color-ink) 15%, transparent);
-    border-radius: 999px;
-  }
+.dyk-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 28px;
+}
+.dyk-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-ink) 18%, transparent);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.dyk-dot:hover {
+  background: color-mix(in srgb, var(--color-ink) 32%, transparent);
+}
+.dyk-dot--ativo {
+  transform: scale(1.3);
+}
+
+.dyk-fade-enter-active, .dyk-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.dyk-fade-enter-from, .dyk-fade-leave-to {
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
   .dyk-card {
-    flex: none;
-    width: min(320px, 82vw);
-    scroll-snap-align: start;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .dyk-frame {
+    width: 100%;
+    max-width: 260px;
+    aspect-ratio: 3 / 2;
   }
 }
 
