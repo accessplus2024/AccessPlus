@@ -70,7 +70,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
     <div class="wrap">
       <div class="dyk-intro" data-aos="fade-up">
         <span class="kicker">Histórias reais</span>
-        <h2 class="mt-3.5" style="font-size: clamp(32px, 4.5vw, 54px); line-height: 1.25; text-wrap: balance">
+        <h2 class="mt-3.5" style="font-size: clamp(38px, 5.5vw, 68px); line-height: 1.22; text-wrap: balance">
           Não é falta de capacidade. <span class="text-primary">É falta de contato.</span>
         </h2>
         <p class="dyk-lead">
@@ -109,14 +109,24 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
           </article>
         </Transition>
 
-        <div class="dyk-dots">
+        <div class="dyk-thumbs">
           <button
             v-for="(h, i) in historias" :key="h.key" type="button"
-            class="dyk-dot" :class="{ 'dyk-dot--ativo': i === ativo }"
-            :style="i === ativo ? { background: h.accent } : {}"
+            class="dyk-thumb" :class="{ 'dyk-thumb--ativo': i === ativo }"
+            :style="{ borderColor: i === ativo ? h.accent : 'transparent' }"
             :aria-label="`Ver história de ${h.name}`"
             @click="ir(i)"
-          />
+          >
+            <img
+              v-if="!quebradas.has(h.key)"
+              :src="h.photo" :alt="h.name" class="dyk-thumb-photo"
+              @error="marcarQuebrada(h.key)"
+            />
+            <div v-else class="dyk-thumb-photo dyk-photo--fallback" :style="{ background: h.accent }">
+              {{ iniciais(h.name) }}
+            </div>
+            <span class="dyk-thumb-name">{{ h.name }}</span>
+          </button>
         </div>
       </div>
 
@@ -142,7 +152,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 }
 
 .dyk-intro {
-  max-width: 640px;
+  max-width: 820px;
 }
 
 .dyk-lead {
@@ -224,24 +234,44 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
   color: color-mix(in srgb, var(--color-ink) 62%, transparent);
 }
 
-.dyk-dots {
+/* Miniaturas das outras histórias em vez de bolinhas — dá pra ver quem
+   vem a seguir (preenche o vão embaixo do card) em vez de só um indicador
+   abstrato de posição. */
+.dyk-thumbs {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 28px;
+  gap: 20px;
+  margin-top: 32px;
 }
-.dyk-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-ink) 18%, transparent);
-  transition: transform 0.2s ease, background 0.2s ease;
+.dyk-thumb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.55;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.dyk-dot:hover {
-  background: color-mix(in srgb, var(--color-ink) 32%, transparent);
+.dyk-thumb:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
 }
-.dyk-dot--ativo {
-  transform: scale(1.3);
+.dyk-thumb--ativo {
+  opacity: 1;
+}
+.dyk-thumb-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  object-fit: cover;
+  display: block;
+  border: 3px solid;
+  border-color: inherit;
+  font-size: 20px;
+}
+.dyk-thumb-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-ink);
 }
 
 .dyk-fade-enter-active, .dyk-fade-leave-active {
