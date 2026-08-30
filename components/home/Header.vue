@@ -134,6 +134,12 @@ const spotlightQuebrada = ref(false)
               </button>
             </div>
           </div>
+
+          <div class="cta-row" data-aos="fade-up" data-aos-delay="220">
+            <NuxtLink to="/oportunidades" class="btn btn-ink">
+              Encontrar minha oportunidade <ArrowRight class="w-[18px] h-[18px]" />
+            </NuxtLink>
+          </div>
         </div>
 
         <div class="hero-visual" data-aos="fade-up" data-aos-delay="200">
@@ -157,12 +163,6 @@ const spotlightQuebrada = ref(false)
               </p>
               <p class="spotlight-detail">{{ spotlight.detail }}</p>
             </div>
-          </div>
-
-          <div class="cta-row" data-aos="fade-up" data-aos-delay="220">
-            <NuxtLink to="/oportunidades" class="btn btn-ink">
-              Encontrar minha oportunidade <ArrowRight class="w-[18px] h-[18px]" />
-            </NuxtLink>
           </div>
 
           <a href="#historias" class="spotlight-more">
@@ -301,6 +301,7 @@ const spotlightQuebrada = ref(false)
 }
 
 .cta-row {
+  margin-top: 28px;
   display: flex;
   flex-wrap: wrap;
   gap: 14px;

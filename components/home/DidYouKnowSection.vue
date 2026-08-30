@@ -70,7 +70,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
     <div class="wrap">
       <div class="dyk-intro" data-aos="fade-up">
         <span class="kicker">Histórias reais</span>
-        <h2 class="mt-3.5" style="font-size: clamp(32px, 4.5vw, 54px); text-wrap: balance">
+        <h2 class="mt-3.5" style="font-size: clamp(32px, 4.5vw, 54px); line-height: 1.25; text-wrap: balance">
           Não é falta de capacidade. <span class="text-primary">É falta de contato.</span>
         </h2>
         <p class="dyk-lead">
@@ -152,30 +152,33 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
   max-width: 46ch;
 }
 
+/* Card único, centralizado, foto em cima — largura própria (não a seção
+   inteira) pra não esticar a foto/texto até ficar estranho, mas com
+   presença suficiente pra não parecer perdido no espaço da seção. */
+.dyk-carousel {
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .dyk-card {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 64px;
+  flex-direction: column;
   min-width: 0;
 }
 
 .dyk-card-text {
   min-width: 0;
-  max-width: 620px;
+  margin-top: 28px;
 }
 
-/* Moldura de tamanho fixo: fotos reais vão chegar em proporções
-   diferentes, e essa moldura garante que todas apareçam do mesmo jeito,
-   organizadas, em vez de cada card ter uma altura diferente. Maior que
-   antes (220px) — com o carrossel ocupando a largura toda da seção (em vez
-   de travado em 780px), um card pequeno lá na esquerda virava ilha num mar
-   de espaço vazio à direita. */
+/* Moldura paisagem: uma foto de grupo/retrato inteiro fica cortada e
+   "quadrada" numa moldura alta (3:4) — 16:10 mostra mais gente/contexto e
+   lê como foto de verdade, não como crop apertado. */
 .dyk-frame {
   position: relative;
-  flex: none;
-  width: 340px;
-  aspect-ratio: 3 / 4;
+  width: 100%;
+  aspect-ratio: 16 / 10;
   border-radius: var(--r-card);
   border: 4px solid;
   padding: 6px;
@@ -246,19 +249,6 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 }
 .dyk-fade-enter-from, .dyk-fade-leave-to {
   opacity: 0;
-}
-
-@media (max-width: 640px) {
-  .dyk-card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
-  .dyk-frame {
-    width: 100%;
-    max-width: 260px;
-    aspect-ratio: 3 / 2;
-  }
 }
 
 .dyk-punchline {
