@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onErrorCaptured, watch } from "vue"
+import { ref, computed, onMounted, watch } from "vue"
 import { NavArrowRight, Xmark, OpenNewWindow } from "@iconoir/vue"
 import { useAuth } from "~/composables/useAuth"
 import { useApplications } from "~/composables/useApplications"
@@ -12,18 +12,6 @@ useHead({
 
 const { user, init } = useAuth()
 const { minhas, carregando, erro, fetchMinhas, setStatus, removerStatus } = useApplications()
-
-// Diagnóstico temporário: sem isso, um erro de render em qualquer filho
-// (AccessGate, o board, etc.) derruba a página inteira em silêncio — vimos
-// isso em produção (div.wrap ficando com um único <!----> vazio dentro,
-// sem "Carregando...", sem estado vazio, nada). onErrorCaptured mostra a
-// causa real na tela em vez de branco. Remover depois de achar a causa.
-const erroFatal = ref(null)
-onErrorCaptured((err, instance, info) => {
-  erroFatal.value = `${err?.message || err} — em: ${info} — componente: ${instance?.$options?.__name || instance?.$options?.name || "?"}`
-  console.error("[erroFatal capturado]", err, info, instance)
-  return false
-})
 
 onMounted(() => {
   init()
@@ -54,7 +42,6 @@ async function remover(id) {
 
 <template>
   <div class="wrap" style="padding-top: 140px; padding-bottom: 100px">
-    <p v-if="erroFatal" style="color: #E24444; font-size: 14px; font-family: monospace; white-space: pre-wrap">{{ erroFatal }}</p>
     <ClientOnly>
       <AccessGate>
         <span class="kicker">Organização</span>
