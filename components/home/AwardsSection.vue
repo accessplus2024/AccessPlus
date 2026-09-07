@@ -22,8 +22,11 @@ const outrasOrganizacoes = [
   { key: "worldskills", name: "WorldSkills", logo: "/images/Worldskills_logo.png" },
 ]
 
+// Cohere Labs (`small: true`) é uma wordmark bem mais larga que o logo do
+// G&G — no mesmo `h-14/h-16` de altura ela ficava com peso visual bem maior
+// que o vizinho, puxando o olho pra ela sozinha na fileira.
 const confiam = [
-  { key: "cohere", name: "Cohere Labs", logo: "https://cdn.sanity.io/images/rjtqmwfu/web3-prod/5e656c29ed95afda78d068164a0bea94efed44ed-263x30.svg", invert: true },
+  { key: "cohere", name: "Cohere Labs", logo: "https://cdn.sanity.io/images/rjtqmwfu/web3-prod/5e656c29ed95afda78d068164a0bea94efed44ed-263x30.svg", invert: true, small: true },
   { key: "geg", name: "Instituto G&G", logo: "https://static.wixstatic.com/media/2dee5e_8222e6990afd4f2aadfa291bb9f5cc2a~mv2.png/v1/crop/x_50,y_445,w_1030,h_464/fill/w_366,h_156,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Logo_Instituto%20G%26G.png" },
 ]
 
@@ -46,7 +49,6 @@ function marcarQuebrada(key) {
 <template>
   <section class="section" style="padding-top: 0">
     <div class="wrap text-center" style="max-width: 900px">
-      <span class="kicker" style="justify-content: center; display: flex">Reconhecimento</span>
       <h2 class="mt-4" style="font-size: clamp(30px, 4vw, 50px); text-wrap: balance">
         Prêmios e reconhecimento
       </h2>
@@ -69,7 +71,7 @@ function marcarQuebrada(key) {
         </div>
       </div>
 
-      <p class="kicker mt-14" style="justify-content: center; display: flex">Outras organizações que também nos reconhecem</p>
+      <p class="kicker mt-14" style="justify-content: center; display: flex">Organizações que reconhecem o nosso trabalho</p>
       <div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-8 mt-6">
         <template v-for="o in outrasOrganizacoes" :key="o.key">
           <img
@@ -83,22 +85,21 @@ function marcarQuebrada(key) {
         </template>
       </div>
 
-      <p class="kicker mt-14" style="justify-content: center; display: flex">Quem confia em nós</p>
       <div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-8 mt-6">
         <template v-for="c in confiam" :key="c.key">
           <img
             v-if="!quebradas.has(c.key)"
             :src="c.logo"
             :alt="c.name"
-            class="h-14 md:h-16 w-auto opacity-80"
-            :class="{ 'invert-logo': c.invert }"
+            class="w-auto opacity-80"
+            :class="[c.small ? 'h-8 md:h-9' : 'h-14 md:h-16', { 'invert-logo': c.invert }]"
             @error="marcarQuebrada(c.key)"
           />
           <span v-else class="award-fallback">{{ c.name }}</span>
         </template>
       </div>
 
-      <p class="kicker mt-14" style="justify-content: center; display: flex">Como visto em</p>
+      <p class="kicker mt-14" style="justify-content: center; display: flex">Como fomos destacados na mídia</p>
       <div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-6 mt-6">
         <template v-for="m in midia" :key="m.key">
           <img
