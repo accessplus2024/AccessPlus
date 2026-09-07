@@ -14,7 +14,6 @@ const contacts = [
     <div class="wrap grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
       <!-- Contact info -->
       <div data-aos="fade-right">
-        <span class="kicker">Fale com a gente</span>
         <h2 class="mt-3.5" style="font-size: clamp(32px, 4vw, 52px); text-wrap: balance">Entre em contato</h2>
         <p class="font-body text-ink/72 leading-relaxed mt-6 mb-8" style="font-size: 17px; max-width: 48ch">
           Nós do Access+ estamos sempre prontos para ouvir você! Se tiver dúvidas,

@@ -8,7 +8,6 @@ const scrollToSection = (sectionId) => {
   <header class="relative overflow-hidden" style="padding-top: 132px">
     <div class="wrap">
       <div style="max-width: 760px">
-        <span class="kicker">
           Newsletter Semanal
         </span>
         <h1 class="mt-4" style="font-size: clamp(40px, 6vw, 84px); text-wrap: balance">

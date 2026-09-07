@@ -46,7 +46,6 @@ function marcarQuebrada(key) {
 <template>
   <section class="section" style="padding-top: 0">
     <div class="wrap text-center" style="max-width: 900px">
-      <span class="kicker" style="justify-content: center; display: flex">Reconhecimento</span>
       <h2 class="mt-4" style="font-size: clamp(30px, 4vw, 50px); text-wrap: balance">
         Prêmios e reconhecimento
       </h2>
@@ -69,7 +68,6 @@ function marcarQuebrada(key) {
         </div>
       </div>
 
-      <p class="kicker mt-14" style="justify-content: center; display: flex">Outras organizações que também nos reconhecem</p>
       <div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-8 mt-6">
         <template v-for="o in outrasOrganizacoes" :key="o.key">
           <img
@@ -83,7 +81,6 @@ function marcarQuebrada(key) {
         </template>
       </div>
 
-      <p class="kicker mt-14" style="justify-content: center; display: flex">Quem confia em nós</p>
       <div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-8 mt-6">
         <template v-for="c in confiam" :key="c.key">
           <img
@@ -98,7 +95,6 @@ function marcarQuebrada(key) {
         </template>
       </div>
 
-      <p class="kicker mt-14" style="justify-content: center; display: flex">Como visto em</p>
       <div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-6 mt-6">
         <template v-for="m in midia" :key="m.key">
           <img

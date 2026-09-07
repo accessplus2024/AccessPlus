@@ -92,7 +92,6 @@ provide("commentsCtx", {
 
 <template>
   <section class="mt-16">
-    <span class="kicker">Comunidade</span>
     <h2 class="mt-3 font-display" style="font-size: clamp(26px, 4vw, 38px)">{{ totalLabel }}</h2>
     <p class="text-ink/60 mt-2" style="font-size: 15px; max-width: 60ch">
       Compartilhe dicas, tire dúvidas, corrija informações e ajude outros estudantes que estão de olho nesta oportunidade.

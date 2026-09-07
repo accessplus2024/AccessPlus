@@ -38,7 +38,6 @@ const hover = ref(false)
 
     <div class="flex items-start justify-between mt-1.5">
       <div class="flex flex-col items-start gap-2">
-        <span class="kicker" style="opacity: 1" :style="{ color: labelColor }">{{ cat.label }}</span>
         <!-- Só marcamos o que está fechado. Um selo "aberta" em 236 dos 295
              cards seria ruído: o aluno precisa enxergar a exceção. -->
         <span

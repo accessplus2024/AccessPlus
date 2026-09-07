@@ -7,7 +7,6 @@ import { ArrowRight } from "@iconoir/vue"
     <div class="wrap">
       <div class="grid lg:grid-cols-2 gap-10 items-center">
         <div data-aos="fade-right">
-          <span class="kicker">Quem somos</span>
           <h2 class="mt-3.5" style="font-size: clamp(34px, 4.5vw, 60px); text-wrap: balance">
             Um futuro mais <span class="text-magenta">justo</span> começa com acesso.
           </h2>

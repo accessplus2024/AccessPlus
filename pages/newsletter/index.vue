@@ -118,7 +118,6 @@ onMounted(() => {
       <div v-if="!loading && !error" id="newsletter-posts">
         <!-- Section Header -->
         <div class="mb-[42px]">
-          <span class="kicker">Arquivo</span>
           <h2 class="mt-3.5" style="font-size: clamp(34px, 4.5vw, 56px)">
             Últimos <span class="font-body font-light italic">posts</span>
           </h2>

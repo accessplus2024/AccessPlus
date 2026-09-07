@@ -65,7 +65,6 @@ async function enviar() {
 
 <template>
   <main class="wrap" style="padding-top: 120px; padding-bottom: 80px; max-width: 760px">
-    <span class="kicker">Para organizações</span>
     <h1 class="mt-4" style="font-size: clamp(30px, 4.5vw, 46px); text-wrap: balance">
       Cadastre uma oportunidade
     </h1>

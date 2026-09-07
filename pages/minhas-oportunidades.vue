@@ -44,7 +44,6 @@ async function remover(id) {
   <div class="wrap" style="padding-top: 140px; padding-bottom: 100px">
     <ClientOnly>
       <AccessGate>
-        <span class="kicker">Organização</span>
         <h1 class="mt-3" style="font-family: var(--font-display); font-size: clamp(30px, 4vw, 46px)">
           Minhas oportunidades
         </h1>
@@ -106,7 +105,6 @@ async function remover(id) {
           </div>
 
           <div v-if="naoSelecionados.length" class="mt-10">
-            <p class="kicker" style="opacity: .5">Não selecionado(a) desta vez</p>
             <div class="nao-selecionado-row mt-4">
               <article v-for="item in naoSelecionados" :key="item.id" class="app-card app-card--muted">
                 <button class="app-card-remove" type="button" aria-label="Remover" @click="remover(item.id)">

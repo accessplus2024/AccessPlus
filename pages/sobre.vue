@@ -32,7 +32,6 @@ useHead({
   <section class="section" style="padding-bottom: 0">
     <div class="wrap">
       <div class="mb-[42px]">
-        <span class="kicker">No que acreditamos</span>
         <h2 class="mt-3.5" style="font-size: clamp(34px, 4.5vw, 56px)">Nossos valores</h2>
       </div>
       <ValuesGrid />
@@ -42,7 +41,6 @@ useHead({
   <section class="section">
     <div class="wrap">
       <div class="mb-[42px]">
-        <span class="kicker">Quem faz acontecer</span>
         <h2 class="mt-3.5" style="font-size: clamp(34px, 4.5vw, 56px)">Nosso time</h2>
       </div>
       <TeamGrid />

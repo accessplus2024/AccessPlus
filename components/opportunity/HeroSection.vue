@@ -31,7 +31,6 @@ const longAbout = computed(() => (props.opportunity.description || "").length > 
         <span class="inline-flex items-center justify-center rounded-full bg-white/90" style="width: 54px; height: 54px">
           <img :src="categoryIcon(category.key)" alt="" style="width: 30px; height: 30px" />
         </span>
-        <span class="kicker" style="opacity: 1" :style="{ color: onColor }">{{ category.label }}</span>
       </div>
 
       <h1 class="mt-5" style="font-size: clamp(34px, 5.5vw, 72px); max-width: 18ch; text-wrap: balance">

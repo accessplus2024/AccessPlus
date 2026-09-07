@@ -146,7 +146,6 @@ async function enviar() {
     <!-- Logado sem cadastro completo: formulário -->
     <div v-else-if="!cadastroCompleto" class="gate-card gate-card--form">
       <div v-if="!compacto" class="gate-topbar" />
-      <span class="kicker" style="opacity: .65">Cadastro rápido</span>
       <h3 class="font-display mt-2" :style="compacto ? 'font-size: 19px' : 'font-size: 24px'">Só mais um passo</h3>
       <p class="text-ink/60 mt-2" :style="compacto ? 'font-size: 14px' : 'font-size: 15px'">
         {{ compacto

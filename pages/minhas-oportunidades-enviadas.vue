@@ -96,7 +96,6 @@ async function salvarEdicao() {
 
 <template>
   <div class="wrap" style="padding-top: 140px; padding-bottom: 100px">
-    <span class="kicker">Para organizações</span>
     <h1 class="mt-3" style="font-family: var(--font-display); font-size: clamp(30px, 4vw, 46px)">
       Minhas oportunidades enviadas
     </h1>

@@ -49,7 +49,6 @@ onMounted(() => {
       <button class="close-btn" aria-label="Fechar" @click="close">✕</button>
 
       <div class="modal-content">
-        <span class="kicker text-white" style="opacity: .8; color: #fff">Newsletter</span>
         <h2 class="mt-4" style="font-size: clamp(28px, 5vw, 48px); text-wrap: balance">
           Não perca nenhuma novidade!
         </h2>

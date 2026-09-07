@@ -70,7 +70,6 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
     <div class="wrap">
       <div class="dyk-top" data-aos="fade-up">
         <div class="dyk-intro">
-          <span class="kicker">Histórias reais</span>
           <h2 class="mt-3.5" style="font-size: clamp(38px, 5.5vw, 68px); line-height: 1.22; text-wrap: balance">
             Não é falta de capacidade. <span class="text-primary">É falta de contato.</span>
           </h2>

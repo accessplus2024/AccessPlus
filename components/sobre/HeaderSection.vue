@@ -2,7 +2,6 @@
   <header class="relative overflow-hidden" style="padding-top: 132px">
     <div class="wrap">
       <div style="max-width: 860px">
-        <span class="kicker">Quem somos</span>
         <h1 class="mt-4" style="font-size: clamp(40px, 6vw, 82px); text-wrap: balance">
           Um futuro mais <span class="text-magenta">justo</span> começa com acesso.
         </h1>

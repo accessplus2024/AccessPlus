@@ -23,7 +23,6 @@ const submit = async () => {
       style="background: var(--color-primary); border-radius: var(--r-lg); padding: 64px 48px"
     >
       <div class="relative" style="max-width: 620px">
-        <span class="kicker text-white" style="opacity: .8; color: #fff">Newsletter</span>
         <h2 class="mt-4" style="font-size: clamp(32px, 4vw, 52px); text-wrap: balance">
           Não perca nenhuma novidade!
         </h2>
