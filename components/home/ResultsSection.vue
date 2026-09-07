@@ -1,23 +1,36 @@
 <script setup>
-// Seção de resultados/autoridade: entra logo depois do HomeHeader.
-// Os logos vêm do Wikimedia Commons (Special:FilePath resolve pelo nome do
-// arquivo). Enquanto/se algum nome mudar lá, o nome da instituição aparece
-// em texto no lugar — mesmo padrão do HomeAwardsSection.
+// Logos salvos localmente em public/images (antes vinham do Wikimedia
+// Commons — trocado porque o link direto do Commons não é confiável a
+// longo prazo: o arquivo pode ser renomeado ou movido lá sem aviso nenhum
+// pra gente). `padding` varia por logo porque cada um tem uma proporção
+// bem diferente (marca-d'água larga como a da Northwestern precisa de
+// bem menos respiro que um brasão quadrado como o de Yale, senão fica
+// minúscula dentro da célula).
+//
+// Stanford continua no Commons: `stanford.svg`, que já existia em
+// public/images antes desta seção existir, não é o logo — é uma foto de
+// paisagem embutida num SVG, sobrando de outro uso qualquer. Sem um logo
+// de verdade baixado, mantém o link externo em vez de mostrar a foto errada.
+//
+// ONU também continua no Commons: o arquivo baixado (Flag-United-Nations-Logo.jpg)
+// é uma foto da bandeira com fundo azul sólido, não um emblema com fundo
+// transparente — ao lado dos outros logos (todos com fundo transparente), ele
+// aparecia como um retângulo azul destoando do resto da grade.
 const commons = (arquivo) =>
   `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(arquivo)}`
 
 const instituicoes = [
-  { key: "harvard", nome: "Harvard", logo: commons("Harvard University logo.svg"), padding: 14 },
+  { key: "harvard", nome: "Harvard", logo: "/images/Harvard_University_logo.svg", padding: 10 },
   { key: "stanford", nome: "Stanford", logo: commons("Stanford wordmark (2012).svg"), padding: 14 },
-  { key: "yale", nome: "Yale", logo: commons("Yale University Shield 1.svg"), padding: 14 },
-  { key: "mit", nome: "MIT", logo: commons("MIT logo.svg"), padding: 20 },
-  { key: "oxford", nome: "Oxford", logo: commons("University of Oxford.svg"), padding: 14 },
-  { key: "onu", nome: "ONU", logo: commons("Emblem of the United Nations.svg"), padding: 14 },
-  { key: "google", nome: "Google", logo: commons("Google 2015 logo.svg"), padding: 22 },
-  { key: "northwestern", nome: "Northwestern", logo: commons("Northwestern University seal.svg"), padding: 14 },
-  { key: "ubc", nome: "UBC", logo: commons("British columbia ca univ logo.svg"), padding: 14 },
-  { key: "fgv", nome: "FGV", logo: commons("Logo FGV - Fundação Getulio Vargas.png"), padding: 16 },
-  { key: "insper", nome: "Insper", logo: commons("Logo Insper.png"), padding: 16 },
+  { key: "yale", nome: "Yale", logo: "/images/Yale_University_logo.svg", padding: 14 },
+  { key: "mit", nome: "MIT", logo: "/images/MIT_Logo_and_Wordmark.svg", padding: 10 },
+  { key: "oxford", nome: "Oxford", logo: "/images/University_of_Oxford-Logo.wine.svg", padding: 4 },
+  { key: "onu", nome: "ONU", logo: commons("Emblem of the United Nations.svg"), padding: 10 },
+  { key: "google", nome: "Google", logo: "/images/Google_2015_logo.svg", padding: 12 },
+  { key: "northwestern", nome: "Northwestern", logo: "/images/Northwestern_University_wordmark.svg", padding: 4 },
+  { key: "ubc", nome: "UBC", logo: "/images/British_columbia_ca_univ_logo.svg", padding: 8 },
+  { key: "fgv", nome: "FGV", logo: "/images/Logo_FGV_-_Fundação_Getulio_Vargas.png", padding: 6 },
+  { key: "insper", nome: "Insper", logo: "/images/Logo_Insper.png", padding: 14 },
 ]
 
 // `carregados` some com o texto quando o logo aparece; `quebradas` some com a
@@ -27,6 +40,15 @@ const carregados = ref(new Set())
 const quebradas = ref(new Set())
 function marcarCarregada(key) { carregados.value = new Set(carregados.value).add(key) }
 function marcarQuebrada(key) { quebradas.value = new Set(quebradas.value).add(key) }
+
+// Imagem local (cache do navegador) costuma terminar de carregar ANTES do
+// Vue acabar de montar o componente e ligar o `@load` — o evento disparava
+// no vazio e o nome placeholder ficava preso atrás do logo pra sempre. Esse
+// `ref` roda assim que o <img> é criado e confere `.complete` na hora,
+// pegando exatamente esse caso.
+function conferirJaCarregada(el, key) {
+  if (el && el.complete && el.naturalWidth > 0) marcarCarregada(key)
+}
 </script>
 
 <template>
@@ -34,8 +56,7 @@ function marcarQuebrada(key) { quebradas.value = new Set(quebradas.value).add(ke
     <div class="wrap">
       <div class="results-top" data-aos="fade-up">
         <div class="results-intro">
-          <span class="kicker">Quem constrói o Access+</span>
-          <h2 class="mt-3.5" style="font-size: clamp(32px, 4.4vw, 52px); text-wrap: balance">
+          <h2 style="font-size: clamp(32px, 4.4vw, 52px); text-wrap: balance">
             Criado por estudantes de escola pública que já
             <span class="relative inline-block text-primary">
               passaram por essas portas
@@ -89,10 +110,11 @@ function marcarQuebrada(key) { quebradas.value = new Set(quebradas.value).add(ke
               <span v-if="!carregados.has(i.key)" class="logo-nome">{{ i.nome }}</span>
               <img
                 v-if="!quebradas.has(i.key)"
+                :ref="(el) => conferirJaCarregada(el, i.key)"
                 :src="i.logo"
                 :alt="i.nome"
                 class="logo-img"
-                :style="{ inset: `${i.padding}px` }"
+                :style="{ width: `calc(100% - ${i.padding * 2}px)`, height: `calc(100% - ${i.padding * 2}px)` }"
                 @load="marcarCarregada(i.key)"
                 @error="marcarQuebrada(i.key)"
               />
@@ -271,14 +293,16 @@ function marcarQuebrada(key) { quebradas.value = new Set(quebradas.value).add(ke
   color: color-mix(in srgb, var(--color-ink) 72%, transparent);
 }
 
-/* `inset` vem do dado (cada marca precisa de respiro diferente); largura e
-   altura saem do inset via calc pra imagem nunca estourar a célula. */
+/* Largura/altura vêm do dado como porcentagem explícita (não auto +
+   max-width): um `<img>` com width/height auto usa o tamanho intrínseco do
+   arquivo e só ENCOLHE se estourar a célula — nunca cresce pra preencher o
+   espaço disponível. Um SVG salvo com viewBox pequeno (a wordmark da
+   Northwestern, por exemplo) ficava minúsculo mesmo tendo a célula toda
+   livre. Com porcentagem explícita + object-fit:contain, a imagem sempre
+   preenche a caixa (cresce ou encolhe, o que for preciso). */
 .logo-img {
   position: absolute;
-  width: auto;
-  height: auto;
-  max-width: calc(100% - 28px);
-  max-height: calc(100% - 28px);
+  inset: 0;
   margin: auto;
   object-fit: contain;
 }
