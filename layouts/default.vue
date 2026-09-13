@@ -3,6 +3,6 @@
     <Navbar />
     <slot></slot>
     <Footer />
-    <AccessIAWidget />
+    <!-- <AccessIAWidget /> -->
   </div>
 </template>
