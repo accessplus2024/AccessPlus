@@ -28,7 +28,6 @@ scripts/eval/results/
 
 # Lock files
 bun.lockb
-package-lock.json
 .vercel
 .claude
 # Added by code-review-graph
