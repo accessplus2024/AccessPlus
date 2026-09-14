@@ -47,7 +47,7 @@ function marcarQuebrada(key) { quebradas.value = new Set(quebradas.value).add(ke
 // `ref` roda assim que o <img> é criado e confere `.complete` na hora,
 // pegando exatamente esse caso.
 function conferirJaCarregada(el, key) {
-  if (el && el.complete && el.naturalWidth > 0) marcarCarregada(key)
+  if (el && el.complete && el.naturalWidth > 0 && !carregados.value.has(key)) marcarCarregada(key)
 }
 </script>
 
