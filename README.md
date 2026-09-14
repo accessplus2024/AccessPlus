@@ -2,7 +2,7 @@
 
 Plataforma gratuita de oportunidades extracurriculares para estudantes
 brasileiros de ensino fundamental e médio. Nuxt 3 + Supabase, em produção na
-Vercel
+Vercel.
 
 ## Rodar
 
