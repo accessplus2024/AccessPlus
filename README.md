@@ -16,7 +16,7 @@ npm run dev              # http://localhost:3000
 
 ```
 pages/                 rotas do site
-components/            UI  (AccessIA*.vue = o chat)
+components/            UI  
 server/api/            rotas Nitro — catálogo e Accessia
 server/utils/rag/      o pipeline de busca da Accessia
 scripts/               offline: embedding, reanotação do catálogo
@@ -27,18 +27,6 @@ docs/accessia.md       como a Accessia funciona
 ## Páginas
 
 `/` · `/oportunidades` · `/oportunidade/[id]` · `/newsletter` · `/sobre`
-
-## Comandos
-
-```bash
-npm run build            # build de produção
-npm run embed            # regera os vetores da busca (obrigatório após mexer
-                         # no catálogo ou em campos.js — ver docs/accessia.md)
-npm run test:roteador    # regressão do casamento de título (segundos, sem API)
-npm run eval:ablacao     # compara configurações de retrieval
-npm run eval:diagnostico # por que o recall caiu
-npm run eval:gaps        # lacunas do catálogo
-```
 
 ## Variáveis de ambiente
 
@@ -52,19 +40,3 @@ npm run eval:gaps        # lacunas do catálogo
 | `BEEHIV_PUBLICATION_ID` / `BEEHIV_API_KEY` | newsletter |
 | `CRON_SECRET` | autoriza `POST /api/opportunities/refresh` |
 | `RAG_SUPABASE_URL` / `RAG_SUPABASE_SERVICE_ROLE_KEY` | opcional: aponta só a busca para outro banco |
-
-**A Accessia precisa de uma chave `service_role`, e o site não.** É o mesmo
-banco e a mesma URL — muda só a permissão: `opportunities` é legível por chave
-publicável, mas `opportunity_chunks` tem RLS e devolve zero linhas para
-qualquer chave que não seja `service_role`.
-
-Por isso só a CHAVE precisa ser configurada à parte; a URL cai em
-`SUPABASE_URL` sozinha. Sem ela, `catalog.js` falha na carga com a mensagem
-dizendo o que configurar, em vez de degradar em silêncio.
-
-Nunca coloque a `service_role` em `runtimeConfig.public`: ela ignora RLS.
-
-## Documentação
-
-`docs/accessia.md` — arquitetura da busca, regras de produto, os pisos de
-qualidade e o que já foi rejeitado com medição. 
