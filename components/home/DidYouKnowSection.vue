@@ -4,38 +4,51 @@ import { ArrowRight } from "@iconoir/vue"
 // Histórias reais da própria equipe fundadora (Paula, Iza, Camilly — já
 // públicas no pitch deck do Access+; a 4ª, a da Ester, vira o destaque
 // lá no topo da hero em vez de ficar empilhada aqui). `role` deixa claro
-// de onde a pessoa veio e pra onde ela foi, sem travessão, com números e
-// nomes de lugar/conquista concretos — isso impressiona mais que adjetivo.
+// de onde a pessoa veio e pra onde ela foi, com números e nomes de
+// lugar/conquista concretos — isso impressiona mais que adjetivo.
+//
+// As três aparecem lado a lado (grade), sem carrossel: dá pra comparar as
+// histórias de uma vez, sem esperar o card trocar. `tag` é a etiqueta sobre a
+// foto; `tagBg`/`tagFg` são as cores dela (fundo/texto).
 const historias = [
   {
     key: "paula",
-    accent: "var(--color-primary)",
-    before: "Com 19 anos, Paula viajou para",
-    highlight: " Genebra sem pagar nada ",
-    after: "para discursar na ONU representando o Brasil.",
-    name: "Paula",
-    role: "Nascida e criada na periferia carioca, estudou a vida inteira em escolas públicas. Ganhou um concurso de redação e foi discursar na ONU, em Genebra, ao lado de diplomatas reais.",
     photo: "/images/founder-paula.jpg",
+    alt: "Paula com colegas na ONU, em Genebra",
+    tag: "ONU · Genebra",
+    tagBg: "var(--color-primary)",
+    tagFg: "#FFFFFF",
+    before: "Com 19 anos, Paula viajou para ",
+    highlight: "Genebra sem pagar nada",
+    after: " para discursar na ONU representando o Brasil.",
+    name: "Paula",
+    role: "Nascida e criada na periferia carioca, estudou a vida inteira em escola pública. Ganhou um concurso de redação e discursou na ONU ao lado de diplomatas.",
   },
   {
     key: "iza",
-    accent: "var(--color-magenta)",
-    before: "Iza passou um verão na ",
-    highlight: "Universidade de Washington ",
-    after: "coom tudo pago, após ouvir que intercâmbio era só pra gente rica.",
-    name: "Iza",
-    role: 'Estudante do IFBA, atual estudante de graduação na UFPE.',
     photo: "/images/founder-iza.jpg",
+    alt: "Iza com colegas do programa de verão",
+    tag: "Universidade de Washington",
+    tagBg: "var(--color-magenta)",
+    tagFg: "var(--color-ink)",
+    before: "Iza passou um verão na ",
+    highlight: "Universidade de Washington",
+    after: " com tudo pago, depois de ouvir que intercâmbio era só pra gente rica.",
+    name: "Iza",
+    role: "Estudante do IFBA, hoje faz graduação na UFPE.",
   },
   {
-    key: "camilly",
-    accent: "var(--color-lime)",
-    before: "Camilly viajou para  ",
-    highlight: " Los Angeles ",
-    after: "após vencer, com suas amigas, a maior competição de tecniologia feminina.",
-    name: "Camilly",
-    role: "Ex-estudante do IFBA, por muito tempo pensou que tecnologia não era para ela. Atualmente estuda Ciência da Computação em Bowdoin College. ",
+    key: "camily",
     photo: "/images/founder-camilly.jpg",
+    alt: "Camily e amigas com a bandeira do Brasil",
+    tag: "São Franciso",
+    tagBg: "var(--color-lime)",
+    tagFg: "var(--color-ink)",
+    before: "Camily foi para ",
+    highlight: "São Francisco",
+    after: " depois de vencer, com as amigas, a maior competição de tecnologia feminina.",
+    name: "Camily",
+    role: "Ex-estudante do IFBA, achava que tecnologia não era para ela. Hoje estuda Ciência da Computação no Bowdoin College.",
   },
 ]
 
@@ -46,97 +59,59 @@ function marcarQuebrada(key) {
 function iniciais(nome) {
   return nome.trim().charAt(0).toUpperCase()
 }
-
-// Carrossel em vez de grade de 3 colunas: um card só, mais compacto,
-// evita a faixa de espaço vazio que sobrava com os três lado a lado.
-// Pausa ao passar o mouse — ninguém gosta de ler pela metade e o card trocar.
-const ativo = ref(0)
-const pausado = ref(false)
-const historiaAtual = computed(() => historias[ativo.value])
-let timer = null
-
-function ir(i) { ativo.value = i }
-
-onMounted(() => {
-  timer = setInterval(() => {
-    if (!pausado.value) ativo.value = (ativo.value + 1) % historias.length
-  }, 6000)
-})
-onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 </script>
 
 <template>
-  <section id="historias" class="section dyk-section">
+  <section id="historias" class="dyk-section">
     <div class="wrap">
       <div class="dyk-top" data-aos="fade-up">
         <div class="dyk-intro">
           <span class="kicker">Histórias reais</span>
-          <h2 class="mt-3.5" style="font-size: clamp(38px, 5.5vw, 68px); line-height: 1.22; text-wrap: balance">
+          <h2 class="dyk-title">
             Não é falta de capacidade. <span class="text-primary">É falta de contato.</span>
           </h2>
-          <p class="dyk-lead">
-            Três pessoas comuns, muitas portas fechadas até acharem a certa. Você também pode achar a sua.
-          </p>
         </div>
+        <p class="dyk-lead">
+          Três pessoas comuns, muitas portas fechadas até acharem a certa. Você também pode achar a sua.
+        </p>
+      </div>
 
-        <div class="dyk-thumbs">
-          <button
-            v-for="(h, i) in historias" :key="h.key" type="button"
-            class="dyk-thumb" :class="{ 'dyk-thumb--ativo': i === ativo }"
-            :style="{ borderColor: i === ativo ? h.accent : 'transparent' }"
-            :aria-label="`Ver história de ${h.name}`"
-            @click="ir(i)"
-          >
+      <div class="dyk-grid">
+        <article
+          v-for="(h, i) in historias"
+          :key="h.key"
+          class="dyk-card"
+          data-aos="fade-up"
+          :data-aos-delay="i * 80"
+        >
+          <div class="dyk-frame">
             <img
               v-if="!quebradas.has(h.key)"
-              :src="h.photo" :alt="h.name" class="dyk-thumb-photo"
+              :src="h.photo"
+              :alt="h.alt"
+              class="dyk-photo"
+              loading="lazy"
               @error="marcarQuebrada(h.key)"
             />
-            <div v-else class="dyk-thumb-photo dyk-photo--fallback" :style="{ background: h.accent }">
+            <div v-else class="dyk-photo dyk-photo--fallback" :style="{ background: h.tagBg, color: h.tagFg }">
               {{ iniciais(h.name) }}
             </div>
-            <span class="dyk-thumb-name">{{ h.name }}</span>
-          </button>
-        </div>
+            <span class="dyk-tag" :style="{ background: h.tagBg, color: h.tagFg }">{{ h.tag }}</span>
+          </div>
+
+          <div class="dyk-card-text">
+            <p class="dyk-headline">
+              {{ h.before }}<span class="dyk-highlight">{{ h.highlight }}</span>{{ h.after }}
+            </p>
+            <p class="dyk-name">{{ h.name }}</p>
+            <p class="dyk-role">{{ h.role }}</p>
+          </div>
+        </article>
       </div>
 
-      <div
-        class="dyk-carousel mt-11"
-        data-aos="fade-up"
-        @mouseenter="pausado = true"
-        @mouseleave="pausado = false"
-      >
-        <Transition name="dyk-fade" mode="out-in">
-          <article :key="historiaAtual.key" class="dyk-card">
-            <div class="dyk-frame" :style="{ borderColor: historiaAtual.accent }">
-              <img
-                v-if="!quebradas.has(historiaAtual.key)"
-                :src="historiaAtual.photo"
-                :alt="historiaAtual.name"
-                class="dyk-photo"
-                @error="marcarQuebrada(historiaAtual.key)"
-              />
-              <div v-else class="dyk-photo dyk-photo--fallback" :style="{ background: historiaAtual.accent }">
-                {{ iniciais(historiaAtual.name) }}
-              </div>
-            </div>
-
-            <div class="dyk-card-text">
-              <p class="dyk-headline">
-                {{ historiaAtual.before }}<span :style="{ color: historiaAtual.accent }">{{ historiaAtual.highlight }}</span>{{ historiaAtual.after }}
-              </p>
-              <p class="dyk-name">{{ historiaAtual.name }}</p>
-              <p class="dyk-role">{{ historiaAtual.role }}</p>
-            </div>
-          </article>
-        </Transition>
-      </div>
-
-      <div class="dyk-punchline" data-aos="zoom-in">
-        <p>
-          <span class="text-lime">Essa também pode ser</span> a sua história.
-        </p>
-        <NuxtLink to="/oportunidades" class="btn btn-lime mt-8">
+      <div class="dyk-cta" data-aos="fade-up">
+        <p>Essa também pode ser a sua história.</p>
+        <NuxtLink to="/oportunidades" class="btn btn-ink">
           Encontrar minha oportunidade <ArrowRight class="w-[18px] h-[18px]" />
         </NuxtLink>
       </div>
@@ -145,74 +120,75 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
 </template>
 
 <style scoped>
-/* .section (assets/css/main.css) dá 96px de padding-top — fazia sentido
-   quando o hero acima era mais alto (stats + botão empilhados). Com o hero
-   mais enxuto, esse respiro fixo virou vão vazio. Reduz só aqui, sem mexer
-   na classe global usada pelas outras seções da home. */
+/* Vem logo depois da faixa de logos (HomeLogoStrip), que não tem respiro
+   embaixo — então o espaço de cima é o mesmo de baixo. */
 .dyk-section {
-  padding-top: 24px;
+  padding-top: clamp(64px, 8vw, 104px);
+  padding-bottom: clamp(64px, 8vw, 104px);
 }
 
-/* Título e as miniaturas das outras histórias lado a lado — antes o título
-   sozinho deixava a metade direita da seção vazia até o card do carrossel
-   começar, bem mais abaixo. */
+/* Título à esquerda, texto de apoio à direita, alinhados pela base. */
 .dyk-top {
-  display: grid;
-  grid-template-columns: 1.4fr 0.6fr;
-  gap: 40px;
-  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px 48px;
 }
 
 .dyk-intro {
+  flex: 1 1 560px;
   min-width: 0;
 }
 
-.dyk-lead {
-  margin-top: 16px;
-  font-size: 17px;
-  color: color-mix(in srgb, var(--color-ink) 65%, transparent);
-  max-width: 46ch;
+.dyk-title {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(36px, 4.6vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  hyphens: manual;
 }
 
-/* Card único, centralizado, foto em cima — largura própria (não a seção
-   inteira) pra não esticar a foto/texto até ficar estranho, mas com
-   presença suficiente pra não parecer perdido no espaço da seção. */
-.dyk-carousel {
-  max-width: 620px;
-  margin-left: auto;
-  margin-right: auto;
+.dyk-lead {
+  flex: 0 1 380px;
+  margin: 0;
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: rgba(21, 17, 31, 0.7);
+}
+
+/* auto-fit + minmax: 3 colunas no desktop, e cai sozinho pra 2 ou 1 coluna
+   quando não cabe um card de 300px — sem precisar de media query. */
+.dyk-grid {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 20px;
 }
 
 .dyk-card {
   display: flex;
   flex-direction: column;
-  min-width: 0;
+  background: var(--color-card);
+  border: 1px solid rgba(21, 17, 31, 0.08);
+  border-radius: var(--r-card);
+  padding: 10px;
+  box-shadow: 0 8px 24px rgba(21, 17, 31, 0.05);
 }
 
-.dyk-card-text {
-  min-width: 0;
-  margin-top: 28px;
-}
-
-/* Moldura paisagem: uma foto de grupo/retrato inteiro fica cortada e
-   "quadrada" numa moldura alta (3:4) — 16:10 mostra mais gente/contexto e
-   lê como foto de verdade, não como crop apertado. */
 .dyk-frame {
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  border-radius: var(--r-card);
-  border: 4px solid;
-  padding: 6px;
-  background: #fff;
 }
 
 .dyk-photo {
-  width: 100%;
-  height: 100%;
-  border-radius: calc(var(--r-card) - 4px);
-  object-fit: cover;
   display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 16px;
 }
 
 .dyk-photo--fallback {
@@ -221,108 +197,92 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
   justify-content: center;
   font-family: var(--font-display);
   font-size: 44px;
-  color: #fff;
+}
+
+.dyk-tag {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* flex: 1 + margin-top: auto no nome = o nome/descrição ficam alinhados no
+   pé do card, mesmo quando as manchetes têm tamanhos diferentes. */
+.dyk-card-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px 18px;
 }
 
 .dyk-headline {
+  margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(22px, 2.4vw, 30px);
-  line-height: 1.28;
+  font-weight: 800;
+  font-size: 21px;
+  line-height: 1.3;
   letter-spacing: -0.01em;
-  text-wrap: balance;
+  text-wrap: pretty;
+}
+
+/* Efeito "marca-texto": gradiente transparente nos 60% de cima e lima nos
+   40% de baixo, atrás do texto. */
+.dyk-highlight {
+  background: linear-gradient(transparent 60%, var(--color-lime) 60%);
+  padding: 0 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .dyk-name {
-  margin-top: 20px;
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 15.5px;
   font-weight: 700;
-  font-size: 16px;
-  color: var(--color-ink);
 }
 
 .dyk-role {
-  margin-top: 6px;
-  font-size: 15px;
+  margin-top: 4px;
+  font-size: 14.5px;
   line-height: 1.6;
-  color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+  color: rgba(21, 17, 31, 0.68);
 }
 
-/* Miniaturas das outras histórias em vez de bolinhas — ao lado do título
-   (não mais embaixo do card), preenchendo o espaço que sobrava vazio ali. */
-.dyk-thumbs {
+/* ---- Faixa lima de chamada ---- */
+.dyk-cta {
+  margin-top: 28px;
   display: flex;
-  justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 20px;
-}
-.dyk-thumb {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  opacity: 0.55;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-.dyk-thumb:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
-}
-.dyk-thumb--ativo {
-  opacity: 1;
-}
-.dyk-thumb-photo {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  object-fit: cover;
-  display: block;
-  border: 3px solid;
-  border-color: inherit;
-  font-size: 20px;
-}
-.dyk-thumb-name {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--color-ink);
-}
-
-.dyk-fade-enter-active, .dyk-fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-.dyk-fade-enter-from, .dyk-fade-leave-to {
-  opacity: 0;
-}
-
-.dyk-punchline {
-  margin-top: 56px;
-  padding: 48px 32px;
+  justify-content: space-between;
+  gap: 16px 24px;
+  padding: 18px 18px 18px 32px;
+  background: var(--color-lime);
   border-radius: var(--r-lg);
-  background: var(--color-primary);
-  text-align: center;
 }
-.dyk-punchline p {
+
+.dyk-cta p {
+  margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(26px, 4vw, 42px);
-  line-height: 1.2;
-  color: #fff;
-  text-wrap: balance;
-  max-width: 20ch;
-  margin: 0 auto;
+  font-weight: 800;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
-@media (max-width: 860px) {
-  .dyk-punchline {
-    margin-top: 56px;
-    padding: 48px 24px;
+@media (max-width: 640px) {
+  .dyk-cta {
+    padding: 24px;
+    border-radius: var(--r-card);
   }
-}
-
-@media (max-width: 700px) {
-  .dyk-top {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .dyk-thumbs {
-    justify-content: flex-start;
+  .dyk-cta .btn {
+    width: 100%;
   }
 }
 </style>
